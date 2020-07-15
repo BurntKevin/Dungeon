@@ -52,6 +52,11 @@ public class Dungeon {
         entities.add(entity);
     }
 
+    public void removeEntity(Entity entity) {
+        // Todo - Remove from front end interface
+        entities.remove(entity);
+    }
+
     public Entity getItem(int x, int y) {
         for (Entity entity : entities) {
             if (entity != null && entity.getX() == x && entity.getY() == y) {

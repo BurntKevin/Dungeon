@@ -26,13 +26,14 @@ public class DungeonControllerLoader extends DungeonLoader {
     //Images
     private Image playerImage;
     private Image wallImage;
+    private Image treasureImage;
 
-    public DungeonControllerLoader(String filename)
-            throws FileNotFoundException {
+    public DungeonControllerLoader(String filename) throws FileNotFoundException {
         super(filename);
         entities = new ArrayList<>();
         playerImage = new Image((new File("images/human_new.png")).toURI().toString());
         wallImage = new Image((new File("images/brick_brown_0.png")).toURI().toString());
+        treasureImage = new Image((new File("images/gold_pile.png")).toURI().toString());
     }
 
     @Override
@@ -45,6 +46,12 @@ public class DungeonControllerLoader extends DungeonLoader {
     public void onLoad(Wall wall) {
         ImageView view = new ImageView(wallImage);
         addEntity(wall, view);
+    }
+
+    @Override
+    public void onLoad(Treasure treasure) {
+        ImageView view = new ImageView(treasureImage);
+        addEntity(treasure, view);
     }
 
     private void addEntity(Entity entity, ImageView view) {
@@ -67,15 +74,13 @@ public class DungeonControllerLoader extends DungeonLoader {
         GridPane.setRowIndex(node, entity.getY());
         entity.x().addListener(new ChangeListener<Number>() {
             @Override
-            public void changed(ObservableValue<? extends Number> observable,
-                    Number oldValue, Number newValue) {
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 GridPane.setColumnIndex(node, newValue.intValue());
             }
         });
         entity.y().addListener(new ChangeListener<Number>() {
             @Override
-            public void changed(ObservableValue<? extends Number> observable,
-                    Number oldValue, Number newValue) {
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 GridPane.setRowIndex(node, newValue.intValue());
             }
         });
@@ -90,6 +95,4 @@ public class DungeonControllerLoader extends DungeonLoader {
     public DungeonController loadController() throws FileNotFoundException {
         return new DungeonController(load(), entities);
     }
-
-
 }
