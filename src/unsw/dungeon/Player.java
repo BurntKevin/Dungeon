@@ -8,6 +8,7 @@ package unsw.dungeon;
 public class Player extends Entity {
 
     private Dungeon dungeon;
+    private Weapon weapon;
     private Log log;
 
     /**
@@ -18,6 +19,7 @@ public class Player extends Entity {
     public Player(Dungeon dungeon, int x, int y) {
         super(x, y);
         this.dungeon = dungeon;
+        this.weapon = null;
         this.log = new Log();
     }
 
@@ -26,8 +28,8 @@ public class Player extends Entity {
         if (getY() > 0 && ! (next_tile instanceof Wall))
             y().set(getY() - 1);
 
-            if (next_tile instanceof Item) {
-                pickUp((Item) next_tile);
+            if (next_tile instanceof PickUpItem) {
+                pickUp((PickUpItem) next_tile);
             }
     }
 
@@ -36,8 +38,8 @@ public class Player extends Entity {
         if (getY() < dungeon.getHeight() - 1 && ! (next_tile instanceof Wall))
             y().set(getY() + 1);
 
-            if (next_tile instanceof Item) {
-                pickUp((Item) next_tile);
+            if (next_tile instanceof PickUpItem) {
+                pickUp((PickUpItem) next_tile);
             }
     }
 
@@ -46,8 +48,8 @@ public class Player extends Entity {
         if (getX() > 0 && ! (next_tile instanceof Wall))
             x().set(getX() - 1);
 
-            if (next_tile instanceof Item) {
-                pickUp((Item) next_tile);
+            if (next_tile instanceof PickUpItem) {
+                pickUp((PickUpItem) next_tile);
             }
     }
 
@@ -56,16 +58,37 @@ public class Player extends Entity {
         if (getX() < dungeon.getWidth() - 1 && ! (next_tile instanceof Wall))
             x().set(getX() + 1);
 
-            if (next_tile instanceof Item) {
-                pickUp((Item) next_tile);
+            if (next_tile instanceof PickUpItem) {
+                pickUp((PickUpItem) next_tile);
             }
     }
 
-    public void pickUp(Item item) {
-        if (item.pickUp() == true) {
-            dungeon.removeEntity(item);
+    public void setWeapon(Weapon weapon) {
+        this.weapon = weapon;
+    }
+
+    public void attacked() {
+        if (! (weapon instanceof Weapon)) {
+            System.out.println("Player died");
+        } else {
+            if (weapon.used()) {
+                // Weapon has no more durability
+                weapon = null;
+
+                // TODO - Remove item from memory
+            }
+        }
+    }
+
+    public void pickUp(PickUpItem item) {
+        if (item.getPickUpItem() instanceof Weapon && weapon == null) {
+            setWeapon((Weapon) item.getPickUpItem());
 
             log.logItem(item);
+            dungeon.removeEntity(item);
+        } else if (item.getPickUpItem() instanceof Treasure) {
+            log.logItem(item);
+            dungeon.removeEntity(item);
         }
     }
 }

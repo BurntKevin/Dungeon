@@ -61,19 +61,38 @@ public abstract class DungeonLoader {
             entity = wall;
             break;
         case "treasure":
-            Treasure treasure = new Treasure(x, y);
-            onLoad(treasure);
-            entity = (Entity) (Item) treasure;
+            Treasure treasure = new Treasure();
+            PickUpItem treasure_item = new PickUpItem(x, y, (Item) treasure);
+            onLoad(treasure_item);
+            entity = treasure_item;
+            break;
+        case "gnome":
+            Gnome gnome = new Gnome(x, y, dungeon);
+            onLoad(gnome);
+            entity = gnome;
+            break;
+        case "sword":
+            Sword sword = new Sword();
+            PickUpItem sword_item = new PickUpItem(x, y, (Item) sword);
+            onLoad(sword_item);
+            entity = sword_item;
+            break;
         // TODO Handle other possible entities
         }
         dungeon.addEntity(entity);
     }
 
-    public abstract void onLoad(Entity player);
+    public abstract void onLoad(Player player);
 
     public abstract void onLoad(Wall wall);
 
     public abstract void onLoad(Treasure treasure);
+
+    public abstract void onLoad(Gnome gnome);
+
+    public abstract void onLoad(Sword sword);
+
+    public abstract void onLoad(PickUpItem item);
 
     // TODO Create additional abstract methods for the other entities
 
