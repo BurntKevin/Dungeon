@@ -25,12 +25,15 @@ public class DungeonController {
 
     private Player player;
 
+    private ArrayList<Enemy> enemies;
+
     private Dungeon dungeon;
 
     public DungeonController(Dungeon dungeon, List<ImageView> initialEntities) {
         this.dungeon = dungeon;
         this.player = dungeon.getPlayer();
         this.initialEntities = new ArrayList<>(initialEntities);
+        this.enemies = dungeon.getEnemies();
     }
 
     @FXML
@@ -44,8 +47,9 @@ public class DungeonController {
             }
         }
 
-        for (ImageView entity : initialEntities)
+        for (ImageView entity : initialEntities) {
             squares.getChildren().add(entity);
+        }
     }
 
     @FXML
@@ -65,6 +69,26 @@ public class DungeonController {
             break;
         default:
             break;
+        }
+
+        moveEnemies();
+        checkPlayerStatus();
+    }
+
+    private void moveEnemies() {
+        for (Enemy e : enemies) {
+            e.move();
+        }
+    }
+
+    private void checkPlayerStatus() {
+        // Checks if a player is meant to be dead
+        // Obtaining player coordinate
+        int[] playerCoordinate = dungeon.getPlayerCoordinates();
+        for (Enemy e : enemies) {
+            if (e.getX() == playerCoordinate[0] && e.getY() == playerCoordinate[1]) {
+                player.attacked();
+            }
         }
     }
 

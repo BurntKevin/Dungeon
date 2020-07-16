@@ -26,7 +26,9 @@ public class DungeonControllerLoader extends DungeonLoader {
     //Images
     private Image playerImage;
     private Image wallImage;
+    private Image gnomeImage;
     private Image treasureImage;
+    private Image swordImage;
 
     public DungeonControllerLoader(String filename) throws FileNotFoundException {
         super(filename);
@@ -34,10 +36,12 @@ public class DungeonControllerLoader extends DungeonLoader {
         playerImage = new Image((new File("images/human_new.png")).toURI().toString());
         wallImage = new Image((new File("images/brick_brown_0.png")).toURI().toString());
         treasureImage = new Image((new File("images/gold_pile.png")).toURI().toString());
+        gnomeImage = new Image((new File("images/gnome.png")).toURI().toString());
+        swordImage = new Image((new File("images/greatsword_1_new.png")).toURI().toString());
     }
 
     @Override
-    public void onLoad(Entity player) {
+    public void onLoad(Player player) {
         ImageView view = new ImageView(playerImage);
         addEntity(player, view);
     }
@@ -54,8 +58,38 @@ public class DungeonControllerLoader extends DungeonLoader {
         addEntity(treasure, view);
     }
 
+    @Override
+    public void onLoad(Gnome gnome) {
+        ImageView view = new ImageView(gnomeImage);
+        addEntity(gnome, view);
+    }
+
+    @Override
+    public void onLoad(Sword sword) {
+        ImageView view = new ImageView(swordImage);
+        addEntity(sword, view);
+    }
+
+    @Override
+    public void onLoad(PickUpItem item) {
+        // Using player to indicate missing texture - #TODO
+        ImageView view = new ImageView(playerImage);
+        if (item.getPickUpItem() instanceof Sword) {
+            view = new ImageView(swordImage);
+        } else if (item.getPickUpItem() instanceof Treasure) {
+            view = new ImageView(treasureImage);
+        }
+
+        addEntity(item, view);
+    }
+
     private void addEntity(Entity entity, ImageView view) {
         trackPosition(entity, view);
+        entities.add(view);
+    }
+
+    private void addEntity(PickUpItem item, ImageView view) {
+        trackPosition(item, view);
         entities.add(view);
     }
 
