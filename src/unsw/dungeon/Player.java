@@ -7,8 +7,11 @@ package unsw.dungeon;
  */
 public class Player extends Entity {
 
-    private Dungeon dungeon;
-    private Weapon weapon;
+    private Dungeon dungeon;    
+    private String faceDirection; // "Left" | "Right" | "Up" | "Down", forms part of extension so animation can be done later
+    private Weapon melee;
+    private Weapon ranged;
+    private int invisTurnsLeft;
     private Log log;
 
     /**
@@ -81,11 +84,13 @@ public class Player extends Entity {
     }
 
     public void pickUp(PickUpItem item) {
+        Item curr = item.getPickUpItem();
         if (item.getPickUpItem() instanceof Weapon && weapon == null) {
             setWeapon((Weapon) item.getPickUpItem());
-
             log.logItem(item);
             dungeon.removeEntity(item);
+        }
+        else if (item.)
         } else if (item.getPickUpItem() instanceof Treasure) {
             log.logItem(item);
             dungeon.removeEntity(item);

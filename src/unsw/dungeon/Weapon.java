@@ -1,5 +1,5 @@
 package unsw.dungeon;
 
 public interface Weapon {
-    public Boolean used();
+    public Boolean useWeapon(); 
 }

@@ -53,6 +53,10 @@ public class Dungeon {
         entities.remove(entity);
     }
 
+    public ArrayList<Entity> getEntitiesAList() {
+        
+    }
+
     public Entity getItem(int x, int y) {
         for (Entity entity : entities) {
             if (entity != null && entity.getX() == x && entity.getY() == y) {

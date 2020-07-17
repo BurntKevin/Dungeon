@@ -9,7 +9,7 @@ public class PickUpItem extends Entity {
         this.pickUpItem = item;
     }
 
-    public Item getPickUpItem() {
+    public Item getItemFromPickup() {
         return pickUpItem;
     }
 }

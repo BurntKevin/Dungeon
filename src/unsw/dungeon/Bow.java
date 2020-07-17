@@ -1,9 +1,9 @@
 package unsw.dungeon;
 
-public class Sword implements Weapon, Item {
-    private int usesLeft;
-    
-    public Sword() {
+public class Bow implements Weapon, Item {
+    int usesLeft;
+
+    public Bow() {
         this.usesLeft = 2;
     }
 
@@ -15,4 +15,5 @@ public class Sword implements Weapon, Item {
         }
         return false;
     }
+
 }

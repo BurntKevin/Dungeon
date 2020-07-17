@@ -1,21 +1,42 @@
 package unsw.dungeon;
 
 public class Log {
-    private int treasureObtained;
-    private int swordsUsed;
+    private int nTreasureObtained;
+    private int nSwordsUsed;
+    private int nEnemiesKilled;
+    private int nPotionsConsumed;
+    private int nStepsTaken;
+    private int nTeleports;
+    private int nBowShotsHit;
+    private int nBowShotsMissed;
 
     public Log() {
-        treasureObtained = 0;
-        swordsUsed = 0;
+        nTreasureObtained = 0;
+        nSwordsUsed = 0;
+        nEnemiesKilled = 0;
+        nPotionsConsumed = 0;
+        nStepsTaken = 0;
+        nTeleports = 0;
+        nBowShotsHit = 0;
+        nBowShotsMissed = 0;
+    }
+
+    public void logMovement() {
+        
     }
 
     public void logItem(PickUpItem item) {
-        if (item.getPickUpItem() instanceof Treasure) {
-            treasureObtained++;
-        } else if (item.getPickUpItem() instanceof Sword) {
-            swordsUsed++;
+        Item nextItem = item.getPickUpItem();
+        if (nextItem instanceof Treasure) {
+            nTreasureObtained++;
+        } else if (nextItem instanceof Sword) {
+            nSwordsUsed++;
+        } else if (nextItem instanceof Potion) {
+            nPotionsConsumed++;
+        }
         } else {
             System.out.println("Got a new item");
         }
     }
+
 }
