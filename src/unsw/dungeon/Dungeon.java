@@ -20,12 +20,14 @@ public class Dungeon {
     private int width, height;
     private List<Entity> entities;
     private Player player;
+    private Log log;
 
     public Dungeon(int width, int height) {
         this.width = width;
         this.height = height;
         this.entities = new ArrayList<>();
         this.player = null;
+        this.log = new Log();
     }
 
     public int getWidth() {
@@ -116,5 +118,22 @@ public class Dungeon {
         }
 
         return board;
+    }
+
+    public void logItem(PickUpItem item) {
+        log.logItem(item);
+    }
+
+    public int getTreasureLeft() {
+        int treasureCount = 0;
+        for (Entity e : entities) {
+            if (e instanceof PickUpItem) {
+                PickUpItem e_item = (PickUpItem) e;
+                if (e_item.getPickUpItem() instanceof Treasure) {
+                    treasureCount++;
+                }
+            }
+        }
+        return treasureCount;
     }
 }

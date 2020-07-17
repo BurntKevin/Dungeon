@@ -9,7 +9,6 @@ public class Player extends Entity {
 
     private Dungeon dungeon;
     private Weapon weapon;
-    private Log log;
 
     /**
      * Create a player positioned in square (x,y)
@@ -20,46 +19,53 @@ public class Player extends Entity {
         super(x, y);
         this.dungeon = dungeon;
         this.weapon = null;
-        this.log = new Log();
     }
 
     public void moveUp() {
-        Entity next_tile = dungeon.getItem(getX(), getY() - 1);
-        if (getY() > 0 && ! (next_tile instanceof Wall))
+        Entity nextTile = dungeon.getItem(getX(), getY() - 1);
+        if (getY() > 0 && ! (nextTile instanceof Wall))
             y().set(getY() - 1);
 
-            if (next_tile instanceof PickUpItem) {
-                pickUp((PickUpItem) next_tile);
+            if (nextTile instanceof PickUpItem) {
+                pickUp((PickUpItem) nextTile);
+            } else if (nextTile instanceof Exit) {
+                finishGame((Exit) nextTile);
             }
     }
 
     public void moveDown() {
-        Entity next_tile = dungeon.getItem(getX(), getY() + 1);
-        if (getY() < dungeon.getHeight() - 1 && ! (next_tile instanceof Wall))
+        Entity nextTile = dungeon.getItem(getX(), getY() + 1);
+        if (getY() < dungeon.getHeight() - 1 && ! (nextTile instanceof Wall))
             y().set(getY() + 1);
 
-            if (next_tile instanceof PickUpItem) {
-                pickUp((PickUpItem) next_tile);
+            if (nextTile instanceof PickUpItem) {
+                pickUp((PickUpItem) nextTile);
+            } else if (nextTile instanceof Exit) {
+                finishGame((Exit) nextTile);
             }
     }
 
     public void moveLeft() {
-        Entity next_tile = dungeon.getItem(getX() - 1, getY());
-        if (getX() > 0 && ! (next_tile instanceof Wall))
+        Entity nextTile = dungeon.getItem(getX() - 1, getY());
+        if (getX() > 0 && ! (nextTile instanceof Wall))
             x().set(getX() - 1);
 
-            if (next_tile instanceof PickUpItem) {
-                pickUp((PickUpItem) next_tile);
+            if (nextTile instanceof PickUpItem) {
+                pickUp((PickUpItem) nextTile);
+            } else if (nextTile instanceof Exit) {
+                finishGame((Exit) nextTile);
             }
     }
 
     public void moveRight() {
-        Entity next_tile = dungeon.getItem(getX() + 1, getY());
-        if (getX() < dungeon.getWidth() - 1 && ! (next_tile instanceof Wall))
+        Entity nextTile = dungeon.getItem(getX() + 1, getY());
+        if (getX() < dungeon.getWidth() - 1 && ! (nextTile instanceof Wall))
             x().set(getX() + 1);
 
-            if (next_tile instanceof PickUpItem) {
-                pickUp((PickUpItem) next_tile);
+            if (nextTile instanceof PickUpItem) {
+                pickUp((PickUpItem) nextTile);
+            } else if (nextTile instanceof Exit) {
+                finishGame((Exit) nextTile);
             }
     }
 
@@ -81,14 +87,23 @@ public class Player extends Entity {
     }
 
     public void pickUp(PickUpItem item) {
+        System.out.println(item.getPickUpItem());
         if (item.getPickUpItem() instanceof Weapon && weapon == null) {
+            System.out.println("Picking up weapon");
             setWeapon((Weapon) item.getPickUpItem());
 
-            log.logItem(item);
+            dungeon.logItem(item);
             dungeon.removeEntity(item);
+            item.confirmPickedUp().set(false);
         } else if (item.getPickUpItem() instanceof Treasure) {
-            log.logItem(item);
+            dungeon.logItem(item);
             dungeon.removeEntity(item);
+            item.confirmPickedUp().set(false);
         }
+        System.out.println("Pickup function called");
+    }
+
+    private void finishGame(Exit exit) {
+        exit.enter();
     }
 }
