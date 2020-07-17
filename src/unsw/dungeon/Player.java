@@ -9,9 +9,10 @@ public class Player extends Entity {
 
     private Dungeon dungeon;    
     private String faceDirection; // "Left" | "Right" | "Up" | "Down", forms part of extension so animation can be done later
-    private Weapon melee;
-    private Weapon ranged;
-    private int invisTurnsLeft;
+    // more type safe: 
+    private Sword melee;
+    private Bow ranged;
+    private int invisMovesLeft;
     private Log log;
 
     /**
@@ -22,7 +23,7 @@ public class Player extends Entity {
     public Player(Dungeon dungeon, int x, int y) {
         super(x, y);
         this.dungeon = dungeon;
-        this.weapon = null;
+        this.melee = new ;
         this.log = new Log();
     }
 
@@ -66,8 +67,8 @@ public class Player extends Entity {
             }
     }
 
-    public void setWeapon(Weapon weapon) {
-        this.weapon = weapon;
+    public void fireRanged() {
+        // TODO - add 
     }
 
     public void attacked() {
@@ -77,6 +78,8 @@ public class Player extends Entity {
             if (weapon.used()) {
                 // Weapon has no more durability
                 weapon = null;
+                // Easy implementation: always have weapon "existing" on player
+                // Reset durability when a new weapon picked up
 
                 // TODO - Remove item from memory
             }
