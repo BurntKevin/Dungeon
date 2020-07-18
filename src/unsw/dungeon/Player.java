@@ -35,6 +35,7 @@ public class Player extends Entity {
 
     public void moveUp() {
         Entity nextTile = dungeon.getItem(getX(), getY() - 1);
+        invisStatus.minusInvisTimer();
         if (getY() > 0 && ! (nextTile instanceof Wall))
             y().set(getY() - 1);
 
@@ -47,6 +48,7 @@ public class Player extends Entity {
 
     public void moveDown() {
         Entity nextTile = dungeon.getItem(getX(), getY() + 1);
+        invisStatus.minusInvisTimer();
         if (getY() < dungeon.getHeight() - 1 && ! (nextTile instanceof Wall))
             y().set(getY() + 1);
 
@@ -59,6 +61,7 @@ public class Player extends Entity {
 
     public void moveLeft() {
         Entity nextTile = dungeon.getItem(getX() - 1, getY());
+        invisStatus.minusInvisTimer();
         if (getX() > 0 && ! (nextTile instanceof Wall))
             x().set(getX() - 1);
 
@@ -71,6 +74,7 @@ public class Player extends Entity {
 
     public void moveRight() {
         Entity nextTile = dungeon.getItem(getX() + 1, getY());
+        invisStatus.minusInvisTimer();
         if (getX() < dungeon.getWidth() - 1 && ! (nextTile instanceof Wall))
             x().set(getX() + 1);
 
