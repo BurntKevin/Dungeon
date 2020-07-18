@@ -73,7 +73,12 @@ public class DungeonController {
             break;
         }
 
-        moveEnemies();
+        if (!player.isInvisible()) {
+            moveEnemies();
+        }
+        else {
+            // flee(); // waiting for implementation
+        }
         checkPlayerStatus();
     }
 

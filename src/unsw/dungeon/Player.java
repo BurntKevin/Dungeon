@@ -99,6 +99,10 @@ public class Player extends Entity {
         y().set(teleY);
     }
 
+    public boolean isInvisible() {
+        return invisStatus.checkPotionActive();
+    }
+
     public void fireRanged() {
         // TODO - add 
     }
