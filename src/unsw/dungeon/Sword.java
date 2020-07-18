@@ -21,7 +21,7 @@ public class Sword extends Weapon {
 
     /**
      * Use weapon for attack if possible
-     * returns true/false depending on whether attack suceeded
+     * @return boolean indicating whether attack suceeded
      */
     public Boolean attemptMeleeAttack() {
         if (usesLeft <= 0) {
@@ -31,6 +31,10 @@ public class Sword extends Weapon {
         return true;
     }
 
+    /**
+     * Determine whether a usable weapon is equipped
+     * @return boolean indicating whether another sword may be picked up
+     */
     public Boolean checkWeaponUsable() {
         if (usesLeft <= 0) {
             return false;

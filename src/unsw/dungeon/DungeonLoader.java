@@ -62,9 +62,9 @@ public abstract class DungeonLoader {
             break;
         case "treasure":
             Treasure treasure = new Treasure();
-            PickUpItem treasure_item = new PickUpItem(x, y, (Item) treasure);
-            onLoad(treasure_item);
-            entity = treasure_item;
+            PickUp treasurePU = new PickUp(x, y, (Item) treasure, "Treasure");
+            onLoad(treasurePU);
+            entity = treasurePU;
             break;
         case "gnome":
             Gnome gnome = new Gnome(x, y, dungeon);
@@ -73,9 +73,9 @@ public abstract class DungeonLoader {
             break;
         case "sword":
             Sword sword = new Sword();
-            PickUpItem sword_item = new PickUpItem(x, y, (Item) sword);
-            onLoad(sword_item);
-            entity = sword_item;
+            PickUp swordPU = new PickUp(x, y, (Item) sword, "Sword");
+            onLoad(swordPU);
+            entity = swordPU;
             break;
         // TODO Handle other possible entities
         }
@@ -92,7 +92,7 @@ public abstract class DungeonLoader {
 
     public abstract void onLoad(Sword sword);
 
-    public abstract void onLoad(PickUpItem item);
+    public abstract void onLoad(PickUp pickup);
 
     // TODO Create additional abstract methods for the other entities
 

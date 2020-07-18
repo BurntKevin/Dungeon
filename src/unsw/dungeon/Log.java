@@ -41,16 +41,18 @@ public class Log {
         nStepsTaken++;
     }
 
-    public void logItem(PickUpItem item) {
-        Item nextItem = item.getPickUpItem();
+    public void logItem(PickUp item) {
+        Item nextItem = item.getItemFromPickUp();
         if (nextItem instanceof Treasure) {
             nTreasureObtained++;
-        } else if (nextItem instanceof Sword) {
+        } 
+        else if (nextItem instanceof Sword) {
             nSwordsUsed++;
-        } else if (nextItem instanceof Potion) {
+        } 
+        else if (nextItem instanceof Potion) {
             nPotionsConsumed++;
-        }
-        } else {
+        } 
+        else {
             System.out.println("Got a new item");
         }
     }

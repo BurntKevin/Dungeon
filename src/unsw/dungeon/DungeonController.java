@@ -27,6 +27,8 @@ public class DungeonController {
 
     private ArrayList<Enemy> enemies;
 
+    private ArrayList<PickUp> itempickups;
+
     private Dungeon dungeon;
 
     public DungeonController(Dungeon dungeon, List<ImageView> initialEntities) {
@@ -80,7 +82,11 @@ public class DungeonController {
             e.move();
         }
     }
-
+    
+    /**
+     * Determines what actions to take for current turn
+     * depending on what entities are in the same tile as the player
+     */
     private void checkPlayerStatus() {
         // Checks if a player is meant to be dead
         // Obtaining player coordinate
@@ -89,6 +95,9 @@ public class DungeonController {
             if (e.getX() == playerCoordinate[0] && e.getY() == playerCoordinate[1]) {
                 player.attacked();
             }
+        }
+        for (PickUp i : itempickups) {
+            
         }
     }
 
