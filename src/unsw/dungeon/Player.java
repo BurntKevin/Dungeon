@@ -8,10 +8,10 @@ package unsw.dungeon;
 public class Player extends Entity {
 
     private Dungeon dungeon;    
-    private String faceDirection; // "Left" | "Right" | "Up" | "Down", forms part of extension so animation can be done later
+    private String facingDir; // facingDir := "Left" | "Right" | "Up" | "Down", forms part of extension so animation can be done later
     private Sword melee;
     private Bow ranged;
-    private int invisMovesLeft;
+    private Potion invisStatus;
     private Log log;
 
     /**
@@ -22,8 +22,11 @@ public class Player extends Entity {
     public Player(Dungeon dungeon, int x, int y) {
         super(x, y);
         this.dungeon = dungeon;
-        this.melee = new ;
+        this.melee = new Sword();
+        this.ranged = new Bow();
         this.log = new Log();
+        this.invisStatus = new Potion();
+        this.facingDir = "Right";
     }
 
     public void moveUp() {
@@ -71,9 +74,13 @@ public class Player extends Entity {
     }
 
     public void attacked() {
-        if (! (weapon instanceof Weapon)) {
+        if (! melee.attemptMeleeAttack()) { // usable weapon equipped
             System.out.println("Player died");
-        } else {
+        } 
+        else if () { // invisibility activated
+
+        } 
+        else {
             if (weapon.used()) {
                 // Weapon has no more durability
                 weapon = null;

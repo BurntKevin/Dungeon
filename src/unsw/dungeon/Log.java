@@ -21,8 +21,24 @@ public class Log {
         nBowShotsMissed = 0;
     }
 
+    public void logRangedAtk(Boolean hit) {
+        if (hit) {
+            nBowShotsHit++;
+        }
+        else {
+            nBowShotsMissed++;
+        }
+    }
+
+    public float calculateAcc() {
+        if (nBowShotsHit == 0 && nBowShotsMissed == 0) {
+            return 100;
+        }
+        return 100 * (nBowShotsHit / (nBowShotsHit + nBowShotsMissed));
+    }
+
     public void logMovement() {
-        
+        nStepsTaken++;
     }
 
     public void logItem(PickUpItem item) {
