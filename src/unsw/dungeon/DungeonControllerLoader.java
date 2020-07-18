@@ -67,12 +67,12 @@ public class DungeonControllerLoader extends DungeonLoader {
     }
 
     @Override
-    public void onLoad(PickUpItem item) {
+    public void onLoad(PickUp item) {
         // Using player to indicate missing texture - #TODO
         ImageView view = new ImageView(playerImage);
-        if (item.getPickUpItem() instanceof Sword) {
+        if (item.getItemFromPickUp() instanceof Sword) {
             view = new ImageView(swordImage);
-        } else if (item.getPickUpItem() instanceof Treasure) {
+        } else if (item.getItemFromPickUp() instanceof Treasure) {
             view = new ImageView(treasureImage);
         }
 
@@ -84,7 +84,7 @@ public class DungeonControllerLoader extends DungeonLoader {
         entities.add(view);
     }
 
-    private void addEntity(PickUpItem item, ImageView view) {
+    private void addEntity(PickUp item, ImageView view) {
         System.out.println("I am an item");
         trackPosition(item, view);
         trackStatus(item, view);
@@ -118,7 +118,7 @@ public class DungeonControllerLoader extends DungeonLoader {
         });
     }
 
-    private void trackStatus(PickUpItem item, Node node) {
+    private void trackStatus(PickUp item, Node node) {
         item.confirmPickedUp().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) {
