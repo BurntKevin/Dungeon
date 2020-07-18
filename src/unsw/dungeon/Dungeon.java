@@ -120,16 +120,16 @@ public class Dungeon {
         return board;
     }
 
-    public void logItem(PickUpItem item) {
+    public void logItem(PickUp item) {
         log.logItem(item);
     }
 
     public int getTreasureLeft() {
         int treasureCount = 0;
         for (Entity e : entities) {
-            if (e instanceof PickUpItem) {
-                PickUpItem e_item = (PickUpItem) e;
-                if (e_item.getPickUpItem() instanceof Treasure) {
+            if (e instanceof PickUp) {
+                PickUp e_item = (PickUp) e;
+                if (e_item.getItemFromPickUp() instanceof Treasure) {
                     treasureCount++;
                 }
             }
