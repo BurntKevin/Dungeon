@@ -7,7 +7,7 @@ package unsw.dungeon;
  */
 public class PickUp extends Entity {
     private Item obtainedItem;
-    private String itemID;
+    private String itemID; // itemID := "Sword" | "Bow" | "Potion" | "Treasure"
 
     public PickUp(int x, int y, Item item, String itemID) {
         super(x, y);

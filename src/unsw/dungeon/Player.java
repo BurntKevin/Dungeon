@@ -34,8 +34,8 @@ public class Player extends Entity {
         if (getY() > 0 && ! (next_tile instanceof Wall))
             y().set(getY() - 1);
 
-            if (next_tile instanceof PickUpItem) {
-                pickUp((PickUpItem) next_tile);
+            if (next_tile instanceof PickUp) {
+                pickUpItem((PickUp) next_tile);
             }
     }
 
@@ -44,8 +44,8 @@ public class Player extends Entity {
         if (getY() < dungeon.getHeight() - 1 && ! (next_tile instanceof Wall))
             y().set(getY() + 1);
 
-            if (next_tile instanceof PickUpItem) {
-                pickUp((PickUpItem) next_tile);
+            if (next_tile instanceof PickUp) {
+                pickUpItem((PickUp) next_tile);
             }
     }
 
@@ -54,8 +54,8 @@ public class Player extends Entity {
         if (getX() > 0 && ! (next_tile instanceof Wall))
             x().set(getX() - 1);
 
-            if (next_tile instanceof PickUpItem) {
-                pickUp((PickUpItem) next_tile);
+            if (next_tile instanceof PickUp) {
+                pickUpItem((PickUp) next_tile);
             }
     }
 
@@ -64,8 +64,8 @@ public class Player extends Entity {
         if (getX() < dungeon.getWidth() - 1 && ! (next_tile instanceof Wall))
             x().set(getX() + 1);
 
-            if (next_tile instanceof PickUpItem) {
-                pickUp((PickUpItem) next_tile);
+            if (next_tile instanceof PickUp) {
+                pickUpItem((PickUp) next_tile);
             }
     }
 
@@ -73,34 +73,42 @@ public class Player extends Entity {
         // TODO - add 
     }
 
-    public void attacked() {
-        if (! melee.attemptMeleeAttack()) { // usable weapon equipped
-            System.out.println("Player died");
-        } 
-        else if () { // invisibility activated
-
-        } 
-        else {
-            if (weapon.used()) {
-                // Weapon has no more durability
-                weapon = null;
-                // Easy implementation: always have weapon "existing" on player
-                // Reset durability when a new weapon picked up
-
-                // TODO - Remove item from memory
-            }
+    /**
+     * 
+     * @return boolean whether player's counteratk was successful (false indicates game over)
+     */
+    public boolean attacked() {
+        
+        if (invisStatus.checkPotionActive()) {
+            return true;
         }
+        else if (melee.attemptMeleeAttack()) { // usable weapon equipped
+            return true;
+        } 
+        return false;
     }
 
-    public void pickUp(PickUpItem item) {
-        Item curr = item.getPickUpItem();
-        if (item.getPickUpItem() instanceof Weapon && weapon == null) {
-            setWeapon((Weapon) item.getPickUpItem());
-            log.logItem(item);
-            dungeon.removeEntity(item);
+    public void pickUpItem(PickUp item) {
+
+        Item curr = item.getItemFromPickUp();
+
+        if (curr instanceof Sword) {
+            if (melee.checkWeaponUsable()) { // usable weapon already equipped 
+                // don't pick up
+            }
+            else {
+                melee.addNewSword(); // reset number of uses left
+                log.logItem(item);
+                dungeon.removeEntity(item);
+            }
         }
-        else if (item.)
-        } else if (item.getPickUpItem() instanceof Treasure) {
+        else if (curr instanceof Potion) {
+            if (! invisStatus.checkPotionActive()) {
+                // activate invisibility visual effect
+            }
+            invisStatus.usePotion();
+        } 
+        else if (curr instanceof Treasure) {
             log.logItem(item);
             dungeon.removeEntity(item);
         }
