@@ -14,7 +14,7 @@ public class Player extends Entity {
     private Sword melee;
     private Bow ranged;
     private Potion invisStatus;
-    private boolean keyObtained;
+    private Key key;
     private Log log;
 
     /**
@@ -139,6 +139,11 @@ public class Player extends Entity {
             }
             invisStatus.usePotion();
         } 
+        else if (curr instanceof Key) {
+            if (! key.carryingKey) {
+                key.equipKey((Key) curr);
+            }
+        }
         else if (curr instanceof Treasure) {
             dungeon.logItem(item);
             dungeon.removeEntity(item);
