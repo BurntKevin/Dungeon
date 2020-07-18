@@ -26,17 +26,24 @@ public class DungeonControllerLoader extends DungeonLoader {
     //Images
     private Image playerImage;
     private Image wallImage;
+    private Image gnomeImage;
+    private Image treasureImage;
+    private Image swordImage;
+    private Image exitImage;
 
-    public DungeonControllerLoader(String filename)
-            throws FileNotFoundException {
+    public DungeonControllerLoader(String filename) throws FileNotFoundException {
         super(filename);
         entities = new ArrayList<>();
         playerImage = new Image((new File("images/human_new.png")).toURI().toString());
         wallImage = new Image((new File("images/brick_brown_0.png")).toURI().toString());
+        treasureImage = new Image((new File("images/gold_pile.png")).toURI().toString());
+        gnomeImage = new Image((new File("images/gnome.png")).toURI().toString());
+        swordImage = new Image((new File("images/greatsword_1_new.png")).toURI().toString());
+        exitImage = new Image((new File("images/exit.png")).toURI().toString());
     }
 
     @Override
-    public void onLoad(Entity player) {
+    public void onLoad(Player player) {
         ImageView view = new ImageView(playerImage);
         addEntity(player, view);
     }
@@ -47,8 +54,40 @@ public class DungeonControllerLoader extends DungeonLoader {
         addEntity(wall, view);
     }
 
+    @Override
+    public void onLoad(Gnome gnome) {
+        ImageView view = new ImageView(gnomeImage);
+        addEntity(gnome, view);
+    }
+
+    @Override
+    public void onLoad(Exit exit) {
+        ImageView view = new ImageView(exitImage);
+        addEntity(exit, view);
+    }
+
+    @Override
+    public void onLoad(PickUp item) {
+        // Using player to indicate missing texture - #TODO
+        ImageView view = new ImageView(playerImage);
+        if (item.getItemFromPickUp() instanceof Sword) {
+            view = new ImageView(swordImage);
+        } else if (item.getItemFromPickUp() instanceof Treasure) {
+            view = new ImageView(treasureImage);
+        }
+
+        addEntity(item, view);
+    }
+
     private void addEntity(Entity entity, ImageView view) {
         trackPosition(entity, view);
+        entities.add(view);
+    }
+
+    private void addEntity(PickUp item, ImageView view) {
+        System.out.println("I am an item");
+        trackPosition(item, view);
+        trackStatus(item, view);
         entities.add(view);
     }
 
@@ -67,18 +106,32 @@ public class DungeonControllerLoader extends DungeonLoader {
         GridPane.setRowIndex(node, entity.getY());
         entity.x().addListener(new ChangeListener<Number>() {
             @Override
-            public void changed(ObservableValue<? extends Number> observable,
-                    Number oldValue, Number newValue) {
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 GridPane.setColumnIndex(node, newValue.intValue());
             }
         });
         entity.y().addListener(new ChangeListener<Number>() {
             @Override
-            public void changed(ObservableValue<? extends Number> observable,
-                    Number oldValue, Number newValue) {
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 GridPane.setRowIndex(node, newValue.intValue());
             }
         });
+    }
+
+    private void trackStatus(PickUp item, Node node) {
+        item.confirmPickedUp().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) {
+                System.out.println("Removing pick up item from front end");
+                node.setVisible(false);
+            }
+        });
+
+        // private GridPane squares;
+        // for (ImageView entity : initialEntities) {
+        //     squares.getChildren().add(entity);
+        // }
+        // private List<ImageView> initialEntities;
     }
 
     /**
@@ -90,6 +143,4 @@ public class DungeonControllerLoader extends DungeonLoader {
     public DungeonController loadController() throws FileNotFoundException {
         return new DungeonController(load(), entities);
     }
-
-
 }

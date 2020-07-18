@@ -39,4 +39,15 @@ public class Entity {
     public int getX() {
         return x().get();
     }
+
+    /**
+     * 
+     * @return boolean if the given coordinates match tile of entity
+     */
+    public boolean checkTilesCoincide(int givenX, int givenY) {
+        if (x.intValue() == givenX && y.intValue() == givenY) {
+            return true; 
+        } 
+        return false;
+    }
 }

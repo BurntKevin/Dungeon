@@ -7,6 +7,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import java.util.ArrayList;
+
 /**
  * Loads a dungeon from a .json file.
  *
@@ -34,11 +36,12 @@ public abstract class DungeonLoader {
 
         Dungeon dungeon = new Dungeon(width, height);
 
+        // Creating entities
         JSONArray jsonEntities = json.getJSONArray("entities");
-
         for (int i = 0; i < jsonEntities.length(); i++) {
             loadEntity(dungeon, jsonEntities.getJSONObject(i));
         }
+
         return dungeon;
     }
 
@@ -60,14 +63,85 @@ public abstract class DungeonLoader {
             onLoad(wall);
             entity = wall;
             break;
+        case "treasure":
+            Treasure treasure = new Treasure();
+            PickUp treasurePU = new PickUp(x, y, (Item) treasure, "Treasure");
+            onLoad(treasurePU);
+            entity = treasurePU;
+            break;
+        case "gnome":
+            Gnome gnome = new Gnome(x, y, dungeon);
+            onLoad(gnome);
+            entity = gnome;
+            break;
+        case "sword":
+            Sword sword = new Sword();
+            PickUp swordPU = new PickUp(x, y, (Item) sword, "Sword");
+            onLoad(swordPU);
+            entity = swordPU;
+            break;
+        case "exit":
+            Exit exit = new Exit(x, y);
+            onLoad(exit);
+            entity = exit;
+
+            // Creating quests
+            // Obtaining goal
+            JSONObject jsonGoalCondition = this.json.getJSONObject("goal-condition");
+            String jsonGoal = jsonGoalCondition.getString("goal");
+
+            // Simple quest of simply arriving to exit
+            Quest questExit = new Quest("exit", dungeon);
+            exit.addMission(questExit);
+
+            // Creating AND, OR goals
+            JSONArray jsonQuests = null;
+            switch (jsonGoal) {
+                case "OR":
+                    jsonQuests = jsonGoalCondition.getJSONArray("subgoals");
+                    OrQuest OrQuest = new OrQuest(new ArrayList<Mission>());
+                    for (int i = 0; i < jsonQuests.length(); i++) {
+                        JSONObject jsonSpecificQuest = (JSONObject) jsonQuests.get(i);
+                        Quest additionalQuest = new Quest(jsonSpecificQuest.getString("goal"), dungeon);
+                        OrQuest.addQuest(additionalQuest);
+                    }
+                    exit.addMission(OrQuest);
+
+                    break;
+                case "AND":
+                    jsonQuests = jsonGoalCondition.getJSONArray("subgoals");
+                    AndQuest AndQuest = new AndQuest(new ArrayList<Mission>());
+                    for (int i = 0; i < jsonQuests.length(); i++) {
+                        JSONObject jsonSpecificQuest = (JSONObject) jsonQuests.get(i);
+                        Quest additionalQuest = new Quest(jsonSpecificQuest.getString("goal"), dungeon);
+                        AndQuest.addQuest(additionalQuest);
+                    }
+                    exit.addMission(AndQuest);
+
+                    break;
+            }
+
+            break;
         // TODO Handle other possible entities
         }
         dungeon.addEntity(entity);
     }
 
-    public abstract void onLoad(Entity player);
+    public abstract void onLoad(Player player);
 
     public abstract void onLoad(Wall wall);
+
+    public abstract void onLoad(Gnome gnome);
+
+<<<<<<< HEAD
+    public abstract void onLoad(Sword sword);
+
+    public abstract void onLoad(PickUp pickup);
+=======
+    public abstract void onLoad(PickUpItem item);
+>>>>>>> Milestone-2
+
+    public abstract void onLoad(Exit exit);
 
     // TODO Create additional abstract methods for the other entities
 
