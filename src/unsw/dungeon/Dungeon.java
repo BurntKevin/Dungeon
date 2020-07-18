@@ -78,6 +78,31 @@ public class Dungeon {
         return enemies;
     }
 
+    public ArrayList<Portal> getPortals() {
+        ArrayList<Portal> portals = new ArrayList<Portal>();
+
+        for (Entity e : entities) {
+            if (e instanceof Portal) {
+                portals.add((Portal) e);
+            }
+        }
+
+        return portals;
+    }
+
+    public ArrayList<Door> getDoors() {
+        ArrayList<Door> doors = new ArrayList<Door>();
+
+        for (Entity e : entities) {
+            if (e instanceof Door) {
+                doors.add((Door) e);
+            }
+        }
+
+        return doors;
+
+    }
+
     public int[] getPlayerCoordinates() {
         int[] coordinates = {player.getX(), player.getY()};
 

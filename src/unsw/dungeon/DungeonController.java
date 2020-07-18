@@ -29,13 +29,19 @@ public class DungeonController {
 
     private ArrayList<PickUp> itempickups;
 
+    private ArrayList<Door> doors;
+
+    private ArrayList<Portal> portals;
+
     private Dungeon dungeon;
 
     public DungeonController(Dungeon dungeon, List<ImageView> initialEntities) {
         this.dungeon = dungeon;
         this.player = dungeon.getPlayer();
         this.initialEntities = new ArrayList<>(initialEntities);
-        this.enemies = dungeon.getEnemies();
+        this.enemies = dungeon.getEnemies();        
+        this.doors = dungeon.getDoors();
+        this.portals = dungeon.getPortals();
     }
 
     @FXML

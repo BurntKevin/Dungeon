@@ -16,8 +16,8 @@ public class Door extends Entity {
      * @param currKeyID integer corresponding to current key
      * @return boolean indicating whether door was opened successfully
      */
-    public boolean attemptUnlock(int currKeyID) {
-        if (keyID == currKeyID) {
+    public boolean attemptUnlock(Key currKey) {
+        if (keyID == currKey.getKeyID()) {
             locked = false;
             return true;
         }
