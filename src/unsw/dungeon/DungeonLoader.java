@@ -88,7 +88,7 @@ public abstract class DungeonLoader {
             break;
         case "key":
             int keyid = json.getInt("id");            
-            Key key = new key(keyid); 
+            Key key = new Key(keyid); 
             PickUp keyPU = new PickUp(x, y, (Item) key, "Key");
             onLoad(keyPU);
             entity = keyPU;
