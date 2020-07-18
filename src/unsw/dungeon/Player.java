@@ -28,7 +28,7 @@ public class Player extends Entity {
         this.melee = new Sword();
         this.ranged = new Bow();
         this.log = new Log();
-        this.keyObtained = false;
+        this.key = new Key();
         this.invisStatus = new Potion();
         this.facingDir = "Right";
     }
