@@ -14,7 +14,7 @@ public class Player extends Entity {
     private Sword melee;
     private Bow ranged;
     private Potion invisStatus;
-    private boolean keyObtained;
+    private Key key;
     private Log log;
 
     /**
@@ -28,18 +28,21 @@ public class Player extends Entity {
         this.melee = new Sword();
         this.ranged = new Bow();
         this.log = new Log();
-        this.keyObtained = false;
+        this.key = new Key();
         this.invisStatus = new Potion();
         this.facingDir = "Right";
     }
 
     public void moveUp() {
         Entity nextTile = dungeon.getItem(getX(), getY() - 1);
+        invisStatus.minusInvisTimer();
         if (getY() > 0 && ! (nextTile instanceof Wall))
             y().set(getY() - 1);
 
-            if (nextTile instanceof PickUpItem) {
-                pickUp((PickUpItem) nextTile);
+            if (nextTile instanceof PickUp) {
+                pickUpItem((PickUp) nextTile);
+            } else if (nextTile instanceof Portal) {
+                setPosition(((Portal) nextTile).getTeleX(), ((Portal) nextTile).getTeleY());
             } else if (nextTile instanceof Exit) {
                 finishGame((Exit) nextTile);
             }
@@ -47,11 +50,14 @@ public class Player extends Entity {
 
     public void moveDown() {
         Entity nextTile = dungeon.getItem(getX(), getY() + 1);
+        invisStatus.minusInvisTimer();
         if (getY() < dungeon.getHeight() - 1 && ! (nextTile instanceof Wall))
             y().set(getY() + 1);
 
-            if (nextTile instanceof PickUpItem) {
-                pickUp((PickUpItem) nextTile);
+            if (nextTile instanceof PickUp) {
+                pickUpItem((PickUp) nextTile);
+            } else if (nextTile instanceof Portal) {
+                setPosition(((Portal) nextTile).getTeleX(), ((Portal) nextTile).getTeleY());
             } else if (nextTile instanceof Exit) {
                 finishGame((Exit) nextTile);
             }
@@ -59,11 +65,14 @@ public class Player extends Entity {
 
     public void moveLeft() {
         Entity nextTile = dungeon.getItem(getX() - 1, getY());
+        invisStatus.minusInvisTimer();
         if (getX() > 0 && ! (nextTile instanceof Wall))
             x().set(getX() - 1);
 
-            if (nextTile instanceof PickUpItem) {
-                pickUpItem((PickUpItem) nextTile);
+            if (nextTile instanceof PickUp) {
+                pickUpItem((PickUp) nextTile);
+            } else if (nextTile instanceof Portal) {
+                setPosition(((Portal) nextTile).getTeleX(), ((Portal) nextTile).getTeleY());
             } else if (nextTile instanceof Exit) {
                 finishGame((Exit) nextTile);
             }
@@ -71,14 +80,27 @@ public class Player extends Entity {
 
     public void moveRight() {
         Entity nextTile = dungeon.getItem(getX() + 1, getY());
+        invisStatus.minusInvisTimer();
         if (getX() < dungeon.getWidth() - 1 && ! (nextTile instanceof Wall))
             x().set(getX() + 1);
 
-            if (nextTile instanceof PickUpItem) {
-                pickUpItem((PickUpItem) nextTile);
+            if (nextTile instanceof PickUp) {
+                pickUpItem((PickUp) nextTile);
+            } else if (nextTile instanceof Portal) {
+                setPosition(((Portal) nextTile).getTeleX(), ((Portal) nextTile).getTeleY());
+
             } else if (nextTile instanceof Exit) {
                 finishGame((Exit) nextTile);
             }
+    }
+
+    public void setPosition(int teleX, int teleY) {
+        x().set(teleX);
+        y().set(teleY);
+    }
+
+    public boolean isInvisible() {
+        return invisStatus.checkPotionActive();
     }
 
     public void fireRanged() {
@@ -121,6 +143,11 @@ public class Player extends Entity {
             }
             invisStatus.usePotion();
         } 
+        else if (curr instanceof Key) {
+            if (! key.carryingKey) {
+                key.equipKey((Key) curr);
+            }
+        }
         else if (curr instanceof Treasure) {
             dungeon.logItem(item);
             dungeon.removeEntity(item);

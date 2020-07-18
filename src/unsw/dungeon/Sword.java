@@ -16,7 +16,7 @@ public class Sword extends Weapon {
      */
     public void addNewSword() {
         assert usesLeft == 0;
-        usesLeft = 2;
+        usesLeft = 5;
     }
 
     /**

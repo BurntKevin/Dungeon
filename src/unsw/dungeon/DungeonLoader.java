@@ -133,13 +133,7 @@ public abstract class DungeonLoader {
 
     public abstract void onLoad(Gnome gnome);
 
-<<<<<<< HEAD
-    public abstract void onLoad(Sword sword);
-
     public abstract void onLoad(PickUp pickup);
-=======
-    public abstract void onLoad(PickUpItem item);
->>>>>>> Milestone-2
 
     public abstract void onLoad(Exit exit);
 
