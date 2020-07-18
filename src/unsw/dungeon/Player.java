@@ -9,7 +9,6 @@ public class Player extends Entity {
 
     private Dungeon dungeon;    
     private String faceDirection; // "Left" | "Right" | "Up" | "Down", forms part of extension so animation can be done later
-    // more type safe: 
     private Sword melee;
     private Bow ranged;
     private int invisMovesLeft;
