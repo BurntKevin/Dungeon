@@ -97,7 +97,7 @@ public class DungeonController {
             }
         }
         for (PickUp i : itempickups) {
-            if (i.checkTilesCoincide(playerCoordinate[0], playerCoordinate[y])) {
+            if (i.checkTilesCoincide(playerCoordinate[0], playerCoordinate[1])) {
                 player.pickUpItem(i);
             }
         }

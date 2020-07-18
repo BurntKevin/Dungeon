@@ -38,8 +38,8 @@ public class Player extends Entity {
         if (getY() > 0 && ! (nextTile instanceof Wall))
             y().set(getY() - 1);
 
-            if (nextTile instanceof PickUpItem) {
-                pickUp((PickUpItem) nextTile);
+            if (nextTile instanceof PickUp) {
+                pickUpItem((PickUp) nextTile);
             } else if (nextTile instanceof Exit) {
                 finishGame((Exit) nextTile);
             }
