@@ -41,6 +41,8 @@ public class Player extends Entity {
 
             if (nextTile instanceof PickUp) {
                 pickUpItem((PickUp) nextTile);
+            } else if (nextTile instanceof Portal) {
+                setPosition(((Portal) nextTile).getTeleX(), ((Portal) nextTile).getTeleY());
             } else if (nextTile instanceof Exit) {
                 finishGame((Exit) nextTile);
             }
@@ -54,6 +56,8 @@ public class Player extends Entity {
 
             if (nextTile instanceof PickUp) {
                 pickUpItem((PickUp) nextTile);
+            } else if (nextTile instanceof Portal) {
+                setPosition(((Portal) nextTile).getTeleX(), ((Portal) nextTile).getTeleY());
             } else if (nextTile instanceof Exit) {
                 finishGame((Exit) nextTile);
             }
@@ -67,6 +71,8 @@ public class Player extends Entity {
 
             if (nextTile instanceof PickUp) {
                 pickUpItem((PickUp) nextTile);
+            } else if (nextTile instanceof Portal) {
+                setPosition(((Portal) nextTile).getTeleX(), ((Portal) nextTile).getTeleY());
             } else if (nextTile instanceof Exit) {
                 finishGame((Exit) nextTile);
             }
@@ -80,9 +86,17 @@ public class Player extends Entity {
 
             if (nextTile instanceof PickUp) {
                 pickUpItem((PickUp) nextTile);
+            } else if (nextTile instanceof Portal) {
+                setPosition(((Portal) nextTile).getTeleX(), ((Portal) nextTile).getTeleY());
+
             } else if (nextTile instanceof Exit) {
                 finishGame((Exit) nextTile);
             }
+    }
+
+    public void setPosition(int teleX, int teleY) {
+        x().set(teleX);
+        y().set(teleY);
     }
 
     public void fireRanged() {
