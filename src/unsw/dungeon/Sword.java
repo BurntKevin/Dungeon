@@ -8,11 +8,7 @@ public class Sword extends Weapon {
      * a usable weapon
      */
     public Sword() {
-<<<<<<< HEAD
         this.usesLeft = 0;
-=======
-        this.durability = 5;
->>>>>>> Milestone-2
     }
 
     /**
