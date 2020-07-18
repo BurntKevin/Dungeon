@@ -7,6 +7,7 @@ package unsw.dungeon;
  */
 public class Player extends Entity {
 
+<<<<<<< HEAD
     private Dungeon dungeon;    
     private String facingDir; // facingDir := "Left" | "Right" | "Up" | "Down", forms part of extension so animation can be done later
     private Sword melee;
@@ -14,6 +15,10 @@ public class Player extends Entity {
     private Potion invisStatus;
     private boolean keyObtained;
     private Log log;
+=======
+    private Dungeon dungeon;
+    private Weapon weapon;
+>>>>>>> Milestone-2
 
     /**
      * Create a player positioned in square (x,y)
@@ -23,51 +28,83 @@ public class Player extends Entity {
     public Player(Dungeon dungeon, int x, int y) {
         super(x, y);
         this.dungeon = dungeon;
+<<<<<<< HEAD
         this.melee = new Sword();
         this.ranged = new Bow();
         this.log = new Log();
         this.keyObtained = false;
         this.invisStatus = new Potion();
         this.facingDir = "Right";
+=======
+        this.weapon = null;
+>>>>>>> Milestone-2
     }
 
     public void moveUp() {
-        Entity next_tile = dungeon.getItem(getX(), getY() - 1);
-        if (getY() > 0 && ! (next_tile instanceof Wall))
+        Entity nextTile = dungeon.getItem(getX(), getY() - 1);
+        if (getY() > 0 && ! (nextTile instanceof Wall))
             y().set(getY() - 1);
 
+<<<<<<< HEAD
             if (next_tile instanceof PickUp) {
                 pickUpItem((PickUp) next_tile);
+=======
+            if (nextTile instanceof PickUpItem) {
+                pickUp((PickUpItem) nextTile);
+            } else if (nextTile instanceof Exit) {
+                finishGame((Exit) nextTile);
+>>>>>>> Milestone-2
             }
     }
 
     public void moveDown() {
-        Entity next_tile = dungeon.getItem(getX(), getY() + 1);
-        if (getY() < dungeon.getHeight() - 1 && ! (next_tile instanceof Wall))
+        Entity nextTile = dungeon.getItem(getX(), getY() + 1);
+        if (getY() < dungeon.getHeight() - 1 && ! (nextTile instanceof Wall))
             y().set(getY() + 1);
 
+<<<<<<< HEAD
             if (next_tile instanceof PickUp) {
                 pickUpItem((PickUp) next_tile);
+=======
+            if (nextTile instanceof PickUpItem) {
+                pickUp((PickUpItem) nextTile);
+            } else if (nextTile instanceof Exit) {
+                finishGame((Exit) nextTile);
+>>>>>>> Milestone-2
             }
     }
 
     public void moveLeft() {
-        Entity next_tile = dungeon.getItem(getX() - 1, getY());
-        if (getX() > 0 && ! (next_tile instanceof Wall))
+        Entity nextTile = dungeon.getItem(getX() - 1, getY());
+        if (getX() > 0 && ! (nextTile instanceof Wall))
             x().set(getX() - 1);
 
+<<<<<<< HEAD
             if (next_tile instanceof PickUp) {
                 pickUpItem((PickUp) next_tile);
+=======
+            if (nextTile instanceof PickUpItem) {
+                pickUp((PickUpItem) nextTile);
+            } else if (nextTile instanceof Exit) {
+                finishGame((Exit) nextTile);
+>>>>>>> Milestone-2
             }
     }
 
     public void moveRight() {
-        Entity next_tile = dungeon.getItem(getX() + 1, getY());
-        if (getX() < dungeon.getWidth() - 1 && ! (next_tile instanceof Wall))
+        Entity nextTile = dungeon.getItem(getX() + 1, getY());
+        if (getX() < dungeon.getWidth() - 1 && ! (nextTile instanceof Wall))
             x().set(getX() + 1);
 
+<<<<<<< HEAD
             if (next_tile instanceof PickUp) {
                 pickUpItem((PickUp) next_tile);
+=======
+            if (nextTile instanceof PickUpItem) {
+                pickUp((PickUpItem) nextTile);
+            } else if (nextTile instanceof Exit) {
+                finishGame((Exit) nextTile);
+>>>>>>> Milestone-2
             }
     }
 
@@ -90,6 +127,7 @@ public class Player extends Entity {
         return false;
     }
 
+<<<<<<< HEAD
     public void pickUpItem(PickUp item) {
 
         Item curr = item.getItemFromPickUp();
@@ -112,7 +150,26 @@ public class Player extends Entity {
         } 
         else if (curr instanceof Treasure) {
             log.logItem(item);
+=======
+    public void pickUp(PickUpItem item) {
+        System.out.println(item.getPickUpItem());
+        if (item.getPickUpItem() instanceof Weapon && weapon == null) {
+            System.out.println("Picking up weapon");
+            setWeapon((Weapon) item.getPickUpItem());
+
+            dungeon.logItem(item);
             dungeon.removeEntity(item);
+            item.confirmPickedUp().set(false);
+        } else if (item.getPickUpItem() instanceof Treasure) {
+            dungeon.logItem(item);
+>>>>>>> Milestone-2
+            dungeon.removeEntity(item);
+            item.confirmPickedUp().set(false);
         }
+        System.out.println("Pickup function called");
+    }
+
+    private void finishGame(Exit exit) {
+        exit.enter();
     }
 }

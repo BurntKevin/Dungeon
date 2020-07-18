@@ -21,6 +21,7 @@ public class Log {
         nBowShotsMissed = 0;
     }
 
+<<<<<<< HEAD
     public void logRangedAtk(Boolean hit) {
         if (hit) {
             nBowShotsHit++;
@@ -53,8 +54,24 @@ public class Log {
             nPotionsConsumed++;
         } 
         else {
+=======
+    public void logItem(PickUpItem item) {
+        if (item.getPickUpItem() instanceof Treasure) {
+            treasureObtained++;
+            System.out.println("Picked up treasure");
+        } else if (item.getPickUpItem() instanceof Sword) {
+            swordsUsed++;
+            System.out.println("Picked up sword");
+        } else {
+>>>>>>> Milestone-2
             System.out.println("Got a new item");
         }
     }
 
+<<<<<<< HEAD
+=======
+    public int getTreasureObtained() {
+        return treasureObtained;
+    }
+>>>>>>> Milestone-2
 }

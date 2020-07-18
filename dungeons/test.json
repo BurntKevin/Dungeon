@@ -45,7 +45,7 @@
       {
         "x": 8,
         "y": 0,
-        "type": "wall"
+        "type": "exit"
       },
       {
         "x": 9,
@@ -914,7 +914,7 @@
       {
         "x": 18,
         "y": 16,
-        "type": "wall"
+        "type": "exit"
       },
       {
         "x": 19,
@@ -1023,7 +1023,15 @@
       }
     ],
     "goal-condition": {
-      "goal": "exit"
+      "goal": "AND",
+      "subgoals": [
+        {
+          "goal": "exit"
+        },
+        {
+          "goal": "treasure"
+        }
+      ]
     }
   }
   

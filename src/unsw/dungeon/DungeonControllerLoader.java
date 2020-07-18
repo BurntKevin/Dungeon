@@ -29,6 +29,7 @@ public class DungeonControllerLoader extends DungeonLoader {
     private Image gnomeImage;
     private Image treasureImage;
     private Image swordImage;
+    private Image exitImage;
 
     public DungeonControllerLoader(String filename) throws FileNotFoundException {
         super(filename);
@@ -38,6 +39,7 @@ public class DungeonControllerLoader extends DungeonLoader {
         treasureImage = new Image((new File("images/gold_pile.png")).toURI().toString());
         gnomeImage = new Image((new File("images/gnome.png")).toURI().toString());
         swordImage = new Image((new File("images/greatsword_1_new.png")).toURI().toString());
+        exitImage = new Image((new File("images/exit.png")).toURI().toString());
     }
 
     @Override
@@ -53,21 +55,15 @@ public class DungeonControllerLoader extends DungeonLoader {
     }
 
     @Override
-    public void onLoad(Treasure treasure) {
-        ImageView view = new ImageView(treasureImage);
-        addEntity(treasure, view);
-    }
-
-    @Override
     public void onLoad(Gnome gnome) {
         ImageView view = new ImageView(gnomeImage);
         addEntity(gnome, view);
     }
 
     @Override
-    public void onLoad(Sword sword) {
-        ImageView view = new ImageView(swordImage);
-        addEntity(sword, view);
+    public void onLoad(Exit exit) {
+        ImageView view = new ImageView(exitImage);
+        addEntity(exit, view);
     }
 
     @Override
@@ -89,7 +85,9 @@ public class DungeonControllerLoader extends DungeonLoader {
     }
 
     private void addEntity(PickUpItem item, ImageView view) {
+        System.out.println("I am an item");
         trackPosition(item, view);
+        trackStatus(item, view);
         entities.add(view);
     }
 
@@ -118,6 +116,22 @@ public class DungeonControllerLoader extends DungeonLoader {
                 GridPane.setRowIndex(node, newValue.intValue());
             }
         });
+    }
+
+    private void trackStatus(PickUpItem item, Node node) {
+        item.confirmPickedUp().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) {
+                System.out.println("Removing pick up item from front end");
+                node.setVisible(false);
+            }
+        });
+
+        // private GridPane squares;
+        // for (ImageView entity : initialEntities) {
+        //     squares.getChildren().add(entity);
+        // }
+        // private List<ImageView> initialEntities;
     }
 
     /**
