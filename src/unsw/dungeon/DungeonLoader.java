@@ -80,6 +80,31 @@ public abstract class DungeonLoader {
             onLoad(swordPU);
             entity = swordPU;
             break;
+        case "potion":
+            Potion potion = new Potion(); 
+            PickUp potionPU = new PickUp(x, y, (Item) potion, "Potion");
+            onLoad(potionPU);
+            entity = potionPU;
+            break;
+        case "key":
+            int keyid = json.getInt("id");            
+            Key key = new key(keyid); 
+            PickUp keyPU = new PickUp(x, y, (Item) key, "Key");
+            onLoad(keyPU);
+            entity = keyPU;
+            break;
+        case "portal":
+            int portid = json.getInt("id");            
+            Portal portal = new Portal(x, y, portid);
+            onLoad(portal);
+            entity = portal;
+            break;
+        case "door":
+            int doorid = json.getInt("id");
+            Door door = new Door(x, y, doorid);
+            onLoad(door);
+            entity = door;
+            break;
         case "exit":
             Exit exit = new Exit(x, y);
             onLoad(exit);
@@ -136,6 +161,10 @@ public abstract class DungeonLoader {
     public abstract void onLoad(PickUp pickup);
 
     public abstract void onLoad(Exit exit);
+
+    public abstract void onLoad(Door door);
+
+    public abstract void onLoad(Portal portal);
 
     // TODO Create additional abstract methods for the other entities
 

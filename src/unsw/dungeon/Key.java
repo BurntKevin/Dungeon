@@ -9,6 +9,11 @@ public class Key implements Item {
         keyID = -1;
     }
 
+    public Key(int id) {
+        carryingKey = true;
+        keyID = id;
+    }
+
     public void equipKey(Key nextKey) {
         keyID = nextKey.getKeyID();
         carryingKey = true;
