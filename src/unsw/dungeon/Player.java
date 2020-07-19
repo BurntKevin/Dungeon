@@ -36,7 +36,11 @@ public class Player extends Entity {
     public void moveUp() {
         Entity nextTile = dungeon.getItem(getX(), getY() - 1);
         invStatus.minusInvTimer();
-        if (getY() > 0 && ! (nextTile instanceof Wall))
+        if (nextTile instanceof Door) {
+            if (enterDoor((Door) nextTile))
+            y().set(getY() - 1);
+        }
+        else if (getY() > 0 && ! (nextTile instanceof Wall))
             y().set(getY() - 1);
 
             if (nextTile instanceof PickUp) {
@@ -51,7 +55,11 @@ public class Player extends Entity {
     public void moveDown() {
         Entity nextTile = dungeon.getItem(getX(), getY() + 1);
         invStatus.minusInvTimer();
-        if (getY() < dungeon.getHeight() - 1 && ! (nextTile instanceof Wall))
+        if (nextTile instanceof Door) {
+            if (enterDoor((Door) nextTile))
+            y().set(getY() + 1);
+        }
+        else if (getY() < dungeon.getHeight() - 1 && ! (nextTile instanceof Wall))
             y().set(getY() + 1);
 
             if (nextTile instanceof PickUp) {
@@ -66,7 +74,11 @@ public class Player extends Entity {
     public void moveLeft() {
         Entity nextTile = dungeon.getItem(getX() - 1, getY());
         invStatus.minusInvTimer();
-        if (getX() > 0 && ! (nextTile instanceof Wall))
+        if (nextTile instanceof Door) {
+            if (enterDoor((Door) nextTile))
+            x().set(getX() - 1);
+        }
+        else if (getX() > 0 && ! (nextTile instanceof Wall))
             x().set(getX() - 1);
 
             if (nextTile instanceof PickUp) {
@@ -81,7 +93,11 @@ public class Player extends Entity {
     public void moveRight() {
         Entity nextTile = dungeon.getItem(getX() + 1, getY());
         invStatus.minusInvTimer();
-        if (getX() < dungeon.getWidth() - 1 && ! (nextTile instanceof Wall))
+        if (nextTile instanceof Door) {
+            if (enterDoor((Door) nextTile))
+            x().set(getX() + 1);
+        }
+        else if (getX() < dungeon.getWidth() - 1 && ! (nextTile instanceof Wall))
             x().set(getX() + 1);
 
             if (nextTile instanceof PickUp) {
@@ -91,6 +107,19 @@ public class Player extends Entity {
             } else if (nextTile instanceof Exit) {
                 finishGame((Exit) nextTile);
             }
+    }
+
+    private boolean enterDoor(Door nextDoor) {
+        if (nextDoor.checkOpen()) {
+            return true;
+        }
+        else {
+            if (nextDoor.attemptUnlock(key)) {
+                key.useKey();
+                return true;
+            }
+        }
+        return false;
     }
 
     private void setPosition(int teleX, int teleY) {
@@ -158,6 +187,8 @@ public class Player extends Entity {
             if (! key.checkCarryingKey()) {
                 key.equipKey((Key) curr);
             }
+            dungeon.removeEntity(item);
+            item.confirmPickedUp().set(false);
         }
         else if (curr instanceof Treasure) {
             dungeon.logItem(item);
