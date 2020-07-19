@@ -80,7 +80,7 @@ public abstract class DungeonLoader {
             entity = lostGnome;
             break;
         case "camo_gnome":
-            CamoGnome lostGnome = new CamoGnome(x, y, dungeon);
+            CamoGnome camoGnome = new CamoGnome(x, y, dungeon);
             onLoad(camoGnome);
             entity = camoGnome;
             break;
