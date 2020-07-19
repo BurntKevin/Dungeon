@@ -4,8 +4,7 @@ import java.util.ArrayList;
 
 public class Portal extends Entity {
 
-    // new teleport locations
-    int portID;
+    private int portID;
 
     public Portal(int x, int y, int id) {
         super(x, y);
