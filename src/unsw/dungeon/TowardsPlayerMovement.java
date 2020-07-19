@@ -57,7 +57,7 @@ public class TowardsPlayerMovement implements MovementType {
         while (queue.size() != 0) {
             int[] node = queue.remove(0);
 
-            if (0 <= node[0] && node[0] < dungeon.getWidth() && 0 <= node[1] && node[1] < dungeon.getHeight() && ! (boardStatus[node[0]][node[1]] instanceof Wall)) {
+            if (0 <= node[0] && node[0] < dungeon.getWidth() && 0 <= node[1] && node[1] < dungeon.getHeight() && ! (boardStatus[node[0]][node[1]] instanceof Wall || boardStatus[node[0]][node[1]] instanceof Door)) {
                 if (node[0] == x && node[1] == y) {
                     move[0] = node[2];
                     move[1] = node[3];

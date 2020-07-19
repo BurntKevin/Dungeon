@@ -75,18 +75,22 @@ public class DungeonControllerLoader extends DungeonLoader {
     public void onLoad(Gnome gnome) {
         ImageView view = new ImageView(gnomeImage);
         addEntity(gnome, view);
+        trackEnemyStatus(gnome, view);
     }
 
     @Override
     public void onLoad(LostGnome lostGnome) {
+        System.out.println("Lost gnome track");
         ImageView view = new ImageView(lostGnomeImage);
         addEntity(lostGnome, view);
+        trackEnemyStatus(lostGnome, view);
     }
     
     @Override
     public void onLoad(CamoGnome camoGnome) {
         ImageView view = new ImageView(camoGnomeImage);
         addEntity(camoGnome, view);
+        trackEnemyStatus(camoGnome, view);
     }
 
     @Override
@@ -188,6 +192,16 @@ public class DungeonControllerLoader extends DungeonLoader {
         //     squares.getChildren().add(entity);
         // }
         // private List<ImageView> initialEntities;
+    }
+
+    private void trackEnemyStatus(Enemy enemy, Node node) {
+        enemy.attacked().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) {
+                System.out.println("Removing enemy from front end");
+                node.setVisible(false);
+            }
+        });
     }
 
     /**

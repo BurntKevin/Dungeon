@@ -81,12 +81,7 @@ public class DungeonController {
             break;
         }
 
-        if (!player.isInvisible()) {
-            moveEnemies();
-        }
-        else {
-            // flee(); // waiting for implementation
-        }
+        moveEnemies();
         checkPlayerStatus();
     }
 
@@ -95,6 +90,13 @@ public class DungeonController {
             e.move();
         }
     }
+
+    private void killEnemy(Enemy e) {
+        System.out.println("Enemy attacked");
+        enemies.remove(e);
+        dungeon.removeEntity(e);
+        e.attacked().set(false);
+    }
     
     /**
      * Determines what actions to take for current turn
@@ -102,13 +104,12 @@ public class DungeonController {
      */
     private void checkPlayerStatus() {
         // Checks if a player is meant to be dead
-        // Obtaining player coordinate
+        // Obtaining player coordinates
         int[] playerCoordinate = dungeon.getPlayerCoordinates();
-        for (Enemy e : enemies) {
+        for (Enemy e : new ArrayList<Enemy>(enemies)) {
             if (e.getX() == playerCoordinate[0] && e.getY() == playerCoordinate[1]) {
                 if (player.attacked()) {
-                    dungeon.removeEntity(e);
-                    enemies.remove(e);
+                    killEnemy(e);
                 }
             }
         }
@@ -119,4 +120,3 @@ public class DungeonController {
         }
     }
 }
-
