@@ -106,7 +106,10 @@ public class DungeonController {
         int[] playerCoordinate = dungeon.getPlayerCoordinates();
         for (Enemy e : enemies) {
             if (e.getX() == playerCoordinate[0] && e.getY() == playerCoordinate[1]) {
-                player.attacked();
+                if (player.attacked()) {
+                    dungeon.removeEntity(e);
+                    enemies.remove(e);
+                }
             }
         }
         for (PickUp i : itemPickUps) {
