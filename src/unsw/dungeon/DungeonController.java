@@ -27,7 +27,7 @@ public class DungeonController {
 
     private ArrayList<Enemy> enemies;
 
-    private ArrayList<PickUp> itempickups;
+    private ArrayList<PickUp> itemPickUps;
 
     private ArrayList<Door> doors;
 
@@ -39,6 +39,8 @@ public class DungeonController {
         this.dungeon = dungeon;
         this.player = dungeon.getPlayer();
         this.initialEntities = new ArrayList<>(initialEntities);
+        this.itemPickUps = new ArrayList<PickUp>();
+        this.enemies = dungeon.getEnemies();
         this.enemies = dungeon.getEnemies();        
         this.doors = dungeon.getDoors();
         this.portals = dungeon.getPortals();
@@ -107,7 +109,7 @@ public class DungeonController {
                 player.attacked();
             }
         }
-        for (PickUp i : itempickups) {
+        for (PickUp i : itemPickUps) {
             if (i.checkTilesCoincide(playerCoordinate[0], playerCoordinate[1])) {
                 player.pickUpItem(i);
             }
