@@ -1,7 +1,7 @@
 package unsw.dungeon;
 
 public class Bow extends Weapon {
-    int usesLeft;
+    private int usesLeft;
 
     public Bow() {
         usesLeft = 0;
@@ -22,19 +22,19 @@ public class Bow extends Weapon {
         throw new IllegalArgumentException();
     }
 
-    private Boolean checkHitTarget() {
+    private boolean checkHitTarget() {
         // TODO - implement function to determine target
         return true;
     }
 
-    public Boolean checkWeaponUsable() {
+    public boolean checkWeaponUsable() {
         if (usesLeft <= 0) {
             return false;
         }
         return true;
     }
     
-    public Boolean useWeapon() {
+    public boolean useWeapon() {
         usesLeft--;
         
         if (usesLeft <= 0) {
