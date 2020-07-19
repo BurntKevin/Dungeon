@@ -90,7 +90,7 @@ public abstract class DungeonLoader {
             onLoad(swordPU);
             entity = swordPU;
             break;
-        case "potion":
+        case "invincibility":
             Potion potion = new Potion(); 
             PickUp potionPU = new PickUp(x, y, (Item) potion, "Potion");
             onLoad(potionPU);
@@ -108,6 +108,16 @@ public abstract class DungeonLoader {
             Portal portal = new Portal(x, y, portid);
             onLoad(portal);
             entity = portal;
+            break;
+        case "boulder":
+            Boulder boulder = new Boulder(x, y);
+            onLoad(boulder);
+            entity = boulder;
+            break;
+        case "switch":
+            Switch plate = new Switch(x, y);
+            onLoad(plate);
+            entity = plate;
             break;
         case "door":
             int doorid = json.getInt("id");
@@ -179,6 +189,10 @@ public abstract class DungeonLoader {
     public abstract void onLoad(Door door);
 
     public abstract void onLoad(Portal portal);
+
+    public abstract void onLoad(Boulder boulder);
+
+    public abstract void onLoad(Switch plate); // switch is a reserved word
 
     // TODO Create additional abstract methods for the other entities
 
