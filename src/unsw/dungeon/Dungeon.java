@@ -161,4 +161,17 @@ public class Dungeon {
         }
         return treasureCount;
     }
+
+    public Boolean buffedPlayer() {
+        return player.isInvisible();
+    }
+
+    public Boolean validPlayerTile(int x, int y) {
+        for (Entity e : entities) {
+            if (e instanceof Wall && e.getX() == x && e.getY() == y) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

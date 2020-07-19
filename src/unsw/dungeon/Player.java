@@ -116,7 +116,7 @@ public class Player extends Entity {
     }
 
     public void fireRanged() {
-        // TODO - add 
+        // TODO - add
     }
 
     /**

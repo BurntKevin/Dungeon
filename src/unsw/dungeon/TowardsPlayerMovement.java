@@ -10,6 +10,39 @@ public class TowardsPlayerMovement implements MovementType {
     }
 
     public int[] move(int x, int y) {
+        if (dungeon.buffedPlayer()) {
+            return awayPlayer(x, y);
+        } else {
+            return towardsPlayer(x, y);
+        }
+    }
+
+    /**
+     * Moves away from the player in a greedy fashion where it does not predict
+     * future best placements but rather instantaneous ones
+     */
+    private int[] awayPlayer(int x, int y) {
+        // Calculating all possible moves
+        ArrayList<int[]> possibilities = new ArrayList<int[]>();
+        possibilities.add(new int[] {x - 1, y});
+        possibilities.add(new int[] {x + 1, y});
+        possibilities.add(new int[] {x, y - 1});
+        possibilities.add(new int[] {x, y + 1});
+
+        for (int[] p : possibilities) {
+            if (dungeon.validPlayerTile(p[0], p[1])) {
+                int[] move = towardsPlayer(p[0], p[1]);
+                if (move[0] + p[0] == x && move[1] + p[1] == y) {
+                    return new int[] {-move[0], -move[1]};
+                }
+            }
+        }
+
+        // No movement which goes further away
+        return new int[] {0, 0};
+    }
+
+    private int[] towardsPlayer(int x, int y) {
         // Setting up board
         Entity[][] boardStatus = dungeon.getBoard();
         int[] playerCoordinates = dungeon.getPlayerCoordinates();
