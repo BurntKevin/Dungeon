@@ -20,7 +20,7 @@ public class Portal extends Entity {
         return new Portal(-1,-1,-1); // in error case
     }
 
-    private boolean checkPortalsMatch(Portal p) {
+    public boolean checkPortalsMatch(Portal p) {
         if (portID == p.getPortID()) {
             return true;
         }
