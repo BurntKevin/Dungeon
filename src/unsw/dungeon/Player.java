@@ -88,7 +88,6 @@ public class Player extends Entity {
                 pickUpItem((PickUp) nextTile);
             } else if (nextTile instanceof Portal) {
                 portalTeleport((Portal) nextTile);
-
             } else if (nextTile instanceof Exit) {
                 finishGame((Exit) nextTile);
             }
