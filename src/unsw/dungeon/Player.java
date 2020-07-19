@@ -13,7 +13,7 @@ public class Player extends Entity {
     private String facingDir; // facingDir := "Left" | "Right" | "Up" | "Down", forms part of extension so animation can be done later
     private Sword melee;
     private Bow ranged;
-    private Potion invisStatus;
+    private Potion invStatus;
     private Key key;
     private Log log;
 
@@ -29,13 +29,13 @@ public class Player extends Entity {
         this.ranged = new Bow();
         this.log = new Log();
         this.key = new Key();
-        this.invisStatus = new Potion();
+        this.invStatus = new Potion();
         this.facingDir = "Right";
     }
 
     public void moveUp() {
         Entity nextTile = dungeon.getItem(getX(), getY() - 1);
-        invisStatus.minusInvisTimer();
+        invStatus.minusInvTimer();
         if (getY() > 0 && ! (nextTile instanceof Wall))
             y().set(getY() - 1);
 
@@ -50,7 +50,7 @@ public class Player extends Entity {
 
     public void moveDown() {
         Entity nextTile = dungeon.getItem(getX(), getY() + 1);
-        invisStatus.minusInvisTimer();
+        invStatus.minusInvTimer();
         if (getY() < dungeon.getHeight() - 1 && ! (nextTile instanceof Wall))
             y().set(getY() + 1);
 
@@ -65,7 +65,7 @@ public class Player extends Entity {
 
     public void moveLeft() {
         Entity nextTile = dungeon.getItem(getX() - 1, getY());
-        invisStatus.minusInvisTimer();
+        invStatus.minusInvTimer();
         if (getX() > 0 && ! (nextTile instanceof Wall))
             x().set(getX() - 1);
 
@@ -80,7 +80,7 @@ public class Player extends Entity {
 
     public void moveRight() {
         Entity nextTile = dungeon.getItem(getX() + 1, getY());
-        invisStatus.minusInvisTimer();
+        invStatus.minusInvTimer();
         if (getX() < dungeon.getWidth() - 1 && ! (nextTile instanceof Wall))
             x().set(getX() + 1);
 
@@ -111,7 +111,7 @@ public class Player extends Entity {
     }
 
     public boolean isInvisible() {
-        return invisStatus.checkPotionActive();
+        return invStatus.checkPotionActive();
     }
 
     public void fireRanged() {
@@ -124,7 +124,7 @@ public class Player extends Entity {
      */
     public boolean attacked() {
         
-        if (invisStatus.checkPotionActive()) {
+        if (invStatus.checkPotionActive()) {
             return true;
         }
         else if (melee.attemptMeleeAttack()) { // usable weapon equipped
@@ -149,13 +149,13 @@ public class Player extends Entity {
             }
         }
         else if (curr instanceof Potion) {
-            if (! invisStatus.checkPotionActive()) {
-                // activate invisibility visual effect
+            if (! invStatus.checkPotionActive()) {
+                // activate invincibility visual effect
             }
-            invisStatus.usePotion();
+            invStatus.usePotion();
         } 
         else if (curr instanceof Key) {
-            if (! key.carryingKey) {
+            if (! key.checkCarryingKey()) {
                 key.equipKey((Key) curr);
             }
         }

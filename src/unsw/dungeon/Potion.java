@@ -1,22 +1,22 @@
 package unsw.dungeon;
 
 public class Potion implements Item {
-    private int invisTurnsLeft;
+    private int invTurnsLeft;
 
     public Potion() { 
-        invisTurnsLeft = 0;
+        invTurnsLeft = 0;
     }
 
     public void usePotion() {
-        invisTurnsLeft = 10;
+        invTurnsLeft = 10;
     }
     
-    public void minusInvisTimer() {
-        invisTurnsLeft = invisTurnsLeft-1;
+    public void minusInvTimer() {
+        invTurnsLeft = invTurnsLeft-1;
     }
 
-    public Boolean checkPotionActive() {
-        if (invisTurnsLeft <= 0) {
+    public boolean checkPotionActive() {
+        if (invTurnsLeft <= 0) {
             return false;
         }
         return true;
