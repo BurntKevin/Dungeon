@@ -30,6 +30,8 @@ public class DungeonControllerLoader extends DungeonLoader {
     private Image treasureImage;
     private Image swordImage;
     private Image exitImage;
+    private Image lostGnomeImage;
+    private Image camoGnomeImage;
 
     public DungeonControllerLoader(String filename) throws FileNotFoundException {
         super(filename);
@@ -40,6 +42,8 @@ public class DungeonControllerLoader extends DungeonLoader {
         gnomeImage = new Image((new File("images/gnome.png")).toURI().toString());
         swordImage = new Image((new File("images/greatsword_1_new.png")).toURI().toString());
         exitImage = new Image((new File("images/exit.png")).toURI().toString());
+        lostGnomeImage = new Image((new File("images/lost_gnome.png")).toURI().toString());
+        camoGnomeImage = new Image((new File("images/camo_gnome.png")).toURI().toString());
     }
 
     @Override
@@ -58,6 +62,18 @@ public class DungeonControllerLoader extends DungeonLoader {
     public void onLoad(Gnome gnome) {
         ImageView view = new ImageView(gnomeImage);
         addEntity(gnome, view);
+    }
+
+    @Override
+    public void onLoad(LostGnome lostGnome) {
+        ImageView view = new ImageView(lostGnomeImage);
+        addEntity(lostGnome, view);
+    }
+
+    @Override
+    public void onLoad(CamoGnome camoGnome) {
+        ImageView view = new ImageView(camoGnomeImage);
+        addEntity(camoGnome, view);
     }
 
     @Override
