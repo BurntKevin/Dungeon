@@ -1,8 +1,8 @@
 package unsw.dungeon;
 
 public class Key implements Item {
-    boolean carryingKey;
-    int keyID;
+    private boolean carryingKey;
+    private int keyID;
 
     public Key() {
         carryingKey = false; 
