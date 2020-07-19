@@ -16,7 +16,6 @@ public class PickUp extends Entity {
         this.obtainedItem = item;
         this.itemID = itemID;
         this.view = new SimpleBooleanProperty(true);
-
     }
 
     public Item getItemFromPickUp() {

@@ -789,13 +789,9 @@
       {
         "x": 0,
         "y": 14,
-        "type": "wall"
+        "type": "camo_gnome"
       },
       {
-        "x": 1,
-        "y": 14,
-        "type": "wall"
-      }, {
         "x": 7,
         "y": 14,
         "type": "lost_gnome"
