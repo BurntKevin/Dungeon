@@ -33,6 +33,7 @@ public class DungeonControllerLoader extends DungeonLoader {
     private Image lostGnomeImage;
     private Image camoGnomeImage;
     private Image closedDoorImage;
+    private Image openDoorImage;
     private Image portalImage;
     private Image keyImage;
     private Image potionImage;
@@ -51,6 +52,7 @@ public class DungeonControllerLoader extends DungeonLoader {
         lostGnomeImage = new Image((new File("images/lost_gnome.png")).toURI().toString());
         camoGnomeImage = new Image((new File("images/camo_gnome.png")).toURI().toString());
         closedDoorImage = new Image((new File("images/closed_door.png")).toURI().toString());
+        openDoorImage = new Image((new File("images/open_door.png")).toURI().toString());
         portalImage = new Image((new File("images/portal.png")).toURI().toString());
         keyImage = new Image((new File("images/key.png")).toURI().toString());
         potionImage = new Image((new File("images/bubbly.png")).toURI().toString());
@@ -103,6 +105,7 @@ public class DungeonControllerLoader extends DungeonLoader {
     public void onLoad(Door door) {
         ImageView view = new ImageView(closedDoorImage);
         addEntity(door, view);
+        trackDoorStatus(door, view);
     }
 
     @Override
@@ -186,12 +189,30 @@ public class DungeonControllerLoader extends DungeonLoader {
                 node.setVisible(false);
             }
         });
+    }
 
-        // private GridPane squares;
-        // for (ImageView entity : initialEntities) {
-        //     squares.getChildren().add(entity);
-        // }
-        // private List<ImageView> initialEntities;
+    private void trackEnemyStatus(Enemy enemy, Node node) {
+        enemy.attacked().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) {
+                System.out.println("Removing enemy from front end");
+                node.setVisible(false);
+            }
+        });
+    }
+
+    private void trackDoorStatus(Door door, Node node) {
+        door.doorOpened().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) {
+                for (ImageView i : entities) {
+                    if (i == node) {
+                        i.setImage(openDoorImage);
+                        break;
+                    }
+                }
+            }
+        });
     }
 
     private void trackEnemyStatus(Enemy enemy, Node node) {

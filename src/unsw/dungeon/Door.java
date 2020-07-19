@@ -1,14 +1,18 @@
 package unsw.dungeon;
 
+import javafx.beans.property.SimpleBooleanProperty;
+
 public class Door extends Entity {
 
     private int keyID;
     private boolean locked; 
+    private SimpleBooleanProperty view;
 
     public Door(int x, int y, int keyID) {
         super(x, y);
         this.keyID = keyID;
-        locked = true;
+        this.locked = true;
+        this.view = new SimpleBooleanProperty(true);
     }
 
     /**
@@ -19,9 +23,14 @@ public class Door extends Entity {
     public boolean attemptUnlock(Key currKey) {
         if (keyID == currKey.getKeyID()) {
             locked = false;
+            doorOpened().set(false);
             return true;
         }
         return false;
+    }
+
+    public SimpleBooleanProperty doorOpened() {
+        return view;
     }
 
     public boolean checkOpen() {
