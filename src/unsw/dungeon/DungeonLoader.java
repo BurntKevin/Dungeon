@@ -74,6 +74,16 @@ public abstract class DungeonLoader {
             onLoad(gnome);
             entity = gnome;
             break;
+        case "lost_gnome":
+            LostGnome lostGnome = new LostGnome(x, y, dungeon);
+            onLoad(lostGnome);
+            entity = lostGnome;
+            break;
+        case "camo_gnome":
+            CamoGnome lostGnome = new CamoGnome(x, y, dungeon);
+            onLoad(camoGnome);
+            entity = camoGnome;
+            break;
         case "sword":
             Sword sword = new Sword();
             PickUp swordPU = new PickUp(x, y, (Item) sword, "Sword");
@@ -88,7 +98,7 @@ public abstract class DungeonLoader {
             break;
         case "key":
             int keyid = json.getInt("id");            
-            Key key = new Key(keyid); 
+            Key key = new Key(keyid);
             PickUp keyPU = new PickUp(x, y, (Item) key, "Key");
             onLoad(keyPU);
             entity = keyPU;
@@ -157,6 +167,10 @@ public abstract class DungeonLoader {
     public abstract void onLoad(Wall wall);
 
     public abstract void onLoad(Gnome gnome);
+
+    public abstract void onLoad(LostGnome lostGnome);
+
+    public abstract void onLoad(CamoGnome camoGnome);
 
     public abstract void onLoad(PickUp pickup);
 
