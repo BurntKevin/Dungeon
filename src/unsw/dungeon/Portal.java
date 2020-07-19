@@ -21,6 +21,7 @@ public class Portal extends Entity {
 
     public boolean checkPortalsMatch(Portal p) {
         if (portID == p.getPortID()) {
+            if (p.getEntryX() != getX() || p.getEntryY() != getY())
             return true;
         }
         return false;
