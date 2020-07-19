@@ -40,6 +40,12 @@ public class Player extends Entity {
             if (enterDoor((Door) nextTile))
             y().set(getY() - 1);
         }
+        else if (nextTile instanceof Boulder) {
+            Entity next = dungeon.getItem(getX(), getY() - 2);
+            if (pushBoulder((Boulder) nextTile, next, "Up")) {
+                y().set(getY() - 1); // move player as well
+            }
+        }
         else if (getY() > 0 && ! (nextTile instanceof Wall))
             y().set(getY() - 1);
 
@@ -58,6 +64,12 @@ public class Player extends Entity {
         if (nextTile instanceof Door) {
             if (enterDoor((Door) nextTile))
             y().set(getY() + 1);
+        }
+        else if (nextTile instanceof Boulder) {
+            Entity next = dungeon.getItem(getX(), getY() + 2);
+            if (pushBoulder((Boulder) nextTile, next, "Down")) {
+                y().set(getY() + 1); // move player as well
+            }
         }
         else if (getY() < dungeon.getHeight() - 1 && ! (nextTile instanceof Wall))
             y().set(getY() + 1);
@@ -78,6 +90,12 @@ public class Player extends Entity {
             if (enterDoor((Door) nextTile))
             x().set(getX() - 1);
         }
+        else if (nextTile instanceof Boulder) {
+            Entity next = dungeon.getItem(getX() - 2, getY());
+            if (pushBoulder((Boulder) nextTile, next, "Left")) {
+                x().set(getX() - 1); // move player as well
+            }
+        }
         else if (getX() > 0 && ! (nextTile instanceof Wall))
             x().set(getX() - 1);
 
@@ -96,6 +114,12 @@ public class Player extends Entity {
         if (nextTile instanceof Door) {
             if (enterDoor((Door) nextTile))
             x().set(getX() + 1);
+        }
+        else if (nextTile instanceof Boulder) {
+            Entity next = dungeon.getItem(getX() + 2, getY());
+            if (pushBoulder((Boulder) nextTile, next, "Right")) {
+                x().set(getX() + 1); // move player as well
+            }
         }
         else if (getX() < dungeon.getWidth() - 1 && ! (nextTile instanceof Wall))
             x().set(getX() + 1);
@@ -141,6 +165,10 @@ public class Player extends Entity {
 
     public boolean isInvisible() {
         return invStatus.checkPotionActive();
+    }
+
+    public boolean pushBoulder(Boulder b, Entity behind, String pushDir) {
+        return b.attemptPush(behind, pushDir);
     }
 
     public void fireRanged() {
