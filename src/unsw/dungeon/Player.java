@@ -42,7 +42,7 @@ public class Player extends Entity {
             if (nextTile instanceof PickUp) {
                 pickUpItem((PickUp) nextTile);
             } else if (nextTile instanceof Portal) {
-                setPosition(((Portal) nextTile).getTeleX(), ((Portal) nextTile).getTeleY());
+                portalTeleport((Portal) nextTile);
             } else if (nextTile instanceof Exit) {
                 finishGame((Exit) nextTile);
             }
@@ -57,7 +57,7 @@ public class Player extends Entity {
             if (nextTile instanceof PickUp) {
                 pickUpItem((PickUp) nextTile);
             } else if (nextTile instanceof Portal) {
-                setPosition(((Portal) nextTile).getTeleX(), ((Portal) nextTile).getTeleY());
+                portalTeleport((Portal) nextTile);
             } else if (nextTile instanceof Exit) {
                 finishGame((Exit) nextTile);
             }
@@ -72,7 +72,7 @@ public class Player extends Entity {
             if (nextTile instanceof PickUp) {
                 pickUpItem((PickUp) nextTile);
             } else if (nextTile instanceof Portal) {
-                setPosition(((Portal) nextTile).getTeleX(), ((Portal) nextTile).getTeleY());
+                portalTeleport((Portal) nextTile);
             } else if (nextTile instanceof Exit) {
                 finishGame((Exit) nextTile);
             }
@@ -87,16 +87,28 @@ public class Player extends Entity {
             if (nextTile instanceof PickUp) {
                 pickUpItem((PickUp) nextTile);
             } else if (nextTile instanceof Portal) {
-                setPosition(((Portal) nextTile).getTeleX(), ((Portal) nextTile).getTeleY());
+                portalTeleport((Portal) nextTile);
 
             } else if (nextTile instanceof Exit) {
                 finishGame((Exit) nextTile);
             }
     }
 
-    public void setPosition(int teleX, int teleY) {
+    private void setPosition(int teleX, int teleY) {
         x().set(teleX);
         y().set(teleY);
+    }
+
+    /**
+     * Updates the player's position after they have travelled through given portal
+     * @param EntryPortal portal which is entered by player
+     */
+    private void portalTeleport(Portal EntryPortal) {
+        for (Portal p: dungeon.getPortals()) {
+            if (EntryPortal.checkPortalsMatch(p)) {
+                setPosition(p.getEntryX(), p.getEntryY());
+            }
+        }
     }
 
     public boolean isInvisible() {
