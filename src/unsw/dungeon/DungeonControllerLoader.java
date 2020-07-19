@@ -32,6 +32,10 @@ public class DungeonControllerLoader extends DungeonLoader {
     private Image exitImage;
     private Image lostGnomeImage;
     private Image camoGnomeImage;
+    private Image closedDoorImage;
+    private Image portalImage;
+    private Image keyImage;
+    private Image potionImage;
 
     public DungeonControllerLoader(String filename) throws FileNotFoundException {
         super(filename);
@@ -44,6 +48,10 @@ public class DungeonControllerLoader extends DungeonLoader {
         exitImage = new Image((new File("images/exit.png")).toURI().toString());
         lostGnomeImage = new Image((new File("images/lost_gnome.png")).toURI().toString());
         camoGnomeImage = new Image((new File("images/camo_gnome.png")).toURI().toString());
+        closedDoorImage = new Image((new File("images/closed_door.png")).toURI().toString());
+        portalImage = new Image((new File("images/portal.png")).toURI().toString());
+        keyImage = new Image((new File("images/key.png")).toURI().toString());
+        potionImage = new Image((new File("images/bubbly.png")).toURI().toString());
     }
 
     @Override
@@ -69,11 +77,23 @@ public class DungeonControllerLoader extends DungeonLoader {
         ImageView view = new ImageView(lostGnomeImage);
         addEntity(lostGnome, view);
     }
-
+    
     @Override
     public void onLoad(CamoGnome camoGnome) {
         ImageView view = new ImageView(camoGnomeImage);
         addEntity(camoGnome, view);
+    }
+
+    @Override
+    public void onLoad(Portal portal) {
+        ImageView view = new ImageView(portalImage);
+        addEntity(portal, view);
+    }
+
+    @Override
+    public void onLoad(Door door) {
+        ImageView view = new ImageView(closedDoorImage);
+        addEntity(door, view);
     }
 
     @Override
@@ -90,8 +110,11 @@ public class DungeonControllerLoader extends DungeonLoader {
             view = new ImageView(swordImage);
         } else if (item.getItemFromPickUp() instanceof Treasure) {
             view = new ImageView(treasureImage);
+        } else if (item.getItemFromPickUp() instanceof Potion) {
+            view = new ImageView(potionImage);
+        } else if (item.getItemFromPickUp() instanceof Key) {
+            view = new ImageView(keyImage);
         }
-
         addEntity(item, view);
     }
 
