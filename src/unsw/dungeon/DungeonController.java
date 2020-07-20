@@ -14,7 +14,6 @@ import java.io.File;
 /**
  * A JavaFX controller for the dungeon.
  * @author Robert Clifton-Everest
- *
  */
 public class DungeonController {
 
@@ -41,7 +40,6 @@ public class DungeonController {
         this.initialEntities = new ArrayList<>(initialEntities);
         this.itemPickUps = new ArrayList<PickUp>();
         this.enemies = dungeon.getEnemies();
-        this.enemies = dungeon.getEnemies();        
         this.doors = dungeon.getDoors();
         this.portals = dungeon.getPortals();
     }

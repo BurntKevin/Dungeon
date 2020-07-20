@@ -3,7 +3,7 @@ package unsw.dungeon;
 /**
  * Boulder which is placed around the map
  */
-public class Boulder extends Entity {
+public class Boulder extends Entity implements Obstacle {
     /**
      * Initalises a boulder onto the board
      * @param x x Coordinate
@@ -21,10 +21,10 @@ public class Boulder extends Entity {
      */
     public boolean attemptPush(Entity next, String moveDir) {
         // Checking whether the push can be completed
-        if (next instanceof Wall || next instanceof Boulder || next instanceof Door) {
+        if (next instanceof Obstacle || next instanceof Door || next instanceof Portal) {
             return false;
         }
-        
+
         // Successfully pushing the entity
         if (moveDir.equals("Left")) {
             x().set(getX() - 1);

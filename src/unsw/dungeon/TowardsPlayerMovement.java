@@ -2,13 +2,25 @@ package unsw.dungeon;
 
 import java.util.ArrayList;
 
+/**
+ * Movement of enemy which goes for player unless they are buffed with a potion
+ */
 public class TowardsPlayerMovement implements MovementType {
     private Dungeon dungeon;
-    
+
+    /**
+     * Initalise enemy movement
+     * @param dungeon Dungeon which enemy is at
+     */
     public TowardsPlayerMovement(Dungeon dungeon) {
         this.dungeon = dungeon;
     }
 
+    /**
+     * Returns a movement for the enemy
+     * @param x Starting x-coordinate
+     * @param y Starting y-coordinate
+     */
     public int[] move(int x, int y) {
         if (dungeon.buffedPlayer()) {
             return awayPlayer(x, y);
@@ -20,6 +32,9 @@ public class TowardsPlayerMovement implements MovementType {
     /**
      * Moves away from the player in a greedy fashion where it does not predict
      * future best placements but rather instantaneous ones
+     * @param x Starting x-coordinate
+     * @param y Starting y-coordinate
+     * @return An array where the enemy should shift [x, y]
      */
     private int[] awayPlayer(int x, int y) {
         // Calculating all possible moves
@@ -29,10 +44,14 @@ public class TowardsPlayerMovement implements MovementType {
         possibilities.add(new int[] {x, y - 1});
         possibilities.add(new int[] {x, y + 1});
 
+        // For all possibilities
         for (int[] p : possibilities) {
+            // Check if it is a possible location to be at
             if (dungeon.validPlayerTile(p[0], p[1])) {
+                // Move towards the player
                 int[] move = towardsPlayer(p[0], p[1]);
                 if (move[0] + p[0] == x && move[1] + p[1] == y) {
+                    // If it goes back to its original spot, it is further away
                     return new int[] {-move[0], -move[1]};
                 }
             }
@@ -42,33 +61,43 @@ public class TowardsPlayerMovement implements MovementType {
         return new int[] {0, 0};
     }
 
+    /**
+     * Moves towards the place
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @return An array where the enemy should shift [x, y]
+     */
     private int[] towardsPlayer(int x, int y) {
         // Setting up board
         Entity[][] boardStatus = dungeon.getBoard();
         int[] playerCoordinates = dungeon.getPlayerCoordinates();
 
-        // Finding best move towards player - invariant: assumes player exists
+        // Finding best move towards player
         // Finds first best move rather than randomly choose
         ArrayList<int[]> queue = new ArrayList<int[]>();
         int[] source = {playerCoordinates[0], playerCoordinates[1], 0, 0};
         queue.add(source);
 
+        // Calculating best move
         int[] move = {0, 0};
         while (queue.size() != 0) {
             int[] node = queue.remove(0);
 
-            if (0 <= node[0] && node[0] < dungeon.getWidth() && 0 <= node[1] && node[1] < dungeon.getHeight() && ! (boardStatus[node[0]][node[1]] instanceof Wall || boardStatus[node[0]][node[1]] instanceof Door)) {
+            // Checking if the current node is a valid location
+            if (0 <= node[0] && node[0] < dungeon.getWidth() && 0 <= node[1] && node[1] < dungeon.getHeight() && ! (boardStatus[node[0]][node[1]] instanceof Obstacle)) {
                 if (node[0] == x && node[1] == y) {
                     move[0] = node[2];
                     move[1] = node[3];
                     break;
                 }
 
+                // Finding next set of possible moves
                 queue.add(new int[] {node[0] - 1, node[1], 1, 0}); // Left
                 queue.add(new int[] {node[0] + 1, node[1], -1, 0}); // Right
                 queue.add(new int[] {node[0], node[1] - 1, 0, 1}); // Up
                 queue.add(new int[] {node[0], node[1] + 1, 0, -1}); // Down
 
+                // Marking node as visited
                 boardStatus[node[0]][node[1]] = new Wall(node[0], node[1]);
             }
         }

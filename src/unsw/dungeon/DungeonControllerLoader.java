@@ -25,7 +25,7 @@ public class DungeonControllerLoader extends DungeonLoader {
 
     private List<ImageView> entities;
 
-    //Images
+    // Images
     private Image playerImage;
     private Image wallImage;
     private Image gnomeImage;
@@ -60,7 +60,6 @@ public class DungeonControllerLoader extends DungeonLoader {
         potionImage = new Image((new File("images/bubbly.png")).toURI().toString());
         boulderImage = new Image((new File("images/boulder.png")).toURI().toString());
         switchImage = new Image((new File("images/pressure_plate.png")).toURI().toString());
-
     }
 
     @Override
@@ -130,8 +129,7 @@ public class DungeonControllerLoader extends DungeonLoader {
 
     @Override
     public void onLoad(PickUp item) {
-        // Using player to indicate missing texture - #TODO
-        ImageView view = new ImageView(playerImage);
+        ImageView view = null;
         if (item.getItemFromPickUp() instanceof Sword) {
             view = new ImageView(swordImage);
         } else if (item.getItemFromPickUp() instanceof Treasure) {
@@ -150,7 +148,6 @@ public class DungeonControllerLoader extends DungeonLoader {
     }
 
     private void addEntity(PickUp item, ImageView view) {
-        System.out.println("I am an item");
         trackPosition(item, view);
         trackStatus(item, view);
         entities.add(view);
@@ -183,6 +180,11 @@ public class DungeonControllerLoader extends DungeonLoader {
         });
     }
 
+    /**
+     * Tracks the status of an item
+     * @param item
+     * @param node
+     */
     private void trackStatus(PickUp item, Node node) {
         item.confirmPickedUp().addListener(new ChangeListener<Boolean>() {
             @Override
@@ -193,6 +195,11 @@ public class DungeonControllerLoader extends DungeonLoader {
         });
     }
 
+    /**
+     * Track enemy status
+     * @param enemy
+     * @param node
+     */
     private void trackEnemyStatus(Enemy enemy, Node node) {
         enemy.attacked().addListener(new ChangeListener<Boolean>() {
             @Override
@@ -203,6 +210,11 @@ public class DungeonControllerLoader extends DungeonLoader {
         });
     }
 
+    /**
+     * Track door open status
+     * @param door
+     * @param node
+     */
     private void trackDoorStatus(Door door, Node node) {
         door.doorOpened().addListener(new ChangeListener<Boolean>() {
             @Override
@@ -213,16 +225,6 @@ public class DungeonControllerLoader extends DungeonLoader {
                         break;
                     }
                 }
-            }
-        });
-    }
-
-    private void trackEnemyStatus(Enemy enemy, Node node) {
-        enemy.attacked().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) {
-                System.out.println("Removing enemy from front end");
-                node.setVisible(false);
             }
         });
     }

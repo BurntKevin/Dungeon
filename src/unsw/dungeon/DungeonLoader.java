@@ -155,7 +155,6 @@ public abstract class DungeonLoader {
                         OrQuest.addQuest(additionalQuest);
                     }
                     exit.addMission(OrQuest);
-
                     break;
                 case "AND":
                     jsonQuests = jsonGoalCondition.getJSONArray("subgoals");
@@ -166,12 +165,9 @@ public abstract class DungeonLoader {
                         AndQuest.addQuest(additionalQuest);
                     }
                     exit.addMission(AndQuest);
-
                     break;
             }
-
             break;
-        // TODO Handle other possible entities
         }
         dungeon.addEntity(entity);
     }
@@ -196,8 +192,5 @@ public abstract class DungeonLoader {
 
     public abstract void onLoad(Boulder boulder);
 
-    public abstract void onLoad(Switch plate); // switch is a reserved word
-
-    // TODO Create additional abstract methods for the other entities
-
+    public abstract void onLoad(Switch plate);
 }
