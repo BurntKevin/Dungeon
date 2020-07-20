@@ -210,6 +210,8 @@ public class Player extends Entity {
                 // activate invincibility visual effect
             }
             invStatus.usePotion();
+            dungeon.removeEntity(item);
+            item.confirmPickedUp().set(false);
         } 
         else if (curr instanceof Key) {
             if (! key.checkCarryingKey()) {
