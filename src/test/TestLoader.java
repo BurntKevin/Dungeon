@@ -69,6 +69,16 @@ public class TestLoader extends DungeonLoader {
         entities.add(portal);
     }
 
+    @Override
+    public void onLoad(Switch plate) {
+        entities.add(plate);
+    }
+
+    @Override
+    public void onLoad(Boulder boulder) {
+        entities.add(boulder);
+    }
+
     public Player getPlayer() {
         for (Entity e: entities) {
             if (e instanceof Player) {
