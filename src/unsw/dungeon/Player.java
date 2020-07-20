@@ -1,5 +1,7 @@
 package unsw.dungeon;
 
+import javafx.beans.property.SimpleBooleanProperty;
+
 /**
  * The player entity
  */
@@ -10,6 +12,8 @@ public class Player extends Entity {
     // private Bow ranged;
     private Potion invStatus;
     private Key key;
+    private SimpleBooleanProperty view;
+    private boolean alive;
 
     /**
      * Create a player positioned in square (x,y)
@@ -25,38 +29,43 @@ public class Player extends Entity {
         this.key = new Key();
         this.invStatus = new Potion();
         // this.facingDir = "Right";
+        this.view = new SimpleBooleanProperty(true);
+        this.alive = true;
     }
 
     /**
      * Player move up action
      */
     public void moveUp() {
-        // Get next tile
-        Entity nextTile = dungeon.getItem(getX(), getY() - 1);
+        // Checking if player is still alive
+        if (alive) {
+            // Get next tile
+            Entity nextTile = dungeon.getItem(getX(), getY() - 1);
 
-        // Setting player status
-        invStatus.minusInvTimer();
+            // Setting player status
+            invStatus.minusInvTimer();
 
-        // Moving player
-        if (nextTile instanceof Door) {
-            if (enterDoor((Door) nextTile))
-            y().set(getY() - 1);
-        }
-        else if (nextTile instanceof Boulder) {
-            Entity next = dungeon.getItem(getX(), getY() - 2);
-            if (pushBoulder((Boulder) nextTile, next, "Up")) {
+            // Moving player
+            if (nextTile instanceof Door) {
+                if (enterDoor((Door) nextTile))
                 y().set(getY() - 1);
             }
-        }
-        else if (getY() > 0 && ! (nextTile instanceof Wall)) {
-            y().set(getY() - 1);
+            else if (nextTile instanceof Boulder) {
+                Entity next = dungeon.getItem(getX(), getY() - 2);
+                if (pushBoulder((Boulder) nextTile, next, "Up")) {
+                    y().set(getY() - 1);
+                }
+            }
+            else if (getY() > 0 && ! (nextTile instanceof Wall)) {
+                y().set(getY() - 1);
 
-            if (nextTile instanceof PickUp) {
-                pickUpItem((PickUp) nextTile);
-            } else if (nextTile instanceof Portal) {
-                portalTeleport((Portal) nextTile);
-            } else if (nextTile instanceof Exit) {
-                finishGame((Exit) nextTile);
+                if (nextTile instanceof PickUp) {
+                    pickUpItem((PickUp) nextTile);
+                } else if (nextTile instanceof Portal) {
+                    portalTeleport((Portal) nextTile);
+                } else if (nextTile instanceof Exit) {
+                    finishGame((Exit) nextTile);
+                }
             }
         }
     }
@@ -65,99 +74,108 @@ public class Player extends Entity {
      * Player move down action
      */
     public void moveDown() {
-        // Obtaining next tile
-        Entity nextTile = dungeon.getItem(getX(), getY() + 1);
+        if (alive) {
+            // Obtaining next tile
+            Entity nextTile = dungeon.getItem(getX(), getY() + 1);
 
-        // Setting player status
-        invStatus.minusInvTimer();
+            // Setting player status
+            invStatus.minusInvTimer();
 
-        // Moving player
-        if (nextTile instanceof Door) {
-            if (enterDoor((Door) nextTile))
-            y().set(getY() + 1);
-        }
-        else if (nextTile instanceof Boulder) {
-            Entity next = dungeon.getItem(getX(), getY() + 2);
-            if (pushBoulder((Boulder) nextTile, next, "Down")) {
-                y().set(getY() + 1); // move player as well
+            // Moving player
+            if (nextTile instanceof Door) {
+                if (enterDoor((Door) nextTile))
+                y().set(getY() + 1);
+            }
+            else if (nextTile instanceof Boulder) {
+                Entity next = dungeon.getItem(getX(), getY() + 2);
+                if (pushBoulder((Boulder) nextTile, next, "Down")) {
+                    y().set(getY() + 1); // move player as well
+                }
+            }
+            else if (getY() < dungeon.getHeight() - 1 && ! (nextTile instanceof Wall)) {
+                y().set(getY() + 1);
+
+                if (nextTile instanceof PickUp) {
+                    pickUpItem((PickUp) nextTile);
+                } else if (nextTile instanceof Portal) {
+                    portalTeleport((Portal) nextTile);
+                } else if (nextTile instanceof Exit) {
+                    finishGame((Exit) nextTile);
+                }
             }
         }
-        else if (getY() < dungeon.getHeight() - 1 && ! (nextTile instanceof Wall))
-            y().set(getY() + 1);
-
-            if (nextTile instanceof PickUp) {
-                pickUpItem((PickUp) nextTile);
-            } else if (nextTile instanceof Portal) {
-                portalTeleport((Portal) nextTile);
-            } else if (nextTile instanceof Exit) {
-                finishGame((Exit) nextTile);
-            }
     }
 
     /**
      * Player move left action
      */
     public void moveLeft() {
-        // Obtaining action
-        Entity nextTile = dungeon.getItem(getX() - 1, getY());
+        if (alive) {
+            // Obtaining action
+            Entity nextTile = dungeon.getItem(getX() - 1, getY());
 
-        // Updating status
-        invStatus.minusInvTimer();
+            // Updating status
+            invStatus.minusInvTimer();
 
-        // Moving player
-        if (nextTile instanceof Door) {
-            if (enterDoor((Door) nextTile))
-            x().set(getX() - 1);
-        }
-        else if (nextTile instanceof Boulder) {
-            Entity next = dungeon.getItem(getX() - 2, getY());
-            if (pushBoulder((Boulder) nextTile, next, "Left")) {
-                x().set(getX() - 1); // move player as well
+            // Moving player
+            if (nextTile instanceof Door) {
+                if (enterDoor((Door) nextTile))
+                x().set(getX() - 1);
+            }
+            else if (nextTile instanceof Boulder) {
+                Entity next = dungeon.getItem(getX() - 2, getY());
+                if (pushBoulder((Boulder) nextTile, next, "Left")) {
+                    x().set(getX() - 1); // move player as well
+                }
+            }
+            else if (getX() > 0 && ! (nextTile instanceof Wall)) {
+                x().set(getX() - 1);
+
+                if (nextTile instanceof PickUp) {
+                    pickUpItem((PickUp) nextTile);
+                } else if (nextTile instanceof Portal) {
+                    portalTeleport((Portal) nextTile);
+                } else if (nextTile instanceof Exit) {
+                    finishGame((Exit) nextTile);
+                }
             }
         }
-        else if (getX() > 0 && ! (nextTile instanceof Wall))
-            x().set(getX() - 1);
-
-            if (nextTile instanceof PickUp) {
-                pickUpItem((PickUp) nextTile);
-            } else if (nextTile instanceof Portal) {
-                portalTeleport((Portal) nextTile);
-            } else if (nextTile instanceof Exit) {
-                finishGame((Exit) nextTile);
-            }
     }
 
     /**
      * Moving the player right
      */
     public void moveRight() {
-        // Setting tile
-        Entity nextTile = dungeon.getItem(getX() + 1, getY());
+        if (alive) {
+            // Setting tile
+            Entity nextTile = dungeon.getItem(getX() + 1, getY());
 
-        // Updating player
-        invStatus.minusInvTimer();
+            // Updating player
+            invStatus.minusInvTimer();
 
-        // Moving player
-        if (nextTile instanceof Door) {
-            if (enterDoor((Door) nextTile))
-            x().set(getX() + 1);
-        }
-        else if (nextTile instanceof Boulder) {
-            Entity next = dungeon.getItem(getX() + 2, getY());
-            if (pushBoulder((Boulder) nextTile, next, "Right")) {
-                x().set(getX() + 1); // move player as well
+            // Moving player
+            if (nextTile instanceof Door) {
+                if (enterDoor((Door) nextTile))
+                x().set(getX() + 1);
+            }
+            else if (nextTile instanceof Boulder) {
+                Entity next = dungeon.getItem(getX() + 2, getY());
+                if (pushBoulder((Boulder) nextTile, next, "Right")) {
+                    x().set(getX() + 1); // move player as well
+                }
+            }
+            else if (getX() < dungeon.getWidth() - 1 && ! (nextTile instanceof Wall)) {
+                x().set(getX() + 1);
+
+                if (nextTile instanceof PickUp) {
+                    pickUpItem((PickUp) nextTile);
+                } else if (nextTile instanceof Portal) {
+                    portalTeleport((Portal) nextTile);
+                } else if (nextTile instanceof Exit) {
+                    finishGame((Exit) nextTile);
+                }
             }
         }
-        else if (getX() < dungeon.getWidth() - 1 && ! (nextTile instanceof Wall))
-            x().set(getX() + 1);
-
-            if (nextTile instanceof PickUp) {
-                pickUpItem((PickUp) nextTile);
-            } else if (nextTile instanceof Portal) {
-                portalTeleport((Portal) nextTile);
-            } else if (nextTile instanceof Exit) {
-                finishGame((Exit) nextTile);
-            }
     }
 
     /**
@@ -234,8 +252,20 @@ public class Player extends Entity {
         // Has a weapon to defend
         else if (melee.attemptMeleeAttack()) {
             return true;
-        } 
+        }
+
+        // Updating status of player as they died
+        death().set(false);
+        alive = false;
+
         return false;
+    }
+
+    /**
+     * Removes a player from the front end
+    */
+    public SimpleBooleanProperty death() {
+        return view;
     }
 
     public void pickUpItem(PickUp item) {

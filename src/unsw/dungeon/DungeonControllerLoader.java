@@ -64,6 +64,7 @@ public class DungeonControllerLoader extends DungeonLoader {
     public void onLoad(Player player) {
         ImageView view = new ImageView(playerImage);
         addEntity(player, view);
+        trackStatus(player, view);
     }
 
     @Override
@@ -187,6 +188,21 @@ public class DungeonControllerLoader extends DungeonLoader {
             @Override
             public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) {
                 System.out.println("Removing pick up item from front end");
+                node.setVisible(false);
+            }
+        });
+    }
+
+    /**
+     * Tracks the status of the player
+     * @param item
+     * @param node
+     */
+    private void trackStatus(Player player, Node node) {
+        player.death().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) {
+                System.out.println("Removing person from front end");
                 node.setVisible(false);
             }
         });
