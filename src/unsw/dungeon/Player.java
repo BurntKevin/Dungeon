@@ -214,9 +214,9 @@ public class Player extends Entity {
         else if (curr instanceof Key) {
             if (! key.checkCarryingKey()) {
                 key.equipKey((Key) curr);
+                dungeon.removeEntity(item);
+                item.confirmPickedUp().set(false);
             }
-            dungeon.removeEntity(item);
-            item.confirmPickedUp().set(false);
         }
         else if (curr instanceof Treasure) {
             dungeon.logItem(item);
