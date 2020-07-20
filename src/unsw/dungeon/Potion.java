@@ -14,7 +14,7 @@ public class Potion implements Item {
     }
 
     /**
-     * Activates a potion
+     * Activating the potion
      */
     public void usePotion() {
         invTurnsLeft = 10;
@@ -24,17 +24,14 @@ public class Potion implements Item {
      * Potion expiring
      */
     public void minusInvTimer() {
-        invTurnsLeft = invTurnsLeft-1;
+        invTurnsLeft = invTurnsLeft - 1;
     }
 
     /**
      * Check if the potion has been fully used
-     * @return
+     * @return Potion active (boolean)
      */
     public boolean checkPotionActive() {
-        if (invTurnsLeft <= 0) {
-            return false;
-        }
-        return true;
+        return invTurnsLeft > 0;
     }
 }

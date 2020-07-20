@@ -344,6 +344,7 @@ public class Dungeon {
 
     /**
      * Checks for all enemies left in the dungeon
+     * @return Number of enemies remaining (int)
      */
     public int enemiesRemaining() {
         int count = 0;
@@ -356,5 +357,20 @@ public class Dungeon {
         }
 
         return count;
+    }
+
+    /**
+     * Obtain's the exit
+     * @return Exit (Exit)
+     */
+    public Exit getExit() {
+        // Check all entities for enemies alive
+        for (Entity e : entities) {
+            if (e instanceof Exit) {
+                return (Exit) e;
+            }
+        }
+
+        return null;
     }
 }

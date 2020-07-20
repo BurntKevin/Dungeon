@@ -1,7 +1,5 @@
 package unsw.dungeon;
 
-import javafx.beans.property.SimpleBooleanProperty;
-
 /**
  * A gnome who is wearing a treasure costume
  */
@@ -21,12 +19,5 @@ public class CamoGnome extends Enemy {
      */
     public void move() {
         super.move();
-    }
-
-    /**
-     * Indicate that the gnome is attacked
-     */
-    public void attacked() {
-        super.attacked().set(false);
     }
 }

@@ -17,12 +17,11 @@ public class Quest implements Mission {
         this.dungeon = dungeon;
     }
 
-    /**
-     * Invariant: Assumes player at exit
-     */
     public Boolean complete() {
         if (goal.equals("exit")) {
-            return true;
+            Exit exit = dungeon.getExit();
+            Player player = dungeon.getPlayer();
+            return exit.getX() == player.getX() && exit.getY() == player.getY();
         } else if (goal.equals("treasure")) {
             return dungeon.getTreasureLeft() == 0;
         } else if (goal.equals("boulders")) {

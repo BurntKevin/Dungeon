@@ -4,8 +4,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import unsw.dungeon.Entity;
+// Dungeon Information
 import unsw.dungeon.DungeonLoader;
+import unsw.dungeon.Dungeon;
+
+// Dungeon Items
+import unsw.dungeon.Entity;
 import unsw.dungeon.Player;
 import unsw.dungeon.Wall;
 import unsw.dungeon.Gnome;
@@ -15,13 +19,15 @@ import unsw.dungeon.PickUp;
 import unsw.dungeon.Exit;
 import unsw.dungeon.Door;
 import unsw.dungeon.Portal;
+import unsw.dungeon.Boulder;
+import unsw.dungeon.Switch;
 
 public class TestLoader extends DungeonLoader {
     private ArrayList<Entity> entities;
 
     public TestLoader(JSONObject json) {
         super(json);
-        this.entities = new ArrayList<Entity>();
+        entities = new ArrayList<Entity>();
     }
 
     @Override
@@ -79,12 +85,7 @@ public class TestLoader extends DungeonLoader {
         entities.add(boulder);
     }
 
-    public Player getPlayer() {
-        for (Entity e: entities) {
-            if (e instanceof Player) {
-                return (Player) e;
-            }
-        }
-        return null;
+    public Dungeon load() {
+        return super.load();
     }
 }

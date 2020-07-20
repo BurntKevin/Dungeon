@@ -27,11 +27,13 @@ public class Sword extends Weapon {
      * @return boolean indicating whether attack suceeded
      */
     public boolean attemptMeleeAttack() {
-        if (usesLeft <= 0) {
-            return false;        
+        // Attempting attack
+        if (checkWeaponUsable()) {
+            // Weapon can be used
+            usesLeft--;
+            return true;
         }
-        usesLeft--;
-        return true;
+        return false;
     }
 
     /**
@@ -39,9 +41,6 @@ public class Sword extends Weapon {
      * @return boolean indicating whether another sword may be picked up
      */
     public boolean checkWeaponUsable() {
-        if (usesLeft <= 0) {
-            return false;
-        }
-        return true;
+        return usesLeft > 0;
     }
 }

@@ -5,12 +5,11 @@ package unsw.dungeon;
  */
 public class Player extends Entity {
     private Dungeon dungeon;    
-    private String facingDir; // facingDir := "Left" | "Right" | "Up" | "Down", forms part of extension so animation can be done later
+    //  private String facingDir; // facingDir := "Left" | "Right" | "Up" | "Down", forms part of extension so animation can be done later
     private Sword melee;
-    private Bow ranged;
+    // private Bow ranged;
     private Potion invStatus;
     private Key key;
-    private Log log;
 
     /**
      * Create a player positioned in square (x,y)
@@ -22,11 +21,10 @@ public class Player extends Entity {
         super(x, y);
         this.dungeon = dungeon;
         this.melee = new Sword();
-        this.ranged = new Bow();
-        this.log = new Log();
+        // this.ranged = new Bow();
         this.key = new Key();
         this.invStatus = new Potion();
-        this.facingDir = "Right";
+        // this.facingDir = "Right";
     }
 
     /**
@@ -220,7 +218,8 @@ public class Player extends Entity {
      * Fires a bow shot
      */
     public void fireRanged() {
-        // TODO
+        // TODO - fire bow shot
+        System.out.println("Todo - fire ranged weapon");
     }
 
     /**
@@ -244,11 +243,9 @@ public class Player extends Entity {
         Item curr = item.getItemFromPickUp();
 
         if (curr instanceof Sword) {
-            if (melee.checkWeaponUsable()) { // usable weapon already equipped 
-                // don't pick up
-            }
-            else {
-                melee.addNewSword(); // reset number of uses left
+            if (! melee.checkWeaponUsable()) {
+                // Able to pick up a new weapon
+                melee.addNewSword();
                 dungeon.logItem(item);
                 dungeon.removeEntity(item);
                 item.confirmPickedUp().set(false);
@@ -256,11 +253,11 @@ public class Player extends Entity {
         }
         else if (curr instanceof Potion) {
             if (! invStatus.checkPotionActive()) {
-                // activate invincibility visual effect
+                // TODO: Activate invincibility visual effect
+                invStatus.usePotion();
+                dungeon.removeEntity(item);
+                item.confirmPickedUp().set(false);
             }
-            invStatus.usePotion();
-            dungeon.removeEntity(item);
-            item.confirmPickedUp().set(false);
         } 
         else if (curr instanceof Key) {
             if (! key.checkCarryingKey()) {
@@ -277,7 +274,18 @@ public class Player extends Entity {
         System.out.println("Pickup function called");
     }
 
+    /**
+     * Player tries to finish the game through the exit
+     * @param exit Exit of game
+     */
     private void finishGame(Exit exit) {
         exit.enter();
+    }
+
+    /**
+     * Returns the sword of the player
+     */
+    public Sword getSword() {
+        return melee;
     }
 }
