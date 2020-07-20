@@ -4,7 +4,6 @@ package unsw.dungeon;
  * The player entity
  */
 public class Player extends Entity {
-
     private Dungeon dungeon;    
     private String facingDir; // facingDir := "Left" | "Right" | "Up" | "Down", forms part of extension so animation can be done later
     private Sword melee;
@@ -15,8 +14,9 @@ public class Player extends Entity {
 
     /**
      * Create a player positioned in square (x,y)
-     * @param x
-     * @param y
+     * @param dungeon Dungeon which player lives in
+     * @param x x-coordinate
+     * @param y y-coordinate
      */
     public Player(Dungeon dungeon, int x, int y) {
         super(x, y);
@@ -29,9 +29,17 @@ public class Player extends Entity {
         this.facingDir = "Right";
     }
 
+    /**
+     * Player move up action
+     */
     public void moveUp() {
+        // Get next tile
         Entity nextTile = dungeon.getItem(getX(), getY() - 1);
+
+        // Setting player status
         invStatus.minusInvTimer();
+
+        // Moving player
         if (nextTile instanceof Door) {
             if (enterDoor((Door) nextTile))
             y().set(getY() - 1);
@@ -39,10 +47,10 @@ public class Player extends Entity {
         else if (nextTile instanceof Boulder) {
             Entity next = dungeon.getItem(getX(), getY() - 2);
             if (pushBoulder((Boulder) nextTile, next, "Up")) {
-                y().set(getY() - 1); // move player as well
+                y().set(getY() - 1);
             }
         }
-        else if (getY() > 0 && ! (nextTile instanceof Wall))
+        else if (getY() > 0 && ! (nextTile instanceof Wall)) {
             y().set(getY() - 1);
 
             if (nextTile instanceof PickUp) {
@@ -52,11 +60,20 @@ public class Player extends Entity {
             } else if (nextTile instanceof Exit) {
                 finishGame((Exit) nextTile);
             }
+        }
     }
 
+    /**
+     * Player move down action
+     */
     public void moveDown() {
+        // Obtaining next tile
         Entity nextTile = dungeon.getItem(getX(), getY() + 1);
+
+        // Setting player status
         invStatus.minusInvTimer();
+
+        // Moving player
         if (nextTile instanceof Door) {
             if (enterDoor((Door) nextTile))
             y().set(getY() + 1);
@@ -79,9 +96,17 @@ public class Player extends Entity {
             }
     }
 
+    /**
+     * Player move left action
+     */
     public void moveLeft() {
+        // Obtaining action
         Entity nextTile = dungeon.getItem(getX() - 1, getY());
+
+        // Updating status
         invStatus.minusInvTimer();
+
+        // Moving player
         if (nextTile instanceof Door) {
             if (enterDoor((Door) nextTile))
             x().set(getX() - 1);
@@ -104,9 +129,17 @@ public class Player extends Entity {
             }
     }
 
+    /**
+     * Moving the player right
+     */
     public void moveRight() {
+        // Setting tile
         Entity nextTile = dungeon.getItem(getX() + 1, getY());
+
+        // Updating player
         invStatus.minusInvTimer();
+
+        // Moving player
         if (nextTile instanceof Door) {
             if (enterDoor((Door) nextTile))
             x().set(getX() + 1);
@@ -129,6 +162,11 @@ public class Player extends Entity {
             }
     }
 
+    /**
+     * Player entering a door
+     * @param nextDoor
+     * @return Success of entering a door (Boolean)
+     */
     private boolean enterDoor(Door nextDoor) {
         if (nextDoor.checkOpen()) {
             return true;
@@ -159,28 +197,43 @@ public class Player extends Entity {
         }
     }
 
-    public boolean isInvisible() {
+    /**
+     * Returns if the player is invincible
+     * @return
+     */
+    public boolean isInvincible() {
         return invStatus.checkPotionActive();
-    }
-
-    public boolean pushBoulder(Boulder b, Entity behind, String pushDir) {
-        return b.attemptPush(behind, pushDir);
-    }
-
-    public void fireRanged() {
-        // TODO - add
     }
 
     /**
      * 
+     * @param b Boulder
+     * @param behind Entity behind
+     * @param pushDir Pushing direction
+     * @return Success of push (boolean)
+     */
+    public boolean pushBoulder(Boulder b, Entity behind, String pushDir) {
+        return b.attemptPush(behind, pushDir);
+    }
+
+    /**
+     * Fires a bow shot
+     */
+    public void fireRanged() {
+        // TODO
+    }
+
+    /**
+     * Used when the player is attacked
      * @return boolean whether player's counteratk was successful (false indicates game over)
      */
     public boolean attacked() {
-        
+        // Has a potion
         if (invStatus.checkPotionActive()) {
             return true;
         }
-        else if (melee.attemptMeleeAttack()) { // usable weapon equipped
+        // Has a weapon to defend
+        else if (melee.attemptMeleeAttack()) {
             return true;
         } 
         return false;

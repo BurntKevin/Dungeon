@@ -2,12 +2,20 @@ package unsw.dungeon;
 
 import javafx.beans.property.SimpleBooleanProperty;
 
+/**
+ * Used to block off sections of the map
+ */
 public class Door extends Entity {
-
     private int keyID;
     private boolean locked; 
     private SimpleBooleanProperty view;
 
+    /**
+     * Initalises a door
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @param keyID Corresponding key which opens the door
+     */
     public Door(int x, int y, int keyID) {
         super(x, y);
         this.keyID = keyID;
@@ -16,24 +24,34 @@ public class Door extends Entity {
     }
 
     /**
-     * 
-     * @param currKeyID integer corresponding to current key
-     * @return boolean indicating whether door was opened successfully
+     * Attempts to unlock a door
+     * @param currKeyID Integer of potential corresponding key
+     * @return boolean Indicating whether door was opened successfully
      */
-    public boolean attemptUnlock(Key currKey) {
-        if (keyID == currKey.getKeyID()) {
+    public boolean attemptUnlock(Key key) {
+        // Checking if the key and door matches
+        if (keyID == key.getKeyID()) {
+            // Successfully opened door
             locked = false;
             doorOpened().set(false);
             return true;
         }
+        // Key does not match door
         return false;
     }
 
+    /**
+     * Opens the door
+     * @return
+     */
     public SimpleBooleanProperty doorOpened() {
         return view;
     }
 
+    /**
+     * Checks whether the door is open
+     */
     public boolean checkOpen() {
-        return (! locked);
+        return !locked;
     }
 }

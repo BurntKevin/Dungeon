@@ -1,5 +1,8 @@
 package unsw.dungeon;
 
+/**
+ * Checks if a Sword is in use
+ */
 public class Sword extends Weapon {
     private int usesLeft;
     

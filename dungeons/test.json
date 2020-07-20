@@ -50,12 +50,12 @@
       {
         "x": 9,
         "y": 0,
-        "type": "wall"
+        "type": "boulder"
       },
       {
         "x": 10,
         "y": 0,
-        "type": "wall"
+        "type": "switch"
       },
       {
         "x": 11,
@@ -1028,13 +1028,13 @@
       }
     ],
     "goal-condition": {
-      "goal": "AND",
+      "goal": "OR",
       "subgoals": [
         {
-          "goal": "exit"
+          "goal": "treasure"
         },
         {
-          "goal": "treasure"
+          "goal": "boulders"
         }
       ]
     }
