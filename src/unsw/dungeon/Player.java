@@ -1,11 +1,7 @@
 package unsw.dungeon;
 
-import javafx.beans.property.SimpleBooleanProperty;
-
 /**
  * The player entity
- * @author Robert Clifton-Everest
- *
  */
 public class Player extends Entity {
 
