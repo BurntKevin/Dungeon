@@ -6,10 +6,10 @@ package unsw.dungeon;
 public class Log {
     private int nTreasureObtained;
     private int nSwordsUsed;
-    private int nEnemiesKilled;
+    // private int nEnemiesKilled;
     private int nPotionsConsumed;
     private int nStepsTaken;
-    private int nTeleports;
+    // private int nTeleports;
     private int nBowShotsHit;
     private int nBowShotsMissed;
 
@@ -19,10 +19,10 @@ public class Log {
     public Log() {
         nTreasureObtained = 0;
         nSwordsUsed = 0;
-        nEnemiesKilled = 0;
+        // nEnemiesKilled = 0;
         nPotionsConsumed = 0;
         nStepsTaken = 0;
-        nTeleports = 0;
+        // nTeleports = 0;
         nBowShotsHit = 0;
         nBowShotsMissed = 0;
     }
@@ -59,6 +59,14 @@ public class Log {
     }
 
     /**
+     * Obtains steps taken by player
+     * @return Steps taken (int)
+     */
+    public int getSteps() {
+        return nStepsTaken;
+    }
+
+    /**
      * Logs the items used by the player
      * @param item Item used (Item)
      */
@@ -84,5 +92,21 @@ public class Log {
      */
     public int getNTreasureObtained() {
         return nTreasureObtained;
+    }
+
+    /**
+     * Obtains the number of swords used by the player
+     * @return Number of swords (int)
+     */
+    public int getSwords() {
+        return nSwordsUsed;
+    }
+
+    /**
+     * Obtains the number of potions used by the player
+     * @return Number of potions (int)
+     */
+    public int getPotions() {
+        return nPotionsConsumed;
     }
 }

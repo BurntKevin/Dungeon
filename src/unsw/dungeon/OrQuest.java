@@ -17,6 +17,13 @@ public class OrQuest implements Mission {
     }
 
     /**
+     * Initalise an array of quests
+     */
+    public OrQuest() {
+        this.quests = new ArrayList<Mission>();
+    }
+
+    /**
      * Add a quest to the list of possible quests
      * @param quest
      */

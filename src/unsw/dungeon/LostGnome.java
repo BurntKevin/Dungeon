@@ -1,7 +1,5 @@
 package unsw.dungeon;
 
-import javafx.beans.property.SimpleBooleanProperty;
-
 /**
  * Creates a fast but randomly moving enemy
  */
@@ -21,12 +19,5 @@ public class LostGnome extends Enemy {
      */
     public void move() {
         super.move();
-    }
-
-    /**
-     * Remove gnome from front end
-     */
-    public void attacked() {
-        super.attacked().set(false);
     }
 }

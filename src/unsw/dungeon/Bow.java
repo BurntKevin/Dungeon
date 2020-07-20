@@ -39,15 +39,15 @@ public class Bow extends Weapon {
         throw new IllegalArgumentException();
     }
 
-    /**
-     * Currently a stub
-     * Checks whether the bow shot hit a target
-     * @return
-     */
-    private boolean checkHitTarget() {
-        // TODO - implement function to determine target
-        return true;
-    }
+    // /**
+    //  * Currently a stub
+    //  * Checks whether the bow shot hit a target
+    //  * @return The hit status of the shot
+    //  */
+    // private boolean checkHitTarget() {
+    //     // TODO - implement function to determine target
+    //     return true;
+    // }
 
     /**
      * Checks if a weapon is 

@@ -4,8 +4,6 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONObject;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
@@ -83,7 +81,6 @@ public class DungeonControllerLoader extends DungeonLoader {
 
     @Override
     public void onLoad(LostGnome lostGnome) {
-        System.out.println("Lost gnome track");
         ImageView view = new ImageView(lostGnomeImage);
         addEntity(lostGnome, view);
         trackEnemyStatus(lostGnome, view);

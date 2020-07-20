@@ -16,6 +16,7 @@ public class Portal extends Entity {
      */
     public Portal(int x, int y, int id) {
         super(x, y);
+        this.portID = id;
     }
 
     /**
@@ -43,10 +44,16 @@ public class Portal extends Entity {
      * @return Match status (boolean)
      */
     public boolean checkPortalsMatch(Portal p) {
+        // Checking portal id
         if (portID == p.getPortID()) {
-            if (p.getEntryX() != getX() || p.getEntryY() != getY())
-            return true;
+            // Checking portal coordinates
+            if (p.getEntryX() != getX() || p.getEntryY() != getY()) {
+                // Found corresponding portal
+                return true;
+            }
         }
+
+        // Could not find corresponding portal
         return false;
     }
 

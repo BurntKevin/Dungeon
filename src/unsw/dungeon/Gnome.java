@@ -1,7 +1,5 @@
 package unsw.dungeon;
 
-import javafx.beans.property.SimpleBooleanProperty;
-
 /**
  * Gnome movement
  */
@@ -21,12 +19,5 @@ public class Gnome extends Enemy {
      */
     public void move() {
         super.move();
-    }
-
-    /**
-     * Removes gnome from front end
-     */
-    public void attacked() {
-        super.attacked().set(false);
     }
 }

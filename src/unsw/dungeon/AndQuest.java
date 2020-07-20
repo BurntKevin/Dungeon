@@ -3,7 +3,7 @@ package unsw.dungeon;
 import java.util.ArrayList;
 
 /**
- * A type of quest where all quests need to be completed
+ * A type of quest where all sub-quests need to be completed
  */
 public class AndQuest implements Mission {
     private ArrayList<Mission> quests;
@@ -14,6 +14,13 @@ public class AndQuest implements Mission {
      */
     public AndQuest(ArrayList<Mission> quests) {
         this.quests = quests;
+    }
+
+    /**
+     * Initalise an array of quests
+     */
+    public AndQuest() {
+        this.quests = new ArrayList<Mission>();
     }
 
     /**
@@ -29,7 +36,7 @@ public class AndQuest implements Mission {
      */
     public Boolean complete() {
         for (Mission m : quests) {
-            if (m.complete() != true) {
+            if (!m.complete()) {
                 return false;
             }
         }

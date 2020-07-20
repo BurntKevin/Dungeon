@@ -28,9 +28,9 @@ public class DungeonController {
 
     private ArrayList<PickUp> itemPickUps;
 
-    private ArrayList<Door> doors;
+    // private ArrayList<Door> doors;
 
-    private ArrayList<Portal> portals;
+    // private ArrayList<Portal> portals;
 
     private Dungeon dungeon;
 
@@ -40,8 +40,8 @@ public class DungeonController {
         this.initialEntities = new ArrayList<>(initialEntities);
         this.itemPickUps = new ArrayList<PickUp>();
         this.enemies = dungeon.getEnemies();
-        this.doors = dungeon.getDoors();
-        this.portals = dungeon.getPortals();
+        // this.doors = dungeon.getDoors();
+        // this.portals = dungeon.getPortals();
     }
 
     @FXML
@@ -111,6 +111,8 @@ public class DungeonController {
                 }
             }
         }
+
+        // Checking for potential items to pickup
         for (PickUp i : itemPickUps) {
             if (i.checkTilesCoincide(playerCoordinate[0], playerCoordinate[1])) {
                 player.pickUpItem(i);

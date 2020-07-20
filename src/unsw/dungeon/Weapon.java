@@ -3,32 +3,32 @@ package unsw.dungeon;
 /**
  * General weapon class for weapons
  */
-public class Weapon implements Item {
-    private String weaponType; // weaponType := "melee" | "ranged"
-    private int usesLeft; 
+public abstract class Weapon implements Item {
+    private int usesLeft;
+
+    // /**
+    //  * Creates a weapon class
+    //  * @return
+    //  */
+    // public boolean Weapon(usesLeft) {
+    //     this.usesLeft = usesLeft;
+    // }
 
     /**
      * Used to attack
      * @return Success of attack
      */
     public boolean useWeapon() {
-        // Todo for bow
-        throw new IllegalArgumentException();
+        if (checkWeaponUsable()) {
+            usesLeft--;
+            return true;
+        }
+        return false;
     }
 
     /**
-     * Used to attack
-     * @param facingDir Facing direction of player
-     * @return Success of attack
-     */
-    public String useWeapon(String facingDir) {
-        // Todo for bow
-        throw new IllegalArgumentException();
-    }
-
-    /**
-     * Checks if a waepon is usable
-     * @return Status of swod (boolean)
+     * Checks if a weapon is usable
+     * @return Status of weapon (boolean)
      */
     public boolean checkWeaponUsable() {
         if (usesLeft <= 0) {
