@@ -36,4 +36,8 @@ public class TitleScreen {
         return controller;
     }
 
+    public void setControllerLevel(DungeonScreen level) {
+        controller.setLevel(level);
+    }
+
 }

@@ -12,6 +12,14 @@ public class DungeonApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
+
+        TitleScreen titleScreen = new TitleScreen(primaryStage);
+
+        DungeonScreen testLevel = new DungeonScreen(primaryStage);
+        titleScreen.setControllerLevel(testLevel);
+        
+        titleScreen.start();
+        /*
         primaryStage.setTitle("Dungeon");
 
         DungeonControllerLoader dungeonLoader = new DungeonControllerLoader("test.json");
@@ -25,6 +33,7 @@ public class DungeonApplication extends Application {
         root.requestFocus();
         primaryStage.setScene(scene);
         primaryStage.show();
+        */
     }
 
     public static void main(String[] args) {
