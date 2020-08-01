@@ -28,10 +28,6 @@ public class DungeonController {
 
     private ArrayList<PickUp> itemPickUps;
 
-    // private ArrayList<Door> doors;
-
-    // private ArrayList<Portal> portals;
-
     private Dungeon dungeon;
 
     public DungeonController(Dungeon dungeon, List<ImageView> initialEntities) {
@@ -40,8 +36,6 @@ public class DungeonController {
         this.initialEntities = new ArrayList<>(initialEntities);
         this.itemPickUps = new ArrayList<PickUp>();
         this.enemies = dungeon.getEnemies();
-        // this.doors = dungeon.getDoors();
-        // this.portals = dungeon.getPortals();
     }
 
     @FXML
@@ -75,6 +69,8 @@ public class DungeonController {
         case RIGHT:
             player.moveRight();
             break;
+        case R:
+            player.fireRanged();
         default:
             break;
         }
@@ -89,13 +85,13 @@ public class DungeonController {
         }
     }
 
-    private void killEnemy(Enemy e) {
+    public void killEnemy(Enemy e) {
         System.out.println("Enemy attacked");
         enemies.remove(e);
         dungeon.removeEntity(e);
         e.attacked().set(false);
     }
-    
+
     /**
      * Determines what actions to take for current turn
      * depending on what entities are in the same tile as the player

@@ -94,6 +94,12 @@ public abstract class DungeonLoader {
             onLoad(swordPU);
             entity = swordPU;
             break;
+        case "bow":
+            Bow bow = new Bow(dungeon);
+            PickUp bowPU = new PickUp(x, y, (Item) bow, "Bow");
+            onLoad(bowPU);
+            entity = bowPU;
+            break;
         case "invincibility":
             Potion potion = new Potion(); 
             PickUp potionPU = new PickUp(x, y, (Item) potion, "Potion");
