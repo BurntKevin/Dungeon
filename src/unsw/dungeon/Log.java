@@ -6,12 +6,14 @@ package unsw.dungeon;
 public class Log {
     private int nTreasureObtained;
     private int nSwordsUsed;
+    private int nBowsUsed;
     // private int nEnemiesKilled;
     private int nPotionsConsumed;
     private int nStepsTaken;
     // private int nTeleports;
     private int nBowShotsHit;
     private int nBowShotsMissed;
+    private int nBowShotsDryFire;
 
     /**
      * Initalises log
@@ -19,12 +21,14 @@ public class Log {
     public Log() {
         nTreasureObtained = 0;
         nSwordsUsed = 0;
+        nBowsUsed = 0;
         // nEnemiesKilled = 0;
         nPotionsConsumed = 0;
         nStepsTaken = 0;
         // nTeleports = 0;
         nBowShotsHit = 0;
         nBowShotsMissed = 0;
+        nBowShotsDryFire = 0;
     }
 
     /**
@@ -77,7 +81,10 @@ public class Log {
         } 
         else if (nextItem instanceof Sword) {
             nSwordsUsed++;
-        } 
+        }
+        else if (nextItem instanceof Bow) {
+            nBowsUsed++;
+        }
         else if (nextItem instanceof Potion) {
             nPotionsConsumed++;
         } 
@@ -108,5 +115,9 @@ public class Log {
      */
     public int getPotions() {
         return nPotionsConsumed;
+    }
+
+    public void logDryFireRanged() {
+        nBowShotsDryFire++;
     }
 }
