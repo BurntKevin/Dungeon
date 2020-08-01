@@ -39,6 +39,7 @@ public class DungeonControllerLoader extends DungeonLoader {
     private Image potionImage;
     private Image boulderImage;
     private Image switchImage;
+    private Image bowImage;
 
     public DungeonControllerLoader(String filename) throws FileNotFoundException {
         super(filename);
@@ -58,6 +59,7 @@ public class DungeonControllerLoader extends DungeonLoader {
         potionImage = new Image((new File("images/bubbly.png")).toURI().toString());
         boulderImage = new Image((new File("images/boulder.png")).toURI().toString());
         switchImage = new Image((new File("images/pressure_plate.png")).toURI().toString());
+        bowImage = new Image((new File("images/bow.png")).toURI().toString());
     }
 
     @Override
@@ -136,6 +138,8 @@ public class DungeonControllerLoader extends DungeonLoader {
             view = new ImageView(potionImage);
         } else if (item.getItemFromPickUp() instanceof Key) {
             view = new ImageView(keyImage);
+        } else if (item.getItemFromPickUp() instanceof Bow) {
+            view = new ImageView(bowImage);
         }
         addEntity(item, view);
     }
@@ -221,6 +225,7 @@ public class DungeonControllerLoader extends DungeonLoader {
                 node.setVisible(false);
             }
         });
+        
     }
 
     /**

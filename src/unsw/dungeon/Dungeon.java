@@ -78,6 +78,7 @@ public class Dungeon {
      */
     public void removeEntity(Entity entity) {
         // Todo - Remove from front end interface
+        System.out.println("Removing entity");
         entities.remove(entity);
     }
 
@@ -371,6 +372,28 @@ public class Dungeon {
             }
         }
 
+        return null;
+    }
+
+    public void logDryFireRanged() {
+        log.logDryFireRanged();
+    }
+
+    public boolean validArrowLocation(int x, int y) {
+        for (Entity e : entities) {
+            if (e.getX() == x && e.getY() == y && ! (e instanceof Enemy)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public Enemy getEnemy(int x, int y) {
+        for (Entity e : entities) {
+            if (e.getX() == x && e.getY() == y && e instanceof Enemy) {
+                return (Enemy) e;
+            }
+        }
         return null;
     }
 }

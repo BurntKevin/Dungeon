@@ -7,9 +7,9 @@ import javafx.beans.property.SimpleBooleanProperty;
  */
 public class Player extends Entity {
     private Dungeon dungeon;    
-    //  private String facingDir; // facingDir := "Left" | "Right" | "Up" | "Down", forms part of extension so animation can be done later
+    private String facingDir; // facingDir := "Left" | "Right" | "Up" | "Down", forms part of extension so animation can be done later
     private Sword melee;
-    // private Bow ranged;
+    private Bow ranged;
     private Potion invStatus;
     private Key key;
     private SimpleBooleanProperty view;
@@ -25,10 +25,10 @@ public class Player extends Entity {
         super(x, y);
         this.dungeon = dungeon;
         this.melee = new Sword();
-        // this.ranged = new Bow();
+        this.ranged = new Bow(dungeon);
         this.key = new Key();
         this.invStatus = new Potion();
-        // this.facingDir = "Right";
+        this.facingDir = "Right";
         this.view = new SimpleBooleanProperty(true);
         this.alive = true;
     }
@@ -67,6 +67,9 @@ public class Player extends Entity {
                     finishGame((Exit) nextTile);
                 }
             }
+
+            // Updating player status
+            facingDir = "Up";
         }
     }
 
@@ -103,6 +106,9 @@ public class Player extends Entity {
                     finishGame((Exit) nextTile);
                 }
             }
+
+            // Updating player status
+            facingDir = "Down";
         }
     }
 
@@ -139,6 +145,9 @@ public class Player extends Entity {
                     finishGame((Exit) nextTile);
                 }
             }
+
+            // Updating player status
+            facingDir = "Left";
         }
     }
 
@@ -175,6 +184,9 @@ public class Player extends Entity {
                     finishGame((Exit) nextTile);
                 }
             }
+
+            // Updating player status
+            facingDir = "Right";
         }
     }
 
@@ -236,8 +248,7 @@ public class Player extends Entity {
      * Fires a bow shot
      */
     public void fireRanged() {
-        // TODO - fire bow shot
-        System.out.println("Todo - fire ranged weapon");
+        ranged.fire(super.getX(), super.getY(), facingDir);
     }
 
     /**
@@ -276,6 +287,15 @@ public class Player extends Entity {
             if (! melee.checkWeaponUsable()) {
                 // Able to pick up a new weapon
                 melee.addNewSword();
+                dungeon.logItem(item);
+                dungeon.removeEntity(item);
+                item.confirmPickedUp().set(false);
+            }
+        }
+        else if (curr instanceof Bow) {
+            if (! ranged.checkWeaponUsable()) {
+                // Able to pick up a new weapon
+                ranged.addNewBow();
                 dungeon.logItem(item);
                 dungeon.removeEntity(item);
                 item.confirmPickedUp().set(false);
