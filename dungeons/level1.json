@@ -85,17 +85,17 @@
       {
         "x": 16,
         "y": 0,
-        "type": "wall"
+        "type": "treasure"
       },
       {
         "x": 17,
         "y": 0,
-        "type": "wall"
+        "type": "treasure"
       },
       {
         "x": 18,
         "y": 0,
-        "type": "wall"
+        "type": "treasure"
       },
       {
         "x": 19,
@@ -135,7 +135,7 @@
       {
         "x": 18,
         "y": 1,
-        "type": "wall"
+        "type": "boulder"
       },
       {
         "x": 19,
@@ -180,7 +180,7 @@
       {
         "x": 9,
         "y": 2,
-        "type": "boulder"
+        "type": "wall"
       },
       {
         "x": 10,
@@ -215,7 +215,7 @@
       {
         "x": 7,
         "y": 3,
-        "type": "boulder"
+        "type": "wall"
       },
       {
         "x": 13,
@@ -225,7 +225,7 @@
       {
         "x": 14,
         "y": 3,
-        "type": "invisibility"
+        "type": "wall"
       },
       {
         "x": 15,

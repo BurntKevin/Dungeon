@@ -45,8 +45,8 @@ public class TitleController {
     @FXML
     public void initialize() {
 
-        //String[] lvlLabels = {"Level 1", "Level 2", "Level 3"}; 
-        lvlChoiceBox.getItems().addAll("Level 1", "Level 2", "Level 3");
+        //String[] lvlLabels = {"Level 1", "Level 2", "Level 3", "Test"}; 
+        lvlChoiceBox.getItems().addAll("Level 1", "Level 2", "Level 3", "Test");
 
         // Set to first level initially
         lvlChoiceBox.setValue("Level 1");

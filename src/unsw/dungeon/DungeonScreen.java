@@ -52,9 +52,14 @@ public class DungeonScreen {
     }
 
     private void setLevel(String choice, Log log) throws IOException {
-
-        String fname = "level"+(choice.charAt(choice.length()-1));
-
+        String fname;
+        if (choice.equals("Test")) {
+            fname = "test";
+        }
+        else {
+            fname = "level"+(choice.charAt(choice.length()-1));
+        }
+        
         DungeonControllerLoader dungeonLoader = new DungeonControllerLoader(fname+".json");
         DungeonController controller = dungeonLoader.loadController();
         controller.setLog(log);
