@@ -1,34 +1,50 @@
 package unsw.dungeon;
 
+import java.util.ArrayList;
+
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.FloatProperty;
+import javafx.beans.property.FloatProperty;
+import javafx.beans.property.Property;
+import javafx.beans.property.SimpleFloatProperty;
+import javafx.beans.property.SimpleFloatProperty;
+
 /**
  * Keeps track of user progress
  */
 public class Log {
-    private int nTreasureObtained;
-    private int nSwordsUsed;
-    private int nBowsUsed;
-    // private int nEnemiesKilled;
-    private int nPotionsConsumed;
-    private int nStepsTaken;
+    private FloatProperty nTreasureObtained;
+    private FloatProperty nDeaths;
+    private FloatProperty nSwordsUsed;
+    private FloatProperty nBowsUsed;
+    private FloatProperty nEnemiesKilled;
+    private FloatProperty nPotionsConsumed;
+    private FloatProperty nStepsTaken;
     // private int nTeleports;
-    private int nBowShotsHit;
-    private int nBowShotsMissed;
-    private int nBowShotsDryFire;
+    private FloatProperty nBowShotsHit;
+    private FloatProperty nBowShotsMissed;
+    private FloatProperty nBowShotsDryFire;
+
+    private FloatProperty nTotalBowShots;
+    private FloatProperty bowAccuracy;
 
     /**
      * Initalises log
      */
     public Log() {
-        nTreasureObtained = 0;
-        nSwordsUsed = 0;
-        nBowsUsed = 0;
-        // nEnemiesKilled = 0;
-        nPotionsConsumed = 0;
-        nStepsTaken = 0;
+        nTreasureObtained = new SimpleFloatProperty(0);
+        nDeaths = new SimpleFloatProperty(0);
+        nSwordsUsed = new SimpleFloatProperty(0);
+        nBowsUsed = new SimpleFloatProperty(0);
+        nEnemiesKilled = new SimpleFloatProperty(0);
+        nPotionsConsumed = new SimpleFloatProperty(0);
+        nStepsTaken = new SimpleFloatProperty(0);
         // nTeleports = 0;
-        nBowShotsHit = 0;
-        nBowShotsMissed = 0;
-        nBowShotsDryFire = 0;
+        nTotalBowShots = new SimpleFloatProperty();
+        bowAccuracy = new SimpleFloatProperty(0);
+        nBowShotsHit = new SimpleFloatProperty(0);
+        nBowShotsMissed = new SimpleFloatProperty(0);
+        nBowShotsDryFire = new SimpleFloatProperty(0);
     }
 
     /**
@@ -37,37 +53,44 @@ public class Log {
      */
     public void logRangedAtk(Boolean hit) {
         if (hit) {
-            nBowShotsHit++;
+            incrementFloatProperty(nBowShotsHit);
         }
         else {
-            nBowShotsMissed++;
+            incrementFloatProperty(nBowShotsMissed);
         }
+        updAccuracy();
+        updRangedAtks();
     }
 
     /**
      * Returns the accuracy of the player
      * @return Accuracy of player (float)
      */
-    public float calculateAcc() {
-        if (nBowShotsHit == 0 && nBowShotsMissed == 0) {
-            return 100;
+    private void updAccuracy() {
+        if (nBowShotsHit.getValue() == 0 && nBowShotsMissed.getValue() == 0) {
+            bowAccuracy.setValue(100.0);
+            return;
         }
-        return 100 * (nBowShotsHit / (nBowShotsHit + nBowShotsMissed));
+        bowAccuracy.setValue(100.0 * ((float) nBowShotsHit.getValue() / nTotalBowShots.getValue()));
+    }
+
+    public void updRangedAtks() {
+        nTotalBowShots.setValue(nBowShotsHit.getValue()+nBowShotsMissed.getValue());
     }
 
     /**
      * Logs the amount of steps taken
      */
     public void logMovement() {
-        nStepsTaken++;
+        incrementFloatProperty(nStepsTaken);
     }
 
     /**
      * Obtains steps taken by player
      * @return Steps taken (int)
      */
-    public int getSteps() {
-        return nStepsTaken;
+    public float getSteps() {
+        return nStepsTaken.getValue();
     }
 
     /**
@@ -77,19 +100,21 @@ public class Log {
     public void logItem(PickUp item) {
         Item nextItem = item.getItemFromPickUp();
         if (nextItem instanceof Treasure) {
-            nTreasureObtained++;
+            incrementFloatProperty(nTreasureObtained);
         } 
         else if (nextItem instanceof Sword) {
-            nSwordsUsed++;
+            incrementFloatProperty(nSwordsUsed);
         }
         else if (nextItem instanceof Bow) {
-            nBowsUsed++;
+            incrementFloatProperty(nBowsUsed);
         }
         else if (nextItem instanceof Potion) {
-            nPotionsConsumed++;
+            incrementFloatProperty(nPotionsConsumed);
         } 
         else {
             System.out.println("Got a new item");
+
+
         }
     }
 
@@ -97,27 +122,43 @@ public class Log {
      * Logs the amount of treasure obtained by the player
      * @return Treasure obtained by player (int)
      */
-    public int getNTreasureObtained() {
-        return nTreasureObtained;
+    public float getNTreasureObtained() {
+        return nTreasureObtained.getValue();
     }
 
     /**
      * Obtains the number of swords used by the player
      * @return Number of swords (int)
      */
-    public int getSwords() {
-        return nSwordsUsed;
+    public float getSwords() {
+        return nSwordsUsed.getValue();
     }
 
     /**
      * Obtains the number of potions used by the player
      * @return Number of potions (int)
      */
-    public int getPotions() {
-        return nPotionsConsumed;
+    public float getPotions() {
+        return nPotionsConsumed.getValue();
     }
 
     public void logDryFireRanged() {
-        nBowShotsDryFire++;
+        incrementFloatProperty(nBowShotsDryFire);
+    }
+
+    private void incrementFloatProperty(FloatProperty toUpd) {
+        toUpd.setValue(toUpd.getValue()+1);
+    }
+
+    public ArrayList<FloatProperty> trackedProperties() {
+        ArrayList<FloatProperty> properties = new ArrayList<>();
+        properties.add(nStepsTaken);
+        properties.add(nDeaths);
+        properties.add(nEnemiesKilled);
+        properties.add(nTreasureObtained);
+        properties.add(nTotalBowShots);
+        properties.add(bowAccuracy);
+        return properties;
+
     }
 }

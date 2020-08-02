@@ -396,4 +396,8 @@ public class Dungeon {
         }
         return null;
     }
+
+    public void setLog(Log log) {
+        this.log = log;
+    }
 }
