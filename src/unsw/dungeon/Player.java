@@ -58,7 +58,26 @@ public class Player extends Entity {
             }
         }
         else if (nextTile instanceof Boulder) {
-            Entity next = dungeon.getItem(getX(), getY() + y - 1);
+            Entity next = null;
+            switch (direction) {
+                case "Up":
+                    next = dungeon.getItem(getX() + x, getY() + y - 1);
+                    break;
+                case "Down":
+                    next = dungeon.getItem(getX() + x, getY() + y + 1);
+                    break;
+                case "Left":
+                    next = dungeon.getItem(getX() + x - 1, getY() + y);
+                    break;
+                case "Right":
+                    next = dungeon.getItem(getX() + x + 1, getY() + y);
+                    break;
+            }
+
+            System.out.println("Pushing " + direction);
+            System.out.println(next);
+
+
             if (pushBoulder((Boulder) nextTile, next, direction)) {
                 y().set(getY() + y);
                 x().set(getX() + x);
@@ -172,6 +191,7 @@ public class Player extends Entity {
      * @return Success of push (boolean)
      */
     public boolean pushBoulder(Boulder b, Entity behind, String pushDir) {
+        System.out.println(b);
         return b.attemptPush(behind, pushDir);
     }
 
