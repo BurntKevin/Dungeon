@@ -89,6 +89,7 @@ public class Bow extends Weapon {
                     dungeon.removeEntity(enemy);
                     enemy.attacked().set(false);
                     System.out.print("Killed enemy with bow");
+                    break;
                 }
 
                 if (direction == "Up") {

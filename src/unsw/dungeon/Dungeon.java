@@ -83,7 +83,7 @@ public class Dungeon {
     }
 
     /**
-     * Obtains an item from the map given its coordinates
+     * Obtains a potential interactable item from the map given its coordinates
      * @param x x-coordinate
      * @param y y-coordinate
      * @return Item on x, y
@@ -92,8 +92,8 @@ public class Dungeon {
         // Checking all items
         for (Entity entity : entities) {
             // Checking if the item matches the desired coordinates
-            if (entity.getX() == x && entity.getY() == y) {
-                // Found item
+            if (entity.getX() == x && entity.getY() == y && ! (entity instanceof Switch)) {
+                // Found item which can be interacted with
                 return entity;
             }
         }
