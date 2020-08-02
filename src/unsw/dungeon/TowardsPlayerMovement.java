@@ -50,16 +50,16 @@ public class TowardsPlayerMovement implements MovementType {
         int[] bestEscape = new int[] {0, 0};
         for (int[] p : possibilities) {
             // Check if it is a possible location to be at
-            if (dungeon.validPlayerTile(x + p[0], y + p[1])) {
+            if (dungeon.validEnemyTile(x + p[0], y + p[1])) {
                 int steps = stepsToPlayer(x + p[0], y + p[1]);
-                if (steps >= furthest) {
+                System.out.println(steps);
+                if (steps > furthest) {
                     bestEscape = p;
                     furthest = steps;
                 }
             }
         }
 
-        // No movement which goes further away
         return bestEscape;
     }
 
@@ -76,22 +76,30 @@ public class TowardsPlayerMovement implements MovementType {
         while (queue.size() != 0) {
             int[] node = queue.remove(0);
 
-            // Checking if the tile can be moved upon
-            if (!(boardStatus[node[0]][node[1]] instanceof Wall)) {
-                // Checking if the player has been reached
-                if (node[0] == playerCoordinates[0] && node[1] == playerCoordinates[1]) {
-                    return node[2];
-                }
-
-                // Finding next set of possible moves
-                queue.add(new int[] {node[0] - 1, node[1], node[2] + 1}); // Left
-                queue.add(new int[] {node[0] + 1, node[1], node[2] + 1}); // Right
-                queue.add(new int[] {node[0], node[1] - 1, node[2] + 1}); // Up
-                queue.add(new int[] {node[0], node[1] + 1, node[2] + 1}); // Down
-
-                // Marking node as visited
-                boardStatus[node[0]][node[1]] = new Wall(node[0], node[1]);
+            // Checking if point is in dungeon
+            if (!dungeon.inDungeon(node[0], node[1])) {
+                continue;
             }
+
+            // Checking if the point is usable
+            if (boardStatus[node[0]][node[1]] instanceof Obstacle || boardStatus[node[0]][node[1]] instanceof Door) {
+                continue;
+            }
+
+
+            // Checking if the player has been reached
+            if (node[0] == playerCoordinates[0] && node[1] == playerCoordinates[1]) {
+                return node[2];
+            }
+
+            // Finding next set of possible moves
+            queue.add(new int[] {node[0] - 1, node[1], node[2] + 1}); // Left
+            queue.add(new int[] {node[0] + 1, node[1], node[2] + 1}); // Right
+            queue.add(new int[] {node[0], node[1] - 1, node[2] + 1}); // Up
+            queue.add(new int[] {node[0], node[1] + 1, node[2] + 1}); // Down
+
+            // Marking node as visited
+            boardStatus[node[0]][node[1]] = new Wall(node[0], node[1]);
         }
 
         return -1;
@@ -119,26 +127,33 @@ public class TowardsPlayerMovement implements MovementType {
         while (queue.size() != 0) {
             int[] node = queue.remove(0);
 
-            // Checking if the current node is a valid location
-            if (0 <= node[0] && node[0] < dungeon.getWidth() && 0 <= node[1] && node[1] < dungeon.getHeight() && ! (boardStatus[node[0]][node[1]] instanceof Obstacle || boardStatus[node[0]][node[1]] instanceof Door)) {
-                if (node[0] == x && node[1] == y) {
-                    move[0] = node[2];
-                    move[1] = node[3];
-                    break;
-                }
-
-                // Finding next set of possible moves
-                if (! (boardStatus[node[0]][node[1]] instanceof Enemy) || node.equals(new int[] {0, 1})) {
-                    queue.add(new int[] {node[0] - 1, node[1], 1, 0}); // Left
-                    queue.add(new int[] {node[0] + 1, node[1], -1, 0}); // Right
-                    queue.add(new int[] {node[0], node[1] - 1, 0, 1}); // Up
-                    queue.add(new int[] {node[0], node[1] + 1, 0, -1}); // Down
-                }
-
-                // Marking node as visited
-                boardStatus[node[0]][node[1]] = new Wall(node[0], node[1]);
+            // Checking if point is in dungeon
+            if (!dungeon.inDungeon(node[0], node[1])) {
+                continue;
             }
+
+            // Checking if the point is usable
+            if (boardStatus[node[0]][node[1]] instanceof Obstacle || boardStatus[node[0]][node[1]] instanceof Door) {
+                continue;
+            }
+
+            // Checking if destination found
+            if (node[0] == x && node[1] == y && dungeon.validEnemyTile(x + node[2], y + node[3])) {
+                move[0] = node[2];
+                move[1] = node[3];
+                break;
+            }
+
+            // Finding next set of possible moves
+            queue.add(new int[] {node[0] - 1, node[1], 1, 0}); // Left
+            queue.add(new int[] {node[0] + 1, node[1], -1, 0}); // Right
+            queue.add(new int[] {node[0], node[1] - 1, 0, 1}); // Up
+            queue.add(new int[] {node[0], node[1] + 1, 0, -1}); // Down
+
+            // Marking node as visited
+            boardStatus[node[0]][node[1]] = new Wall(node[0], node[1]);
         }
+
         return move;
     }
 }
