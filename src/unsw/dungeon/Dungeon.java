@@ -173,6 +173,10 @@ public class Dungeon {
         return coordinates;
     }
 
+    public boolean inDungeon(int x, int y) {
+        return 0 <= x && x < getWidth() && 0 <= y && y < getHeight();
+    }
+
     /**
      * Checks for possible moves a player can do given a coordinate
      * @param x x-coordinate at dungeon
@@ -275,6 +279,26 @@ public class Dungeon {
             if ((e instanceof Obstacle) && e.getX() == x && e.getY() == y) {
                 // Cannot move into this tile
                 return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Checks if a tile can be moved towards by an enemy
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @return Availability of location for the player
+     */
+    public Boolean validEnemyTile(int x, int y) {
+        // For all entities
+        for (Entity e : entities) {
+            // Checking if the tile can be moved towards
+            if (e.getX() == x && e.getY() == y) {
+                if (e instanceof Obstacle || e instanceof Enemy || e instanceof Door) {
+                    // Cannot move into this tile
+                    return false;
+                }
             }
         }
         return true;
