@@ -39,28 +39,64 @@ public class TowardsPlayerMovement implements MovementType {
     private int[] awayPlayer(int x, int y) {
         // Calculating all possible moves
         ArrayList<int[]> possibilities = new ArrayList<int[]>();
-        possibilities.add(new int[] {x - 1, y});
-        possibilities.add(new int[] {x + 1, y});
-        possibilities.add(new int[] {x, y - 1});
-        possibilities.add(new int[] {x, y + 1});
+        possibilities.add(new int[] {-1, 0});
+        possibilities.add(new int[] {1, 0});
+        possibilities.add(new int[] {0, -1});
+        possibilities.add(new int[] {0, 1});
+        possibilities.add(new int[] {0, 0});
 
         // For all possibilities
+        int furthest = 0;
+        int[] bestEscape = new int[] {0, 0};
         for (int[] p : possibilities) {
             // Check if it is a possible location to be at
-            if (dungeon.validPlayerTile(p[0], p[1])) {
-                // Move towards the player
-                int[] move = towardsPlayer(p[0], p[1]);
-                if (move[0] + p[0] == x && move[1] + p[1] == y) {
-                    // If it goes back to its original spot, it is further away
-                    return new int[] {-move[0], -move[1]};
+            if (dungeon.validPlayerTile(x + p[0], y + p[1])) {
+                int steps = stepsToPlayer(x + p[0], y + p[1]);
+                if (steps >= furthest) {
+                    bestEscape = p;
+                    furthest = steps;
                 }
             }
         }
 
         // No movement which goes further away
-        return new int[] {0, 0};
+        return bestEscape;
     }
 
+    public int stepsToPlayer(int x, int y) {
+        // Setting up board
+        Entity[][] boardStatus = dungeon.getBoard();
+        int[] playerCoordinates = dungeon.getPlayerCoordinates();
+
+        // Finding best move towards player
+        ArrayList<int[]> queue = new ArrayList<int[]>();
+        int[] source = {x, y, 0};
+        queue.add(source);
+
+        while (queue.size() != 0) {
+            int[] node = queue.remove(0);
+
+            // Checking if the tile can be moved upon
+            if (!(boardStatus[node[0]][node[1]] instanceof Wall)) {
+                // Checking if the player has been reached
+                if (node[0] == playerCoordinates[0] && node[1] == playerCoordinates[1]) {
+                    return node[2];
+                }
+
+                // Finding next set of possible moves
+                queue.add(new int[] {node[0] - 1, node[1], node[2] + 1}); // Left
+                queue.add(new int[] {node[0] + 1, node[1], node[2] + 1}); // Right
+                queue.add(new int[] {node[0], node[1] - 1, node[2] + 1}); // Up
+                queue.add(new int[] {node[0], node[1] + 1, node[2] + 1}); // Down
+
+                // Marking node as visited
+                boardStatus[node[0]][node[1]] = new Wall(node[0], node[1]);
+            }
+        }
+
+        return -1;
+    }
+    
     /**
      * Moves towards the place
      * @param x x-coordinate

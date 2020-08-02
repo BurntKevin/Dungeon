@@ -57,22 +57,22 @@ public class DungeonController {
     @FXML
     public void handleKeyPress(KeyEvent event) {
         switch (event.getCode()) {
-        case UP:
-            player.moveUp();
-            break;
-        case DOWN:
-            player.moveDown();
-            break;
-        case LEFT:
-            player.moveLeft();
-            break;
-        case RIGHT:
-            player.moveRight();
-            break;
-        case R:
-            player.fireRanged();
-        default:
-            break;
+            case UP:
+                player.moveUp();
+                break;
+            case DOWN:
+                player.moveDown();
+                break;
+            case LEFT:
+                player.moveLeft();
+                break;
+            case RIGHT:
+                player.moveRight();
+                break;
+            case F:
+                player.fireRanged();
+            default:
+                break;
         }
 
         moveEnemies();
@@ -102,7 +102,7 @@ public class DungeonController {
         int[] playerCoordinate = dungeon.getPlayerCoordinates();
         for (Enemy e : new ArrayList<Enemy>(enemies)) {
             if (e.getX() == playerCoordinate[0] && e.getY() == playerCoordinate[1]) {
-                if (player.attacked()) {
+                if (e.readyToAttack() && player.attacked()) {
                     killEnemy(e);
                 }
             }

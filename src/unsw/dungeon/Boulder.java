@@ -21,7 +21,7 @@ public class Boulder extends Entity implements Obstacle {
      */
     public boolean attemptPush(Entity next, String moveDir) {
         // Checking whether the push can be completed
-        if (next instanceof Obstacle || next instanceof Door || next instanceof Portal) {
+        if (next instanceof Obstacle || next instanceof Door || next instanceof Portal || next instanceof Exit) {
             return false;
         }
 

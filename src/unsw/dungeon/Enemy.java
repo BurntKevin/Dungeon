@@ -63,4 +63,8 @@ public abstract class Enemy extends Entity {
     public SimpleBooleanProperty attacked() {
         return view;
     }
+
+    public boolean readyToAttack() {
+        return view.getValue();
+    }
 }

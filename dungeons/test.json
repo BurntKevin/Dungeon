@@ -40,22 +40,22 @@
       {
         "x": 7,
         "y": 0,
-        "type": "treasure"
+        "type": "wall"
       },
       {
         "x": 8,
         "y": 0,
-        "type": "exit"
+        "type": "wall"
       },
       {
         "x": 9,
         "y": 0,
-        "type": "boulder"
+        "type": "wall"
       },
       {
         "x": 10,
         "y": 0,
-        "type": "switch"
+        "type": "wall"
       },
       {
         "x": 11,
@@ -155,7 +155,7 @@
       {
         "x": 4,
         "y": 2,
-        "type": "wall"
+        "type": "invincibility"
       },
       {
         "x": 5,
@@ -163,24 +163,14 @@
         "type": "wall"
       },
       {
-        "x": 6,
-        "y": 2,
-        "type": "wall"
-      },
-      {
         "x": 7,
         "y": 2,
-        "type": "wall"
+        "type": "boulder"
       },
       {
         "x": 8,
         "y": 2,
-        "type": "wall"
-      },
-      {
-        "x": 9,
-        "y": 2,
-        "type": "wall"
+        "type": "boulder"
       },
       {
         "x": 10,
@@ -190,17 +180,17 @@
       {
         "x": 11,
         "y": 2,
-        "type": "wall"
+        "type": "treasure"
       },
       {
         "x": 12,
         "y": 2,
-        "type": "wall"
+        "type": "boulder"
       },
       {
         "x": 13,
         "y": 2,
-        "type": "wall"
+        "type": "switch"
       },
       {
         "x": 19,
@@ -794,7 +784,7 @@
       {
         "x": 7,
         "y": 14,
-        "type": "lost_gnome"
+        "type": "hound"
       },
       {
         "x": 8,
