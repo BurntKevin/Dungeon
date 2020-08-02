@@ -175,12 +175,7 @@
       {
         "x": 10,
         "y": 2,
-        "type": "wall"
-      },
-      {
-        "x": 11,
-        "y": 2,
-        "type": "treasure"
+        "type": "exit"
       },
       {
         "x": 12,
@@ -205,17 +200,17 @@
       {
         "x": 7,
         "y": 3,
-        "type": "wall"
+        "type": "treasure"
       },
       {
         "x": 13,
         "y": 3,
-        "type": "wall"
+        "type": "bow"
       },
       {
         "x": 14,
         "y": 3,
-        "type": "wall"
+        "type": "sword"
       },
       {
         "x": 15,
@@ -1024,6 +1019,8 @@
           "goal": "treasure"
         }, {
           "goal": "boulders"
+        }, {
+          "goal": "enemies"
         }
       ]
     }

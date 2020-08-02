@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 import unsw.dungeon.AndQuest;
 import unsw.dungeon.Dungeon;
-import unsw.dungeon.Quest;
 
 
 public class AndQuestTest {

@@ -146,7 +146,7 @@ public abstract class DungeonLoader {
                 String jsonGoal = jsonGoalCondition.getString("goal");
 
                 // Simple quest of simply arriving to exit
-                Quest questExit = new Quest("exit", dungeon);
+                Mission questExit = new ExitQuest(dungeon);
                 exit.addMission(questExit);
 
                 // Creating AND, OR goals
@@ -157,7 +157,7 @@ public abstract class DungeonLoader {
                         OrQuest OrQuest = new OrQuest(new ArrayList<Mission>());
                         for (int i = 0; i < jsonQuests.length(); i++) {
                             JSONObject jsonSpecificQuest = (JSONObject) jsonQuests.get(i);
-                            Quest additionalQuest = new Quest(jsonSpecificQuest.getString("goal"), dungeon);
+                            Mission additionalQuest = createQuest(jsonSpecificQuest.getString("goal"), dungeon);
                             OrQuest.addQuest(additionalQuest);
                         }
                         exit.addMission(OrQuest);
@@ -167,7 +167,7 @@ public abstract class DungeonLoader {
                         AndQuest AndQuest = new AndQuest(new ArrayList<Mission>());
                         for (int i = 0; i < jsonQuests.length(); i++) {
                             JSONObject jsonSpecificQuest = (JSONObject) jsonQuests.get(i);
-                            Quest additionalQuest = new Quest(jsonSpecificQuest.getString("goal"), dungeon);
+                            Mission additionalQuest = createQuest(jsonSpecificQuest.getString("goal"), dungeon);
                             AndQuest.addQuest(additionalQuest);
                         }
                         exit.addMission(AndQuest);
@@ -176,6 +176,21 @@ public abstract class DungeonLoader {
                 break;
         }
         dungeon.addEntity(entity);
+    }
+
+    private Mission createQuest(String goal, Dungeon dungeon) {
+        Mission mission = null;
+        if (goal.equals("exit")) {
+            mission = new ExitQuest(dungeon);
+        } else if (goal.equals("treasure")) {
+            mission = new TreasureQuest(dungeon);
+        } else if (goal.equals("boulders")) {
+            mission = new BouldersQuest(dungeon);
+        } else if (goal.equals("enemies")) {
+            mission = new EnemyQuest(dungeon);
+        }
+
+        return mission;
     }
 
     public abstract void onLoad(Player player);
