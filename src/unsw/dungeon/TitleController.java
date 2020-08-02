@@ -4,13 +4,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 
 public class TitleController {
    
     private DungeonScreen level;
+    private LogScreen stats;
+
+    private Log log;
 
     @FXML
     private Label title;
@@ -29,7 +30,7 @@ public class TitleController {
 
     @FXML
     public void handleStartPress(ActionEvent event) {
-        level.start(lvlChoiceBox.getSelectionModel().getSelectedItem());
+        level.start(lvlChoiceBox.getSelectionModel().getSelectedItem(), log);
     }
 
     @FXML
@@ -38,6 +39,7 @@ public class TitleController {
 
     @FXML
     public void handleStatsPress(ActionEvent event) {
+        stats.start();
     }
 
     @FXML
@@ -52,5 +54,13 @@ public class TitleController {
 
     public void setLevel(DungeonScreen level) {
         this.level = level;
+    }
+
+    public void setStats(LogScreen stats) {
+        this.stats = stats; 
+    }
+
+    public void setLog(Log log) {
+        this.log = log; 
     }
 }

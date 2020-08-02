@@ -15,9 +15,16 @@ public class DungeonApplication extends Application {
 
         TitleScreen titleScreen = new TitleScreen(primaryStage);
 
-        DungeonScreen testLevel = new DungeonScreen(primaryStage);
+        Log gameLog = new Log();
+        titleScreen.setControllerLog(gameLog);
+
+        DungeonScreen testLevel = new DungeonScreen(primaryStage, gameLog);
         titleScreen.setControllerLevel(testLevel);
-        
+
+        // Set the initial log, and pass to current level
+        LogScreen logScreen = new LogScreen(primaryStage, titleScreen, gameLog);
+        titleScreen.setControllerStats(logScreen);
+
         titleScreen.start();
         /*
         primaryStage.setTitle("Dungeon");

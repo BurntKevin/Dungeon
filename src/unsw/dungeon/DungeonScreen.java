@@ -14,7 +14,7 @@ public class DungeonScreen {
 
     private Scene scene;
 
-    public DungeonScreen(Stage stage) throws IOException {
+    public DungeonScreen(Stage stage, Log log) throws IOException {
         this.stage = stage;
         //title = "Level "+level;
         
@@ -22,6 +22,7 @@ public class DungeonScreen {
         String fname = "test";
         DungeonControllerLoader dungeonLoader = new DungeonControllerLoader(fname+".json");
         DungeonController controller = dungeonLoader.loadController();
+        controller.setLog(log);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("DungeonView.fxml"));
         loader.setController(controller);
@@ -33,9 +34,9 @@ public class DungeonScreen {
 
     }
 
-    public void start(String choice) {
+    public void start(String choice, Log log) {
         try {
-            setLevel(choice);
+            setLevel(choice, log);
         }
         catch (Exception e) {
             System.out.println("Could not load level.");
@@ -49,12 +50,13 @@ public class DungeonScreen {
         return controller;
     }
 
-    private void setLevel(String choice) throws IOException {
+    private void setLevel(String choice, Log log) throws IOException {
 
         String fname = "level"+(choice.charAt(choice.length()-1));
 
         DungeonControllerLoader dungeonLoader = new DungeonControllerLoader(fname+".json");
         DungeonController controller = dungeonLoader.loadController();
+        controller.setLog(log);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("DungeonView.fxml"));
         loader.setController(controller);

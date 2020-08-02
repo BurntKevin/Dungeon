@@ -115,4 +115,8 @@ public class DungeonController {
             }
         }
     }
+
+    public void setLog(Log log) {
+        dungeon.setLog(log);
+    }
 }

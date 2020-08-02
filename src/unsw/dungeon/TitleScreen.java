@@ -40,4 +40,12 @@ public class TitleScreen {
         controller.setLevel(level);
     }
 
+    public void setControllerStats(LogScreen stats) {
+        controller.setStats(stats);
+    }
+
+    public void setControllerLog(Log log) {
+        controller.setLog(log);
+    }
+
 }
