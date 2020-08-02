@@ -22,7 +22,7 @@ import java.io.File;
 public class DungeonControllerLoader extends DungeonLoader {
 
     private List<ImageView> entities;
-
+    
     // Images
     private Image playerImage;
     private Image wallImage;
