@@ -28,7 +28,7 @@ public class DungeonScreen {
         loader.setController(controller);
 
         Parent root = loader.load();
-        root.requestFocus();
+        // root.requestFocus();
         scene = new Scene(root);
         stage.setScene(scene);
 
@@ -41,9 +41,10 @@ public class DungeonScreen {
         catch (Exception e) {
             System.out.println("Could not load level.");
         }
+        /*
         stage.setTitle(title);
-        stage.setScene(scene);
-        stage.show();
+        stage.setScene(scene);     
+        */   
     }
 
     public TitleController getController() {
@@ -65,6 +66,10 @@ public class DungeonScreen {
         root.requestFocus();
         scene = new Scene(root);
         stage.setScene(scene);
+        stage.show();        
+        stage.getScene().setOnKeyPressed(controller::handleKeyPress);
+
+
     }
    
 
