@@ -3,11 +3,15 @@ package unsw.dungeon;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 
 import java.io.File;
 
@@ -16,6 +20,24 @@ import java.io.File;
  * @author Robert Clifton-Everest
  */
 public class DungeonController {
+    
+    private Image sword;
+    private Image bow;
+    private Image potion;
+
+    @FXML
+    private Button returnBtn;
+
+    @FXML
+    private ImageView swordImg;
+
+    @FXML
+    private ImageView bowImg;
+
+    @FXML
+    private ImageView potionImg;
+
+    // @FXML Pane gamePane;
 
     @FXML
     private GridPane squares;
@@ -29,6 +51,8 @@ public class DungeonController {
     private ArrayList<Enemy> enemies;
 
     private ArrayList<PickUp> itemPickUps;
+
+    private TitleScreen mainMenu;
 
     private Dungeon dungeon;
 
@@ -44,6 +68,13 @@ public class DungeonController {
     @FXML
     public void initialize() {
         Image ground = new Image((new File("images/dirt_0_new.png")).toURI().toString());
+        
+        potion = new Image((new File("images/bubbly.png")).toURI().toString());
+        sword = new Image((new File("images/greatsword_1_new.png")).toURI().toString());
+        bow = new Image((new File("images/bow.png")).toURI().toString());
+        potionImg.setImage(potion);
+        swordImg.setImage(sword);
+        bowImg.setImage(bow);
 
         // Add the ground first so it is below all other entities
         for (int x = 0; x < dungeon.getWidth(); x++) {
@@ -55,6 +86,11 @@ public class DungeonController {
         for (ImageView entity : initialEntities) {
             squares.getChildren().add(entity);
         }
+    }
+
+    @FXML
+    public void handleReturnPress(ActionEvent event) {
+        mainMenu.start();
     }
 
     @FXML
@@ -147,6 +183,12 @@ public class DungeonController {
                 }
             }
         }
+        //squares.setFocusTraversable(true);
+        //squares.requestFocus();
+    }
+
+    public void setMenu(TitleScreen menu) {
+        this.mainMenu = menu;
     }
 
     public void setLog(Log log) {

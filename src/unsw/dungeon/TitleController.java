@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
 public class TitleController {
    
@@ -29,6 +30,9 @@ public class TitleController {
     private Button statsBtn;
 
     @FXML
+    private Button exitBtn;
+
+    @FXML
     public void handleStartPress(ActionEvent event) {
         level.start(lvlChoiceBox.getSelectionModel().getSelectedItem(), log);
     }
@@ -40,6 +44,12 @@ public class TitleController {
     @FXML
     public void handleStatsPress(ActionEvent event) {
         stats.start();
+    }
+
+    @FXML
+    public void handleExitPress(ActionEvent event) {
+        Stage stage = (Stage) exitBtn.getScene().getWindow();
+        stage.close();
     }
 
     @FXML

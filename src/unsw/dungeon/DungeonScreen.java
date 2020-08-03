@@ -1,20 +1,25 @@
 package unsw.dungeon;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 
 public class DungeonScreen {
     private Stage stage;
     private String title;
     private TitleController controller;
 
+    private TitleScreen main;
     private Scene scene;
 
-    public DungeonScreen(Stage stage, Log log) throws IOException {
+    public DungeonScreen(Stage stage, Log log, TitleScreen menu) throws IOException, FileNotFoundException {
         this.stage = stage;
         //title = "Level "+level;
         
@@ -26,6 +31,8 @@ public class DungeonScreen {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("DungeonView.fxml"));
         loader.setController(controller);
+        controller.setMenu(menu);
+        main = menu;
 
         Parent root = loader.load();
         // root.requestFocus();
@@ -51,7 +58,7 @@ public class DungeonScreen {
         return controller;
     }
 
-    private void setLevel(String choice, Log log) throws IOException {
+    private void setLevel(String choice, Log log)throws IOException {
         String fname;
         if (choice.equals("Test")) {
             fname = "test";
@@ -66,14 +73,14 @@ public class DungeonScreen {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("DungeonView.fxml"));
         loader.setController(controller);
+        controller.setMenu(main);
 
         Parent root = loader.load();
         root.requestFocus();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();        
-        stage.getScene().setOnKeyPressed(controller::handleKeyPress);
-
+        // stage.getScene().setOnKeyPressed(controller::handleKeyPress);
 
     }
    
