@@ -1,5 +1,6 @@
 package unsw.dungeon;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
 /**
@@ -9,6 +10,7 @@ public class Door extends Entity {
     private int keyID;
     private boolean locked; 
     private SimpleBooleanProperty view;
+    private SimpleBooleanProperty highlight;
 
     /**
      * Initalises a door
@@ -21,6 +23,7 @@ public class Door extends Entity {
         this.keyID = keyID;
         this.locked = true;
         this.view = new SimpleBooleanProperty(true);
+        this.highlight = new SimpleBooleanProperty(false);
     }
 
     /**
@@ -53,5 +56,13 @@ public class Door extends Entity {
      */
     public boolean checkOpen() {
         return !locked;
+    }
+
+    public int getKeyId() {
+        return keyID;
+    }
+
+    public BooleanProperty highlight() {
+        return highlight;
     }
 }

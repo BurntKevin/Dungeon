@@ -532,4 +532,15 @@ public class Dungeon {
     public ArrayList<IntegerProperty> getPlayerInventory() {
         return player.getInventoryStatus();
     }
+    
+    public void highlightDoors(int Id) {
+        for (Entity e : entities) {
+            if (e instanceof Door) {
+                Door door = (Door) e;
+                if (door.getKeyId() == Id) {
+                    door.highlight().set(true);
+                }
+            }
+        }
+    }
 }

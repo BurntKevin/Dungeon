@@ -27,6 +27,16 @@ public class Exit extends Entity {
     }
 
     /**
+     * Add sets of missions for an exit
+     * @param mission Mission
+     */
+    public void addMission(ArrayList<Mission> mission) {
+        for (Mission m : mission) {
+            addMission(m);
+        }
+    }
+
+    /**
      * Checks if a player is allowed to exit dungeon
      */
     public void enter() {

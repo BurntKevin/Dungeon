@@ -35,6 +35,7 @@ public class DungeonControllerLoader extends DungeonLoader {
     private Image camoGnomeImage;
     private Image closedDoorImage;
     private Image openDoorImage;
+    private Image highlightDoorImage;
     private Image portalImage;
     private Image keyImage;
     private Image potionImage;
@@ -56,6 +57,7 @@ public class DungeonControllerLoader extends DungeonLoader {
         camoGnomeImage = new Image((new File("images/camo_gnome.png")).toURI().toString());
         closedDoorImage = new Image((new File("images/closed_door.png")).toURI().toString());
         openDoorImage = new Image((new File("images/open_door.png")).toURI().toString());
+        highlightDoorImage = new Image((new File("images/highlight_door.png")).toURI().toString());
         portalImage = new Image((new File("images/portal.png")).toURI().toString());
         keyImage = new Image((new File("images/key.png")).toURI().toString());
         potionImage = new Image((new File("images/bubbly.png")).toURI().toString());
@@ -261,6 +263,20 @@ public class DungeonControllerLoader extends DungeonLoader {
                     if (i == node) {
                         i.setImage(openDoorImage);
                         break;
+                    }
+                }
+            }
+        });
+        door.highlight().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) {
+                for (ImageView i : entities) {
+                    if (i == node) {
+                        if (newValue) {
+                            i.setImage(highlightDoorImage);
+                        } else {
+                            i.setImage(closedDoorImage);
+                        }
                     }
                 }
             }
