@@ -1,7 +1,7 @@
 package unsw.dungeon;
 
 /**
- * Used to act as a general item
+ * Used to act as a marker interface
  */
 public interface Item {
     

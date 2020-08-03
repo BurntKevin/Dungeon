@@ -64,6 +64,10 @@ public abstract class Enemy extends Entity {
         return view;
     }
 
+    /**
+     * Checks if the enemy is ready to attack
+     * @return Ready status
+     */
     public boolean readyToAttack() {
         return view.getValue();
     }

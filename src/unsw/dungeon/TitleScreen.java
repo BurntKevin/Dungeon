@@ -14,9 +14,11 @@ public class TitleScreen {
     private Scene scene;
 
     public TitleScreen(Stage stage) throws IOException {
+        // Screen information
         this.stage = stage;
-        title = "Title";
+        title = "Main Menu";
 
+        // Controller
         controller = new TitleController();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("title.fxml"));
         loader.setController(controller);
@@ -51,5 +53,4 @@ public class TitleScreen {
     public void controllerRestart() {
         controller.restartLevel();
     }
-
 }

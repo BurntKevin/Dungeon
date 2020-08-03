@@ -47,6 +47,10 @@ public class Sword extends Weapon {
         return usesLeft.getValue() > 0;
     }
 
+    /**
+     * Returns the number of uses a sword has
+     * @return Number of uses
+     */
     public IntegerProperty getUsesProperty() {
         return usesLeft;
     }

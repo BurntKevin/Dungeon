@@ -36,19 +36,4 @@ public class Exit extends Entity {
             addMission(m);
         }
     }
-
-    /**
-     * Checks if a player is allowed to exit dungeon
-     */
-    public void enter() {
-        // Checking if sufficient quests are satisfised
-        for (Mission m : quests) {
-            if (m.complete() == false) {
-                // Game not completed yet
-                System.out.println("Not complete yet");
-                return;
-            }
-        }
-        System.out.println("Game over - finished");
-    }
 }

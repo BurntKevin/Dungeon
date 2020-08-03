@@ -195,7 +195,6 @@ public class DungeonControllerLoader extends DungeonLoader {
         item.confirmPickedUp().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) {
-                System.out.println("Removing pick up item from front end");
                 node.setVisible(false);
             }
         });
@@ -210,14 +209,12 @@ public class DungeonControllerLoader extends DungeonLoader {
         player.death().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) {
-                System.out.println("Removing person from front end");
                 node.setVisible(false);
             }
         });
         player.buffed().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) {
-                System.out.println("Buffing player");
                 for (ImageView i : entities) {
                     if (i == node) {
                         if (newValue) {
@@ -243,7 +240,6 @@ public class DungeonControllerLoader extends DungeonLoader {
         enemy.attacked().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) {
-                System.out.println("Removing enemy from front end");
                 node.setVisible(false);
             }
         });

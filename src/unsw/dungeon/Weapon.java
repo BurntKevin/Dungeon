@@ -10,12 +10,8 @@ public abstract class Weapon implements Item {
      * Used to attack
      * @return Success of attack
      */
-    public boolean useWeapon() {
-        if (checkWeaponUsable()) {
-            usesLeft--;
-            return true;
-        }
-        return false;
+    public void useWeapon() {
+        usesLeft--;
     }
 
     /**

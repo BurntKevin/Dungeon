@@ -10,5 +10,9 @@ public interface Mission {
      */
     public Boolean complete();
 
+    /**
+     * Turns the mission into a readable string
+     * @return Mission as string
+     */
     public String descript();
 }

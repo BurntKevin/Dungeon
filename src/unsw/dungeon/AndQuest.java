@@ -43,16 +43,23 @@ public class AndQuest implements Mission {
         return true;
     }
 
+    // Transforms quests into string information
     public String descript() {
+        // Starting string
         String descriptStr = "";
+
+        // For all missions, add their corresponding string
         for (Mission m : quests) {
+            // Creating string
             if (descriptStr.equals("")) {
+                // First addition
                 descriptStr = m.descript();
-            }
-            else {
-                descriptStr = descriptStr+" AND "+m.descript();
+            } else {
+                // Not first addition
+                descriptStr = descriptStr + " AND " + m.descript();
             }
         }
+
         return descriptStr;
     }
 }

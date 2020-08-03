@@ -16,7 +16,12 @@ public class ExitQuest implements Mission {
         this.dungeon = dungeon;
     }
 
+    /**
+     * Checks if the exit quest is complete
+     * @return Completion status
+     */
     public Boolean complete() {
+        // Obtaining dungeon environment information
         Exit exit = dungeon.getExit();
         ArrayList<int[]> coordinates = dungeon.getPlayersCoordinates();
 
@@ -31,6 +36,9 @@ public class ExitQuest implements Mission {
         return false;
     }
 
+    /**
+     * Transforms exit quest into text
+     */
     public String descript() {
         return "Reach the exit";
     }

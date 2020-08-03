@@ -10,7 +10,7 @@ import javafx.beans.property.SimpleBooleanProperty;
  */
 public class Player extends Entity {
     private Dungeon dungeon;    
-    private String facingDir; // facingDir := "Left" | "Right" | "Up" | "Down", forms part of extension so animation can be done later
+    private String facingDir; // facingDir := "Left" | "Right" | "Up" | "Down"
     private Sword melee;
     private Bow ranged;
     private Potion invStatus;
@@ -53,12 +53,13 @@ public class Player extends Entity {
 
         // Moving player
         if (nextTile instanceof Door) {
+            // Adjusting for door
             if (enterDoor((Door) nextTile)) {
                 y().set(getY() + y);
                 x().set(getX() + x);
             }
-        }
-        else if (nextTile instanceof Boulder) {
+        } else if (nextTile instanceof Boulder) {
+            // Adjusting for boulder
             Entity next = null;
             switch (direction) {
                 case "Up":
@@ -75,25 +76,21 @@ public class Player extends Entity {
                     break;
             }
 
-            System.out.println("Pushing " + direction);
-            System.out.println(next);
-
-
             if (pushBoulder((Boulder) nextTile, next, direction)) {
                 y().set(getY() + y);
                 x().set(getX() + x);
             }
         }
         else if (getY() > 0 && !(nextTile instanceof Wall)) {
+            // Adjusting for free slot
             y().set(getY() + y);
             x().set(getX() + x);
 
+            // Accessing miscellaneous items
             if (nextTile instanceof PickUp) {
                 pickUpItem((PickUp) nextTile);
             } else if (nextTile instanceof Portal) {
                 portalTeleport((Portal) nextTile);
-            } else if (nextTile instanceof Exit) {
-                finishGame((Exit) nextTile);
             }
         }
 
@@ -105,11 +102,14 @@ public class Player extends Entity {
         dungeon.logStep();
     }
 
+    /**
+     * Causes the player to update its temporary effects
+     */
     public void nextTurn() {
+        // Updating potion
         if (!invStatus.checkPotionActive()) {
             buff.set(false);
         }
-        // Setting player status
         invStatus.minusInvTimer();
     }
 
@@ -131,6 +131,7 @@ public class Player extends Entity {
      * Player move down action
      */
     public void moveDown() {
+        // Checking if player is still alive
         if (alive) {
             shift(0, 1, "Down");
         }
@@ -140,6 +141,7 @@ public class Player extends Entity {
      * Player move left action
      */
     public void moveLeft() {
+        // Checking if player is still alive
         if (alive) {
             shift(-1, 0, "Left");
         }
@@ -149,6 +151,7 @@ public class Player extends Entity {
      * Moving the player right
      */
     public void moveRight() {
+        // Checking if player is still alive
         if (alive) {
             shift(1, 0, "Right");
         }
@@ -160,18 +163,28 @@ public class Player extends Entity {
      * @return Success of entering a door (Boolean)
      */
     private boolean enterDoor(Door nextDoor) {
+        // Checking if a door can be used
         if (nextDoor.checkOpen()) {
+            // Already unlocked
             return true;
-        }
-        else {
+        } else {
+            // Locked
             if (nextDoor.attemptUnlock(key)) {
+                // Door is unlocked
                 key.useKey();
+
                 return true;
             }
         }
+
         return false;
     }
 
+    /**
+     * Updates the position of the player
+     * @param teleX New x coordinate
+     * @param teleY New y coordinate
+     */
     private void setPosition(int teleX, int teleY) {
         x().set(teleX);
         y().set(teleY);
@@ -182,8 +195,11 @@ public class Player extends Entity {
      * @param EntryPortal portal which is entered by player
      */
     private void portalTeleport(Portal EntryPortal) {
+        // For all portals
         for (Portal p: dungeon.getPortals()) {
+            // Check for a matching portal
             if (EntryPortal.checkPortalsMatch(p)) {
+                // Teleport to corresponding portal
                 setPosition(p.getEntryX(), p.getEntryY());
             }
         }
@@ -191,21 +207,20 @@ public class Player extends Entity {
 
     /**
      * Returns if the player is invincible
-     * @return
+     * @return Player invincibility status
      */
     public boolean isInvincible() {
         return invStatus.checkPotionActive();
     }
 
     /**
-     * 
+     * Pushes a boulder
      * @param b Boulder
      * @param behind Entity behind
      * @param pushDir Pushing direction
      * @return Success of push (boolean)
      */
     public boolean pushBoulder(Boulder b, Entity behind, String pushDir) {
-        System.out.println(b);
         return b.attemptPush(behind, pushDir);
     }
 
@@ -221,19 +236,16 @@ public class Player extends Entity {
      * @return boolean whether player's counteratk was successful (false indicates game over)
      */
     public boolean attacked() {
-        System.out.println("Player got attacked");
-
-        // Has a potion
+        // Checking if the player can defend themselves
         if (invStatus.checkPotionActive()) {
+            // Has a potion
             return true;
-        }
-        // Has a weapon to defend
-        else if (melee.attemptMeleeAttack()) {
+        } else if (melee.attemptMeleeAttack()) {
+            // Has a weapon
             return true;
         }
 
         // Updating status of player as they died
-        System.out.println("KIA Player");
         dungeon.logDeath();
         death().set(false);
         alive = false;
@@ -248,9 +260,15 @@ public class Player extends Entity {
         return view;
     }
 
+    /**
+     * Pick up an item
+     * @param item
+     */
     public void pickUpItem(PickUp item) {
+        // Obtaining item from wrapper
         Item curr = item.getItemFromPickUp();
 
+        // Picking up item
         if (curr instanceof Sword) {
             if (!melee.checkWeaponUsable()) {
                 // Able to pick up a new weapon
@@ -276,7 +294,6 @@ public class Player extends Entity {
                 item.confirmPickedUp().set(false);
                 buffed().set(true);
                 dungeon.logPotion();
-                System.out.println("Picked up potion");
             }
         } else if (curr instanceof Key) {
             if (!key.checkCarryingKey()) {
@@ -290,15 +307,6 @@ public class Player extends Entity {
             dungeon.removeEntity(item);
             item.confirmPickedUp().set(false);
         }
-        System.out.println("Pickup function called");
-    }
-
-    /**
-     * Player tries to finish the game through the exit
-     * @param exit Exit of game
-     */
-    private void finishGame(Exit exit) {
-        exit.enter();
     }
 
     /**
@@ -308,15 +316,27 @@ public class Player extends Entity {
         return melee;
     }
 
+    /**
+     * Updates UI that the player is under the effect of a potation
+     * @return Status of player under potion
+     */
     public SimpleBooleanProperty buffed() {
         return buff;
     }
 
+    /**
+     * Obtain inventory information
+     * @return Inventory
+     */
     public ArrayList<IntegerProperty> getInventoryStatus() {
+        // Obtaining inventory
         ArrayList<IntegerProperty> inven = new ArrayList<>();
+
+        // Adding inventory items
         inven.add(invStatus.getUsesProperty());
         inven.add(melee.getUsesProperty());
         inven.add(ranged.getUsesProperty());
+
         return inven;
     }
 
