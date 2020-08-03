@@ -62,6 +62,12 @@ public abstract class DungeonLoader {
                 onLoad(player);
                 entity = player;
                 break;
+            case "player_coop":
+                Player playerCoop = new Player(dungeon, x, y);
+                dungeon.setPlayerCoop(playerCoop);
+                onLoad(playerCoop);
+                entity = playerCoop;
+                break;
             case "wall":
                 Wall wall = new Wall(x, y);
                 onLoad(wall);

@@ -1,6 +1,5 @@
 /**
  * Currently not fully implemented
- * Improvements: Use more of Weapon superclass
  */
 
 package unsw.dungeon;
