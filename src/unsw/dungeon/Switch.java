@@ -21,11 +21,16 @@ public class Switch extends Entity {
      * @return
      */
     public boolean checkActivated(ArrayList<Boulder> currBoulders) {
+        // For all boulders
         for (Boulder b : currBoulders) {
+            // Check if they match the switch
             if (b.getX() == getX() && b.getY() == getY()) {
+                // Switch is activated
                 return true;
             }
         }
+
+        // Switch is not activated
         return false;
     }
 }

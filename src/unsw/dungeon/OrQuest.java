@@ -48,16 +48,24 @@ public class OrQuest implements Mission {
         return false;
     }
 
+    /**
+     * Turns the quest into a string
+     */
     public String descript() {
+        // Starting string
         String descriptStr = "";
+
+        // For all quests
         for (Mission m : quests) {
             if (descriptStr.equals("")) {
+                // If it is the first quest
                 descriptStr = m.descript();
-            }
-            else {
-                descriptStr = descriptStr+" OR "+m.descript();
+            } else {
+                // Not the first quest
+                descriptStr = descriptStr + " OR " + m.descript();
             }
         }
+
         return descriptStr;
     }
 }

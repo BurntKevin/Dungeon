@@ -40,6 +40,10 @@ public class Potion implements Item {
         return invTurnsLeft.getValue() > 0;
     }
 
+    /**
+     * Returns the number of uses left
+     * @return
+     */
     public IntegerProperty getUsesProperty() {
         return invTurnsLeft;
     }

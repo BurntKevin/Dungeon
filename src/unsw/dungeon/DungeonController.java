@@ -53,8 +53,6 @@ public class DungeonController {
     @FXML
     private Label potionVal;
 
-    // @FXML Pane gamePane;
-
     @FXML
     private GridPane squares;
 
@@ -83,26 +81,26 @@ public class DungeonController {
 
     @FXML
     public void initialize() {
+        // Obtaining images
         Image ground = new Image((new File("images/dirt_0_new.png")).toURI().toString());
-        
         potion = new Image((new File("images/bubbly.png")).toURI().toString());
         sword = new Image((new File("images/greatsword_1_new.png")).toURI().toString());
         bow = new Image((new File("images/bow.png")).toURI().toString());
         quest = new Image((new File("images/exit.png")).toURI().toString());
 
+        // Setting images
         potionImg.setImage(potion);
         swordImg.setImage(sword);
         bowImg.setImage(bow);
         questImg.setImage(quest);
-        
+
+        // Setting quests HUD
         questList.setText(getQuestsStr());
         questList.setShowDelay(Duration.millis(100));
-        // questList.setHideDelay(Duration.millis(200));
-
-        
         Tooltip.install(questImg, questList);
         ArrayList<IntegerProperty> uses = player.getInventoryStatus();
 
+        // Setting inventory HUD
         potionVal.textProperty().bind(uses.get(0).asString());
         swordVal.textProperty().bind(uses.get(1).asString());
         bowVal.textProperty().bind(uses.get(2).asString());
@@ -114,11 +112,10 @@ public class DungeonController {
             }
         }
 
+        // Adding rest of entities
         for (ImageView entity : initialEntities) {
             squares.getChildren().add(entity);
         }
-
-
     }
 
     /**
@@ -129,11 +126,19 @@ public class DungeonController {
     }
 
     @FXML
+    /**
+     * Handles main menu action
+     * @param event Click
+     */
     public void handleReturnPress(ActionEvent event) {
         mainMenu.start();
     }
 
     @FXML
+    /**
+     * Handles player movement
+     * @param event Player action key
+     */
     public void handleKeyPress(KeyEvent event) {
         switch (event.getCode()) {
             case UP:
@@ -188,39 +193,57 @@ public class DungeonController {
                 break;
             case R:
                 mainMenu.controllerRestart();
-            break;
+                break;
             default:
                 break;
         }
 
-        System.out.println("Next turn");
+        // Updating board state
         moveEnemies();
         checkPlayersStatus();
+        checkFinishedGame();
     }
 
+    /**
+     * Notifies the player 1 to go to the next turn
+     */
     private void nextTurnPlayer1() {
         if (dungeon.firstPlayerExists()) {
             player.nextTurn();
         }
     }
 
+    /**
+     * Notifies the player 2 to go to the next turn
+     */
     private void nextTurnPlayer2() {
         if (dungeon.secondPlayerExists()) {
             playerCoop.nextTurn();
         }
     }
 
+    /**
+     * Makes the enemies move
+     */
     private void moveEnemies() {
+        // For all enemies
         for (Enemy e : enemies) {
+            // Move
             e.move();
         }
     }
 
+    /**
+     * Used by the player to remove an enemy
+     * @param e Enemy to be removed
+     */
     public void killEnemy(Enemy e) {
-        System.out.println("Enemy attacked");
+        // Removing enemy
         enemies.remove(e);
         dungeon.removeEntity(e);
         e.attacked().set(false);
+
+        // Logging enemy death
         dungeon.logKill();
     }
 
@@ -229,11 +252,12 @@ public class DungeonController {
      * depending on what entities are in the same tile as the player
      */
     private void checkPlayersStatus() {
-        // Checks if a player is meant to be dead
-        // Obtaining player coordinates
+        // Obtaining players
         ArrayList<Player> players = dungeon.getPlayers();
 
+        // For all players
         for (Player p : players) {
+            // Check if they have been attacked
             for (Enemy e : new ArrayList<Enemy>(enemies)) {
                 if (e.getX() == p.getX() && e.getY() == p.getY()) {
                     if (e.readyToAttack()) {
@@ -251,23 +275,44 @@ public class DungeonController {
                 }
             }
         }
-        //squares.setFocusTraversable(true);
-        //squares.requestFocus();
     }
 
+    /**
+     * Checks if the level has been completed and if it is, goes back to the
+     * main menu
+     */
+    private void checkFinishedGame() {
+        if (dungeon.gameFinished()) {
+            mainMenu.start();
+        }
+    }
+
+    /**
+     * Sets the main menu
+     * @param menu Main menu to go back to
+     */
     public void setMenu(TitleScreen menu) {
         this.mainMenu = menu;
     }
 
+    /**
+     * Sets the log for the dungeon controller
+     * @param log Log of the game
+     */
     public void setLog(Log log) {
         dungeon.setLog(log);
     }
-    
+
+    /**
+     * Obtains the quests of the game
+     * @return Quests as a string
+     */
     private String getQuestsStr() {
         String questStr = "";
         for (Mission m : player.getQuests()) {
-            questStr = questStr+ m.descript() + "\n";
+            questStr = questStr + m.descript() + "\n";
         }
+
         return questStr;
     }
 }

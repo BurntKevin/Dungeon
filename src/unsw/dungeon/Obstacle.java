@@ -1,7 +1,8 @@
 package unsw.dungeon;
 
 /**
- * Used to generalise obstacles which the player and enemies cannot move through
+ * Used as a market interface for obstacles which the player and enemies cannot
+ * move through
  */
 public interface Obstacle {
     

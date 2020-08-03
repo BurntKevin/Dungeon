@@ -1,7 +1,3 @@
-/**
- * Currently not fully implemented
- */
-
 package unsw.dungeon;
 
 import javafx.beans.property.IntegerProperty;
@@ -11,8 +7,13 @@ import javafx.beans.property.SimpleIntegerProperty;
  * Allows the player to shoot long range
  */
 public class Bow extends Weapon {
-    
+    /**
+     * Uses left on the bow
+     */
     private IntegerProperty usesLeft;
+    /**
+     * Reference to the dungeon for checking of hits
+     */
     private Dungeon dungeon;
 
     /**
@@ -32,48 +33,48 @@ public class Bow extends Weapon {
     }
 
     /**
-     * Checks if a weapon is 
+     * Checks if a weapon is usable
+     * @return Weapon usability status
      */
     public boolean checkWeaponUsable() {
         // Checks if a weapon is usable
-        if (usesLeft.getValue() <= 0) {
-            return false;
-        }
-        return true;
+        return usesLeft.getValue() > 0;
     }
 
     /**
      * Update weapon to be used
      */
-    public boolean useWeapon() {
-        usesLeft.setValue(usesLeft.getValue()-1);
-
-        if (usesLeft.getValue() <= 0) {
-            return true;
-        }
-        return false;
+    public void useWeapon() {
+        // Reduce durability of weapon
+        usesLeft.setValue(usesLeft.getValue() - 1);
     }
 
+    /**
+     * Fires the bow
+     */
     public void fire(int x, int y, String direction) {
-        System.out.println("I want to shot " + direction);
+        // Checking if the bow can be used
         if (checkWeaponUsable()) {
             // Utilising weapon
             useWeapon();
 
-            System.out.println("I shot");
-
             // Firing shot
             boolean hit = false;
             do {
+                // Checking if the arrow hit a target
                 Enemy enemy = dungeon.getEnemy(x, y);
                 if (enemy != null) {
+                    // Arrow hit a target
+                    // Removing entity
                     dungeon.removeEntity(enemy);
                     enemy.attacked().set(false);
-                    System.out.print("Killed enemy with bow");
+
+                    // Logging that the arrow hit
                     hit = true;
                     break;
                 }
 
+                // Moving arrow to the next step
                 if (direction == "Up") {
                     y -= 1;
                 } else if (direction == "Down") {
@@ -83,15 +84,20 @@ public class Bow extends Weapon {
                 } else if (direction == "Right") {
                     x += 1;
                 }
-                System.out.println(x + " " + y);
             } while (dungeon.validArrowLocation(x, y));
 
+            // Logging the arrows activity
             dungeon.logRangedAttack(hit);
         } else {
+            // Logging the mistakes of the player
             dungeon.logDryFireRanged();
         }
     }
-    
+
+    /**
+     * Obtains the uses of the bow
+     * @return Uses of the bow
+     */
     public IntegerProperty getUsesProperty() {
         return usesLeft;
     }

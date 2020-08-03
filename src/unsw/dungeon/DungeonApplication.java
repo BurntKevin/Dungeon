@@ -8,16 +8,20 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * Used to launch the dungeon game
+ */
 public class DungeonApplication extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-
         TitleScreen titleScreen = new TitleScreen(primaryStage);
 
+        // Creating log
         Log gameLog = new Log();
         titleScreen.setControllerLog(gameLog);
 
+        // Creating dungeon screen
         DungeonScreen testLevel = new DungeonScreen(primaryStage, gameLog, titleScreen);
         titleScreen.setControllerLevel(testLevel);
 
@@ -25,6 +29,7 @@ public class DungeonApplication extends Application {
         LogScreen logScreen = new LogScreen(primaryStage, titleScreen, gameLog);
         titleScreen.setControllerStats(logScreen);
 
+        // Starting game
         titleScreen.start();
     }
 

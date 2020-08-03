@@ -52,7 +52,6 @@ public class TowardsPlayerMovement implements MovementType {
             // Check if it is a possible location to be at
             if (dungeon.validEnemyTile(x + p[0], y + p[1])) {
                 int steps = stepsToPlayer(x + p[0], y + p[1]);
-                System.out.println(steps);
                 if (steps > furthest) {
                     bestEscape = p;
                     furthest = steps;
@@ -63,6 +62,13 @@ public class TowardsPlayerMovement implements MovementType {
         return bestEscape;
     }
 
+    /**
+     * Calculates the number of steps required to move to the player's current
+     * position
+     * @param x Starting x coordinate
+     * @param y Starting y coordinate
+     * @return Number of steps to player
+     */
     public int stepsToPlayer(int x, int y) {
         // Setting up board
         Entity[][] boardStatus = dungeon.getBoard();
@@ -78,6 +84,7 @@ public class TowardsPlayerMovement implements MovementType {
             queue.add(new int[] {p2[0], p2[1], 0, 0});
         }
 
+        // While it is still possible to find the player
         while (queue.size() != 0) {
             int[] node = queue.remove(0);
 
@@ -91,6 +98,7 @@ public class TowardsPlayerMovement implements MovementType {
                 continue;
             }
 
+            // Checking if the player has been found
             if (node[0] == x && node[1] == y) {
                 return node[2];
             }
@@ -105,6 +113,7 @@ public class TowardsPlayerMovement implements MovementType {
             boardStatus[node[0]][node[1]] = new Wall(node[0], node[1]);
         }
 
+        // Could not find a way to meet player
         return -1;
     }
     

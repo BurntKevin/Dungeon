@@ -3,8 +3,6 @@ package unsw.dungeon;
 import java.util.ArrayList;
 
 import javafx.beans.property.FloatProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.Property;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -40,7 +38,7 @@ public class LogController {
     public void initialize() {
         
         ArrayList<FloatProperty> values = currLog.trackedProperties();
-        for (int i=0; i<6; i++) {
+        for (int i = 0; i < 6; i++) {
             statValues[i] = new Label();
             statValues[i].textProperty().bind(values.get(i).asString());
             logGrid.add(statValues[i], 2, i);

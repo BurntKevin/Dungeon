@@ -20,7 +20,6 @@ public class Log {
     private FloatProperty nEnemiesKilled;
     private FloatProperty nPotionsConsumed;
     private FloatProperty nStepsTaken;
-    // private int nTeleports;
     private FloatProperty nBowShotsHit;
     private FloatProperty nBowShotsMissed;
     private FloatProperty nBowShotsDryFire;
@@ -39,7 +38,6 @@ public class Log {
         nEnemiesKilled = new SimpleFloatProperty(0);
         nPotionsConsumed = new SimpleFloatProperty(0);
         nStepsTaken = new SimpleFloatProperty(0);
-        // nTeleports = 0;
         nTotalBowShots = new SimpleFloatProperty();
         bowAccuracy = new SimpleFloatProperty(0);
         nBowShotsHit = new SimpleFloatProperty(0);
@@ -101,20 +99,12 @@ public class Log {
         Item nextItem = item.getItemFromPickUp();
         if (nextItem instanceof Treasure) {
             incrementFloatProperty(nTreasureObtained);
-        } 
-        else if (nextItem instanceof Sword) {
+        } else if (nextItem instanceof Sword) {
             incrementFloatProperty(nSwordsUsed);
-        }
-        else if (nextItem instanceof Bow) {
+        } else if (nextItem instanceof Bow) {
             incrementFloatProperty(nBowsUsed);
-        }
-        else if (nextItem instanceof Potion) {
+        } else if (nextItem instanceof Potion) {
             incrementFloatProperty(nPotionsConsumed);
-        } 
-        else {
-            System.out.println("Got a new item");
-
-
         }
     }
 
@@ -142,15 +132,26 @@ public class Log {
         return nPotionsConsumed.getValue();
     }
 
+    /**
+     * Increments the times the player dry fired their bow
+     */
     public void logDryFireRanged() {
         incrementFloatProperty(nBowShotsDryFire);
     }
 
+    /**
+     * Increments a float property
+     */
     private void incrementFloatProperty(FloatProperty toUpd) {
-        toUpd.setValue(toUpd.getValue()+1);
+        toUpd.setValue(toUpd.getValue() + 1);
     }
 
+    /**
+     * Obtains all tracked items
+     * @return All tracked items
+     */
     public ArrayList<FloatProperty> trackedProperties() {
+        // Obtaining all tracked items
         ArrayList<FloatProperty> properties = new ArrayList<>();
         properties.add(nStepsTaken);
         properties.add(nDeaths);
@@ -158,33 +159,55 @@ public class Log {
         properties.add(nTreasureObtained);
         properties.add(nTotalBowShots);
         properties.add(bowAccuracy);
+
         return properties;
     }
 
+    /**
+     * Increments number of steps taken by players
+     */
     public void logStep() {
         incrementFloatProperty(nStepsTaken);
     }
 
+    /**
+     * Increments number of deaths taken by players
+     */
     public void logDeath() {
         incrementFloatProperty(nDeaths);
     }
 
+    /**
+     * Increments number of kills by players
+     */
     public void logKill() {
         incrementFloatProperty(nEnemiesKilled);
     }
 
+    /**
+     * Increments number of swords used by players
+     */
     public void logSword() {
         incrementFloatProperty(nSwordsUsed);
     }
 
+    /**
+     * Increments number of bows used by players
+     */
     public void logBow() {
         incrementFloatProperty(nBowsUsed);
     }
 
+    /**
+     * Increments number of potions used by players
+     */
     public void logPotion() {
         incrementFloatProperty(nPotionsConsumed);
     }
 
+    /**
+     * Increments number of bow shots by players
+     */
     public void logBowShot() {
         incrementFloatProperty(nTotalBowShots);
         updAccuracy();

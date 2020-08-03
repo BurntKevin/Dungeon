@@ -14,10 +14,18 @@ public class EnemyQuest implements Mission {
         this.dungeon = dungeon;
     }
 
+    /**
+     * Checks if the quest is complete
+     * @return Quest completion status
+     */
     public Boolean complete() {
         return dungeon.enemiesRemaining() == 0;
     }
 
+    /**
+     * Turns the quest into a string
+     * @return Quest as text
+     */
     public String descript() {
         return "Defeat all enemies";
     }

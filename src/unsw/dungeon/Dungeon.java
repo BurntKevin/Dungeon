@@ -1,6 +1,7 @@
 package unsw.dungeon;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import javafx.beans.property.IntegerProperty;
@@ -15,7 +16,6 @@ import javafx.beans.property.IntegerProperty;
  *
  */
 public class Dungeon {
-
     private int width, height;
     private List<Entity> entities;
     private Player player;
@@ -60,6 +60,10 @@ public class Dungeon {
         return player;
     }
 
+    /**
+     * Obtains the second player of the dungeon
+     * @return
+     */
     public Player getPlayerCoop() {
         return playerCoop;
     }
@@ -74,7 +78,7 @@ public class Dungeon {
 
     /**
      * Sets the new coop player of the dungeon
-     * @param player Player (Player)
+     * @param player Second player (Player)
      */
     public void setPlayerCoop(Player player) {
         this.playerCoop = player;
@@ -94,7 +98,6 @@ public class Dungeon {
      */
     public void removeEntity(Entity entity) {
         // Todo - Remove from front end interface
-        System.out.println("Removing entity");
         entities.remove(entity);
     }
 
@@ -185,7 +188,6 @@ public class Dungeon {
     public int[] getPlayerCoordinates() {
         // First player does not exist
         if (!player.isAlive()) {
-            System.out.println("Player1 died");
             return new int[] {-1, -1};
         }
 
@@ -211,6 +213,11 @@ public class Dungeon {
         return coordinates;
     }
 
+    /**
+     * Obtains all the players in the game currently which are still alive
+     * and applicable
+     * @return Alive players
+     */
     public ArrayList<Player> getPlayers() {
         ArrayList<Player> players = new ArrayList<Player>();
         if (firstPlayerExists()) {
@@ -223,28 +230,51 @@ public class Dungeon {
         return players;
     }
 
+    /**
+     * Checks if the first player is still playable
+     * @return Player one status
+     */
     public boolean firstPlayerExists() {
         return player != null && player.isAlive();
     }
 
+    /**
+     * Checks if the second player is still playable
+     * @return Player two status
+     */
     public boolean secondPlayerExists() {
         return playerCoop != null && playerCoop.isAlive();
     }
 
+    /**
+     * Obtains all applicable player's coordinates
+     * @return
+     */
     public ArrayList<int[]> getPlayersCoordinates() {
         // Obtaining player coordinates
         int[] playerOne = getPlayerCoordinates();
         int[] playerTwo = getPlayerCoopCoordinates();
 
+        // Obtaining player one's coordinates
         ArrayList<int[]> players = new ArrayList<int[]>();
-        players.add(playerOne);
-        if (!playerTwo.equals(new int[] {-1, -1})) {
+        if (firstPlayerExists()) {
+            players.add(playerOne);
+        }
+
+        // Obtaining player two's coordinates if applicable
+        if (secondPlayerExists()) {
             players.add(playerTwo);
         }
 
         return players;
     }
 
+    /**
+     * Checks if a point is inside the dungeon
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @return Whether the point is in the dungeon
+     */
     public boolean inDungeon(int x, int y) {
         return 0 <= x && x < getWidth() && 0 <= y && y < getHeight();
     }
@@ -256,6 +286,7 @@ public class Dungeon {
      * @return Positions moveable: [moveLeft, moveRight, moveUp, moveDown]
      */
     public Boolean[] validAdjacentMoves(int x, int y) {
+        // Starting location
         Boolean[] result = {x - 1 >= 0, x + 1 < width, y - 1 >= 0, y + 1 < height};
 
         // Checking all entities
@@ -378,7 +409,7 @@ public class Dungeon {
 
     /**
      * Checks if all switches are activated
-     * @return
+     * @return Whether the switches are active or not
      */
     public Boolean allSwitchesActivated() {
         // Obtaining required data
@@ -395,6 +426,7 @@ public class Dungeon {
                     break;
                 }
             }
+
             // No match
             if (foundMatch != true) {
                 return false;
@@ -406,14 +438,15 @@ public class Dungeon {
 
     /**
      * Obtaining all switches
-     * @return
+     * @return All switches in dungeon
      */
     public ArrayList<Switch> getSwitches() {
         // Initalising switches array
         ArrayList<Switch> switches = new ArrayList<Switch>();
 
-        // Checking all entities of switches
+        // Checking all entities in dungeon
         for (Entity e : entities) {
+            // Adding all switches
             if (e instanceof Switch) {
                 switches.add((Switch) e);
             }
@@ -432,10 +465,12 @@ public class Dungeon {
 
         // Checks all entities for boulders
         for (Entity e : entities) {
+            // Adding boulders
             if (e instanceof Boulder) {
                 boulders.add((Boulder) e);
             }
         }
+
         return boulders;
     }
 
@@ -461,7 +496,7 @@ public class Dungeon {
      * @return Exit (Exit)
      */
     public Exit getExit() {
-        // Check all entities for enemies alive
+        // Check all entities for the exit
         for (Entity e : entities) {
             if (e instanceof Exit) {
                 return (Exit) e;
@@ -471,42 +506,73 @@ public class Dungeon {
         return null;
     }
 
+    /**
+     * Increments the time the player dry fired
+     */
     public void logDryFireRanged() {
         log.logDryFireRanged();
     }
 
+    /**
+     * Increments the number of steps the player took
+     */
     public void logStep() {
         log.logStep();
     }
 
+    /**
+     * Increments the number of deaths the player had
+     */
     public void logDeath() {
         log.logDeath();
     }
 
+    /**
+     * Increments the number of kills the player had
+     */
     public void logKill() {
         log.logKill();
     }
 
+    /**
+     * Increments the number of swords the player picked up
+     */
     public void logSword() {
         log.logSword();
     }
 
+    /**
+     * Increments the number of bows the player picked up
+     */
     public void logBow() {
         log.logBow();
     }
 
+    /**
+     * Increments the number of potions the player used
+     */
     public void logPotion() {
         log.logPotion();
     }
 
+    /**
+     * Increments the number of bow shots the player used
+     */
     public void logBowShot() {
         log.logBow();
     }
 
+    /**
+     * Adjusts the player's accuracy of hitting and missing
+     * @param hit Whether the arrow hit a target
+     */
     public void logRangedAttack(Boolean hit) {
         log.logRangedAtk(hit);
     }
 
+    /**
+     * Checks if an arrow can be placed in the tile
+     */
     public boolean validArrowLocation(int x, int y) {
         for (Entity e : entities) {
             if (e.getX() == x && e.getY() == y && ! (e instanceof Enemy)) {
@@ -516,28 +582,98 @@ public class Dungeon {
         return true;
     }
 
+    /**
+     * Obtains an enemy from the corresponding tile
+     * @param x x coordinate
+     * @param y y coordiante
+     * @return Enemy at the location
+     */
     public Enemy getEnemy(int x, int y) {
+        // For all entities
         for (Entity e : entities) {
+            // If an enemy is fount at the same coordinates
             if (e.getX() == x && e.getY() == y && e instanceof Enemy) {
+                // Return enemy
                 return (Enemy) e;
             }
         }
+
+        // Could not find enemy
         return null;
     }
 
+    /**
+     * Sets the dungeon's log
+     * @param log Log of the player's progress
+     */
     public void setLog(Log log) {
         this.log = log;
     }
 
+    /**
+     * Obtains the player's inventory
+     * @return Player's inventory
+     */
     public ArrayList<IntegerProperty> getPlayerInventory() {
         return player.getInventoryStatus();
     }
-    
-    public void highlightDoors(int Id) {
+
+    /**
+     * Checks whether a game has been completed
+     * @return Finished status
+     */
+    public boolean gameFinished() {
+        return getPlayers().size() == 0 || exitReached();
+    }
+
+    /**
+     * Checks whether the exit has been reached
+     * @return Player reaached exit boolean
+     */
+    public boolean exitReached() {
+        // Creating player and exit locations
+        HashSet<String> players = new HashSet<String>();
+        HashSet<String> exit = new HashSet<String>();
+
+        // For all entities
         for (Entity e : entities) {
+            if (e instanceof Player) {
+                // Checking if player corresponding to an exit
+                if (exit.contains(e.getX() + " " + e.getY())) {
+                    return true;
+                }
+
+                // Add player location
+                players.add(e.getX() + " " + e.getY());
+            } else if (e instanceof Exit) {
+                // Checking if exit corresponds to a player
+                if (players.contains(e.getX() + " " + e.getY())) {
+                    return true;
+                }
+
+                // Adding exit location
+                exit.add(e.getX() + " " + e.getY());
+            }
+        }
+
+        // Player has not finished the game
+        return false;
+    }
+
+    /**
+     * Used as a way to highlight the doors of a corresponding key
+     * @param Id Key id of door
+     */
+    public void highlightDoors(int Id) {
+        // For all entities
+        for (Entity e : entities) {
+            // If it is a door
             if (e instanceof Door) {
                 Door door = (Door) e;
+
+                // Check if the key works with the door
                 if (door.getKeyId() == Id) {
+                    // Highlight door for player
                     door.highlight().set(true);
                 }
             }

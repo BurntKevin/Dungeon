@@ -39,6 +39,7 @@ public class Door extends Entity {
             doorOpened().set(false);
             return true;
         }
+
         // Key does not match door
         return false;
     }
@@ -58,10 +59,19 @@ public class Door extends Entity {
         return !locked;
     }
 
+    /**
+     * Obtains the door's corresponding key id
+     * @return Key id
+     */
     public int getKeyId() {
         return keyID;
     }
 
+    /**
+     * Used to highlight the door once a player picks up its corresponding
+     * key for ease of use
+     * @return
+     */
     public BooleanProperty highlight() {
         return highlight;
     }
