@@ -121,6 +121,13 @@ public class DungeonController {
 
     }
 
+    /**
+     * Called on death or level completion to return to menu
+     */
+    public void gameEnd() {
+        mainMenu.start();
+    }
+
     @FXML
     public void handleReturnPress(ActionEvent event) {
         mainMenu.start();
