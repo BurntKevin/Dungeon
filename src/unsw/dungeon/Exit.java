@@ -16,6 +16,7 @@ public class Exit extends Entity {
     public Exit(int x, int y) {
         super(x, y);
         quests = new ArrayList<Mission>();
+        quests.add(AllQuests.getInstance());
     }
 
     /**

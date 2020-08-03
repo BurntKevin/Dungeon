@@ -40,6 +40,9 @@ public abstract class DungeonLoader {
 
         Dungeon dungeon = new Dungeon(width, height);
 
+        JSONObject jsonGoalCondition = this.json.getJSONObject("goal-condition");
+        createAllQuests(dungeon, jsonGoalCondition);
+
         // Creating entities
         JSONArray jsonEntities = json.getJSONArray("entities");
         for (int i = 0; i < jsonEntities.length(); i++) {
@@ -57,17 +60,15 @@ public abstract class DungeonLoader {
         Entity entity = null;
         switch (type) {
             case "player":
-                JSONObject jsonGoalConditionP1 = this.json.getJSONObject("goal-condition");
-                ArrayList<Mission> missionsP1 = createAllQuests(dungeon, jsonGoalConditionP1);
-                Player player = new Player(dungeon, missionsP1, x, y);
+                AllQuests quest1 = AllQuests.getInstance();
+                Player player = new Player(dungeon, quest1.getQuests(), x, y);
                 dungeon.setPlayer(player);
                 onLoad(player);
                 entity = player;
                 break;
             case "player_coop":
-                JSONObject jsonGoalConditionP2 = this.json.getJSONObject("goal-condition");
-                ArrayList<Mission> missionsP2 = createAllQuests(dungeon, jsonGoalConditionP2);
-                Player playerCoop = new Player(dungeon, missionsP2, x, y);
+                AllQuests quest2 = AllQuests.getInstance();
+                Player playerCoop = new Player(dungeon, quest2.getQuests(), x, y);
                 dungeon.setPlayerCoop(playerCoop);
                 onLoad(playerCoop);
                 entity = playerCoop;
@@ -149,15 +150,12 @@ public abstract class DungeonLoader {
                 Exit exit = new Exit(x, y);
                 onLoad(exit);
                 entity = exit;
-                JSONObject jsonGoalCondition = this.json.getJSONObject("goal-condition");
-                ArrayList<Mission> missions = createAllQuests(dungeon, jsonGoalCondition);
-                exit.addMission(missions);
                 break;
         }
         dungeon.addEntity(entity);
     }
 
-    private ArrayList<Mission> createAllQuests(Dungeon dungeon, JSONObject jsonGoalCondition) {
+    private void createAllQuests(Dungeon dungeon, JSONObject jsonGoalCondition) {
         // Finding type of quest
         String jsonGoal = jsonGoalCondition.getString("goal");
 
@@ -193,7 +191,7 @@ public abstract class DungeonLoader {
                 break;
         }
 
-        return missions;
+        AllQuests.createInstance(missions);
     }
 
     private Mission createQuest(String goal, Dungeon dungeon) {
