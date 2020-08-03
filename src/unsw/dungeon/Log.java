@@ -75,7 +75,7 @@ public class Log {
     }
 
     public void updRangedAtks() {
-        nTotalBowShots.setValue(nBowShotsHit.getValue()+nBowShotsMissed.getValue());
+        nTotalBowShots.setValue(nBowShotsHit.getValue() + nBowShotsMissed.getValue());
     }
 
     /**
@@ -159,6 +159,34 @@ public class Log {
         properties.add(nTotalBowShots);
         properties.add(bowAccuracy);
         return properties;
+    }
 
+    public void logStep() {
+        incrementFloatProperty(nStepsTaken);
+    }
+
+    public void logDeath() {
+        incrementFloatProperty(nDeaths);
+    }
+
+    public void logKill() {
+        incrementFloatProperty(nEnemiesKilled);
+    }
+
+    public void logSword() {
+        incrementFloatProperty(nSwordsUsed);
+    }
+
+    public void logBow() {
+        incrementFloatProperty(nBowsUsed);
+    }
+
+    public void logPotion() {
+        incrementFloatProperty(nPotionsConsumed);
+    }
+
+    public void logBowShot() {
+        incrementFloatProperty(nTotalBowShots);
+        updAccuracy();
     }
 }
