@@ -4,18 +4,22 @@
 
 package unsw.dungeon;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+
 /**
  * Allows the player to shoot long range
  */
 public class Bow extends Weapon {
-    private int usesLeft;
+    
+    private IntegerProperty usesLeft;
     private Dungeon dungeon;
 
     /**
      * Empty initaliser for a broken bow
      */
     public Bow(Dungeon dungeon) {
-        usesLeft = 0;
+        usesLeft = new SimpleIntegerProperty(0);
         this.dungeon = dungeon;
     }
 
@@ -24,7 +28,7 @@ public class Bow extends Weapon {
      * Typically called when a new bow is picked up
      */
     public void addNewBow() {
-        usesLeft = 2;
+        usesLeft.setValue(2);
     }
 
     /**
@@ -32,7 +36,7 @@ public class Bow extends Weapon {
      */
     public boolean checkWeaponUsable() {
         // Checks if a weapon is usable
-        if (usesLeft <= 0) {
+        if (usesLeft.getValue() <= 0) {
             return false;
         }
         return true;
@@ -42,9 +46,9 @@ public class Bow extends Weapon {
      * Update weapon to be used
      */
     public boolean useWeapon() {
-        usesLeft--;
+        usesLeft.setValue(usesLeft.getValue()-1);
 
-        if (usesLeft <= 0) {
+        if (usesLeft.getValue() <= 0) {
             return true;
         }
         return false;
@@ -82,5 +86,9 @@ public class Bow extends Weapon {
         } else {
             dungeon.logDryFireRanged();
         }
+    }
+    
+    public IntegerProperty getUsesProperty() {
+        return usesLeft;
     }
 }

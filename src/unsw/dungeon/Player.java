@@ -1,6 +1,8 @@
 package unsw.dungeon;
 
-import javafx.beans.property.BooleanProperty;
+import java.util.ArrayList;
+
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
 /**
@@ -299,5 +301,13 @@ public class Player extends Entity {
 
     public SimpleBooleanProperty buffed() {
         return buff;
+    }
+
+    public ArrayList<IntegerProperty> getInventoryStatus() {
+        ArrayList<IntegerProperty> inven = new ArrayList<>();
+        inven.add(invStatus.getUsesProperty());
+        inven.add(melee.getUsesProperty());
+        inven.add(ranged.getUsesProperty());
+        return inven;
     }
 }

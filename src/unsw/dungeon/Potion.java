@@ -1,30 +1,35 @@
 package unsw.dungeon;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+
 /**
  * Potion for the user to use
  */
 public class Potion implements Item {
-    private int invTurnsLeft;
+    private IntegerProperty invTurnsLeft;
 
     /**
      * Initalises a potion
      */
     public Potion() { 
-        invTurnsLeft = 0;
+        invTurnsLeft = new SimpleIntegerProperty(0);
     }
 
     /**
      * Activating the potion
      */
     public void usePotion() {
-        invTurnsLeft = 10;
+        invTurnsLeft.setValue(10);
     }
 
     /**
      * Potion expiring
      */
     public void minusInvTimer() {
-        invTurnsLeft = invTurnsLeft - 1;
+        if (invTurnsLeft.getValue() > 0) {
+            invTurnsLeft.setValue(invTurnsLeft.getValue()-1);
+        }
     }
 
     /**
@@ -32,6 +37,10 @@ public class Potion implements Item {
      * @return Potion active (boolean)
      */
     public boolean checkPotionActive() {
-        return invTurnsLeft > 0;
+        return invTurnsLeft.getValue() > 0;
+    }
+
+    public IntegerProperty getUsesProperty() {
+        return invTurnsLeft;
     }
 }

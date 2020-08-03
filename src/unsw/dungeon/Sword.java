@@ -1,25 +1,28 @@
 package unsw.dungeon;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+
 /**
  * Checks if a Sword is in use
  */
 public class Sword extends Weapon {
-    private int usesLeft;
+    private IntegerProperty usesLeft;
     
     /**
      * Default: initialize sword with no uses, as player does not yet have
      * a usable weapon
      */
     public Sword() {
-        this.usesLeft = 0;
+        this.usesLeft = new SimpleIntegerProperty(0);
     }
 
     /**
      * Resets sword by adding two new uses
      */
     public void addNewSword() {
-        assert usesLeft == 0;
-        usesLeft = 5;
+        assert usesLeft.getValue() == 0;
+        usesLeft.setValue(5);
     }
 
     /**
@@ -30,7 +33,7 @@ public class Sword extends Weapon {
         // Attempting attack
         if (checkWeaponUsable()) {
             // Weapon can be used
-            usesLeft--;
+            usesLeft.setValue(usesLeft.getValue()-1);
             return true;
         }
         return false;
@@ -41,6 +44,10 @@ public class Sword extends Weapon {
      * @return boolean indicating whether another sword may be picked up
      */
     public boolean checkWeaponUsable() {
-        return usesLeft > 0;
+        return usesLeft.getValue() > 0;
+    }
+
+    public IntegerProperty getUsesProperty() {
+        return usesLeft;
     }
 }

@@ -3,9 +3,11 @@ package unsw.dungeon;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.beans.property.IntegerProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -36,6 +38,15 @@ public class DungeonController {
 
     @FXML
     private ImageView potionImg;
+
+    @FXML
+    private Label swordVal;
+
+    @FXML
+    private Label bowVal;
+
+    @FXML
+    private Label potionVal;
 
     // @FXML Pane gamePane;
 
@@ -76,6 +87,12 @@ public class DungeonController {
         swordImg.setImage(sword);
         bowImg.setImage(bow);
 
+        ArrayList<IntegerProperty> uses = player.getInventoryStatus();
+
+        potionVal.textProperty().bind(uses.get(0).asString());
+        swordVal.textProperty().bind(uses.get(1).asString());
+        bowVal.textProperty().bind(uses.get(2).asString());
+
         // Add the ground first so it is below all other entities
         for (int x = 0; x < dungeon.getWidth(); x++) {
             for (int y = 0; y < dungeon.getHeight(); y++) {
@@ -86,6 +103,8 @@ public class DungeonController {
         for (ImageView entity : initialEntities) {
             squares.getChildren().add(entity);
         }
+
+
     }
 
     @FXML
