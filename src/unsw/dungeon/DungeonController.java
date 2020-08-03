@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -26,9 +27,15 @@ public class DungeonController {
     private Image sword;
     private Image bow;
     private Image potion;
+    private Image quest;
+
+    private Tooltip questList = new Tooltip();
 
     @FXML
     private Button returnBtn;
+
+    @FXML
+    private ImageView questImg;
 
     @FXML
     private ImageView swordImg;
@@ -83,10 +90,15 @@ public class DungeonController {
         potion = new Image((new File("images/bubbly.png")).toURI().toString());
         sword = new Image((new File("images/greatsword_1_new.png")).toURI().toString());
         bow = new Image((new File("images/bow.png")).toURI().toString());
+        quest = new Image((new File("images/exit.png")).toURI().toString());
+
         potionImg.setImage(potion);
         swordImg.setImage(sword);
         bowImg.setImage(bow);
-
+        questImg.setImage(quest);
+        
+        questList.setText("Hello !!");
+        Tooltip.install(questImg, questList);
         ArrayList<IntegerProperty> uses = player.getInventoryStatus();
 
         potionVal.textProperty().bind(uses.get(0).asString());
@@ -165,6 +177,9 @@ public class DungeonController {
                     nextTurnPlayer1();
                 }
                 break;
+            case R:
+                mainMenu.controllerRestart();
+            break;
             default:
                 break;
         }
