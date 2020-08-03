@@ -2,11 +2,7 @@ package unsw.dungeon;
 
 import java.util.ArrayList;
 
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.FloatProperty;
-import javafx.beans.property.FloatProperty;
-import javafx.beans.property.Property;
-import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleFloatProperty;
 
 /**

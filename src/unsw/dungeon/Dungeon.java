@@ -1,7 +1,6 @@
 package unsw.dungeon;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import javafx.beans.property.IntegerProperty;
