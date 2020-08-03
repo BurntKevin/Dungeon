@@ -1,5 +1,7 @@
 package unsw.dungeon;
 
+import java.util.ArrayList;
+
 /**
  * Exit quest to complete the dungeon
  */
@@ -16,7 +18,16 @@ public class ExitQuest implements Mission {
 
     public Boolean complete() {
         Exit exit = dungeon.getExit();
-        Player player = dungeon.getPlayer();
-        return exit.getX() == player.getX() && exit.getY() == player.getY();
+        ArrayList<int[]> coordinates = dungeon.getPlayersCoordinates();
+
+        // Checking if a player has finished the game
+        for (int[] c : coordinates) {
+            if (c[0] == exit.getX() && c[1] == exit.getY()) {
+                return true;
+            }
+        }
+
+        // Mission not complete
+        return false;
     }
 }

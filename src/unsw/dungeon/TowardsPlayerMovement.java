@@ -66,12 +66,17 @@ public class TowardsPlayerMovement implements MovementType {
     public int stepsToPlayer(int x, int y) {
         // Setting up board
         Entity[][] boardStatus = dungeon.getBoard();
-        int[] playerCoordinates = dungeon.getPlayerCoordinates();
+        int[] p1 = dungeon.getPlayerCoordinates();
+        int[] p2 = dungeon.getPlayerCoopCoordinates();
 
-        // Finding best move towards player
+        // Setting up initial coordinates
         ArrayList<int[]> queue = new ArrayList<int[]>();
-        int[] source = {x, y, 0};
-        queue.add(source);
+        if (dungeon.firstPlayerExists()) {
+            queue.add(new int[] {p1[0], p1[1], 0, 0});
+        }
+        if (dungeon.secondPlayerExists()) {
+            queue.add(new int[] {p2[0], p2[1], 0, 0});
+        }
 
         while (queue.size() != 0) {
             int[] node = queue.remove(0);
@@ -86,9 +91,7 @@ public class TowardsPlayerMovement implements MovementType {
                 continue;
             }
 
-
-            // Checking if the player has been reached
-            if (node[0] == playerCoordinates[0] && node[1] == playerCoordinates[1]) {
+            if (node[0] == x && node[1] == y) {
                 return node[2];
             }
 
@@ -106,7 +109,8 @@ public class TowardsPlayerMovement implements MovementType {
     }
     
     /**
-     * Moves towards the place
+     * Moves towards the person using the best possible move to the closest
+     * player
      * @param x x-coordinate
      * @param y y-coordinate
      * @return An array where the enemy should shift [x, y]
@@ -114,13 +118,17 @@ public class TowardsPlayerMovement implements MovementType {
     private int[] towardsPlayer(int x, int y) {
         // Setting up board
         Entity[][] boardStatus = dungeon.getBoard();
-        int[] playerCoordinates = dungeon.getPlayerCoordinates();
+        int[] p1 = dungeon.getPlayerCoordinates();
+        int[] p2 = dungeon.getPlayerCoopCoordinates();
 
-        // Finding best move towards player
-        // Finds first best move rather than randomly choose
+        // Setting up initial coordinates
         ArrayList<int[]> queue = new ArrayList<int[]>();
-        int[] source = {playerCoordinates[0], playerCoordinates[1], 0, 0};
-        queue.add(source);
+        if (dungeon.firstPlayerExists()) {
+            queue.add(new int[] {p1[0], p1[1], 0, 0});
+        }
+        if (dungeon.secondPlayerExists()) {
+            queue.add(new int[] {p2[0], p2[1], 0, 0});
+        }
 
         // Calculating best move
         int[] move = {0, 0};
@@ -137,11 +145,13 @@ public class TowardsPlayerMovement implements MovementType {
                 continue;
             }
 
-            // Checking if destination found
-            if (node[0] == x && node[1] == y && dungeon.validEnemyTile(x + node[2], y + node[3])) {
-                move[0] = node[2];
-                move[1] = node[3];
-                break;
+            // Checking if the tile can be moved into by the enemy
+            if (dungeon.validEnemyTile(x + node[2], y + node[3])) {
+                if (node[0] == x && node[1] == y) {
+                    move[0] = node[2];
+                    move[1] = node[3];
+                    break;
+                }
             }
 
             // Finding next set of possible moves

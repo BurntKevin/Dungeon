@@ -113,6 +113,10 @@ public class Player extends Entity {
         }
     }
 
+    public boolean isAlive() {
+        return alive;
+    }
+
     /**
      * Player move down action
      */
@@ -207,6 +211,8 @@ public class Player extends Entity {
      * @return boolean whether player's counteratk was successful (false indicates game over)
      */
     public boolean attacked() {
+        System.out.println("Player got attacked");
+
         // Has a potion
         if (invStatus.checkPotionActive()) {
             return true;
@@ -217,6 +223,7 @@ public class Player extends Entity {
         }
 
         // Updating status of player as they died
+        System.out.println("KIA Player");
         death().set(false);
         alive = false;
 

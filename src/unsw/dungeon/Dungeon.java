@@ -17,6 +17,7 @@ public class Dungeon {
     private int width, height;
     private List<Entity> entities;
     private Player player;
+    private Player playerCoop;
     private Log log;
 
     /**
@@ -29,6 +30,7 @@ public class Dungeon {
         this.height = height;
         this.entities = new ArrayList<Entity>();
         this.player = null;
+        this.playerCoop = null;
         this.log = new Log();
     }
 
@@ -56,12 +58,24 @@ public class Dungeon {
         return player;
     }
 
+    public Player getPlayerCoop() {
+        return playerCoop;
+    }
+
     /**
      * Sets the new player of the dungeon
      * @param player Player (Player)
      */
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    /**
+     * Sets the new coop player of the dungeon
+     * @param player Player (Player)
+     */
+    public void setPlayerCoop(Player player) {
+        this.playerCoop = player;
     }
 
     /**
@@ -167,10 +181,66 @@ public class Dungeon {
      * @return Coordinates ({x, y})
      */
     public int[] getPlayerCoordinates() {
+        // First player does not exist
+        if (!player.isAlive()) {
+            System.out.println("Player1 died");
+            return new int[] {-1, -1};
+        }
+
         // Obtaining player's coordinates
         int[] coordinates = {player.getX(), player.getY()};
 
         return coordinates;
+    }
+
+    /**
+     * Obtains the player's coordinates in a length 2 array
+     * @return Coordinates ({x, y})
+     */
+    public int[] getPlayerCoopCoordinates() {
+        // Second player does not exist
+        if (playerCoop == null || !playerCoop.isAlive()) {
+            return new int[] {-1, -1};
+        }
+
+        // Obtaining player's coordinates
+        int[] coordinates = {playerCoop.getX(), playerCoop.getY()};
+
+        return coordinates;
+    }
+
+    public ArrayList<Player> getPlayers() {
+        ArrayList<Player> players = new ArrayList<Player>();
+        if (firstPlayerExists()) {
+            players.add(getPlayer());
+        }
+        if (secondPlayerExists()) {
+            players.add(getPlayerCoop());
+        }
+
+        return players;
+    }
+
+    public boolean firstPlayerExists() {
+        return player != null && player.isAlive();
+    }
+
+    public boolean secondPlayerExists() {
+        return playerCoop != null && playerCoop.isAlive();
+    }
+
+    public ArrayList<int[]> getPlayersCoordinates() {
+        // Obtaining player coordinates
+        int[] playerOne = getPlayerCoordinates();
+        int[] playerTwo = getPlayerCoopCoordinates();
+
+        ArrayList<int[]> players = new ArrayList<int[]>();
+        players.add(playerOne);
+        if (!playerTwo.equals(new int[] {-1, -1})) {
+            players.add(playerTwo);
+        }
+
+        return players;
     }
 
     public boolean inDungeon(int x, int y) {
@@ -263,7 +333,7 @@ public class Dungeon {
      * @return Player affected by potion
      */
     public Boolean buffedPlayer() {
-        return player.isInvincible();
+        return player.isInvincible() || (secondPlayerExists() && playerCoop.isInvincible());
     }
 
     /**
