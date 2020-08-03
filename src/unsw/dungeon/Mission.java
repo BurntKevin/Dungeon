@@ -9,4 +9,6 @@ public interface Mission {
      * @return Complete status of mission (Boolean)
      */
     public Boolean complete();
+
+    public String descript();
 }

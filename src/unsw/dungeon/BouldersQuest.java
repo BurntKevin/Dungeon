@@ -17,4 +17,8 @@ public class BouldersQuest implements Mission {
     public Boolean complete() {
         return dungeon.allSwitchesActivated();
     }
+    
+    public String descript() {
+        return "Activate all switches";
+    }
 }

@@ -30,4 +30,8 @@ public class ExitQuest implements Mission {
         // Mission not complete
         return false;
     }
+
+    public String descript() {
+        return "Reach the exit";
+    }
 }
