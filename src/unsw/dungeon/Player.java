@@ -49,9 +49,6 @@ public class Player extends Entity {
         // Get next tile
         Entity nextTile = dungeon.getItem(getX() + x, getY() + y);
 
-        // Setting player status
-        invStatus.minusInvTimer();
-
         // Moving player
         if (nextTile instanceof Door) {
             if (enterDoor((Door) nextTile)) {
@@ -100,9 +97,18 @@ public class Player extends Entity {
 
         // Updating player status
         facingDir = direction;
+        nextTurn();
+
+        // Updating log information
+        dungeon.logStep();
+    }
+
+    public void nextTurn() {
         if (!invStatus.checkPotionActive()) {
             buff.set(false);
         }
+        // Setting player status
+        invStatus.minusInvTimer();
     }
 
     /**
@@ -226,6 +232,7 @@ public class Player extends Entity {
 
         // Updating status of player as they died
         System.out.println("KIA Player");
+        dungeon.logDeath();
         death().set(false);
         alive = false;
 
@@ -249,34 +256,33 @@ public class Player extends Entity {
                 dungeon.logItem(item);
                 dungeon.removeEntity(item);
                 item.confirmPickedUp().set(false);
+                dungeon.logSword();
             }
-        }
-        else if (curr instanceof Bow) {
+        } else if (curr instanceof Bow) {
             if (!ranged.checkWeaponUsable()) {
                 // Able to pick up a new weapon
                 ranged.addNewBow();
                 dungeon.logItem(item);
                 dungeon.removeEntity(item);
                 item.confirmPickedUp().set(false);
+                dungeon.logBow();
             }
-        }
-        else if (curr instanceof Potion) {
+        } else if (curr instanceof Potion) {
             if (!invStatus.checkPotionActive()) {
                 invStatus.usePotion();
                 dungeon.removeEntity(item);
                 item.confirmPickedUp().set(false);
                 buffed().set(true);
+                dungeon.logPotion();
                 System.out.println("Picked up potion");
             }
-        } 
-        else if (curr instanceof Key) {
+        } else if (curr instanceof Key) {
             if (!key.checkCarryingKey()) {
                 key.equipKey((Key) curr);
                 dungeon.removeEntity(item);
                 item.confirmPickedUp().set(false);
             }
-        }
-        else if (curr instanceof Treasure) {
+        } else if (curr instanceof Treasure) {
             dungeon.logItem(item);
             dungeon.removeEntity(item);
             item.confirmPickedUp().set(false);

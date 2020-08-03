@@ -129,42 +129,52 @@ public class DungeonController {
         switch (event.getCode()) {
             case UP:
                 player.moveUp();
+                nextTurnPlayer2();
                 break;
             case DOWN:
                 player.moveDown();
+                nextTurnPlayer2();
                 break;
             case LEFT:
                 player.moveLeft();
+                nextTurnPlayer2();
                 break;
             case RIGHT:
                 player.moveRight();
+                nextTurnPlayer2();
                 break;
             case M:
                 player.fireRanged();
+                nextTurnPlayer2();
                 break;
             case W:
                 if (playerCoop != null) {
                     playerCoop.moveUp();
+                    nextTurnPlayer1();
                 }
                 break;
             case A:
                 if (playerCoop != null) {
                     playerCoop.moveLeft();
+                    nextTurnPlayer1();
                 }
                 break;
             case S:
                 if (playerCoop != null) {
                     playerCoop.moveDown();
+                    nextTurnPlayer1();
                 }
                 break;
             case D:
                 if (playerCoop != null) {
                     playerCoop.moveRight();
+                    nextTurnPlayer1();
                 }
                 break;
             case F:
                 if (playerCoop != null) {
                     playerCoop.fireRanged();
+                    nextTurnPlayer1();
                 }
                 break;
             default:
@@ -174,6 +184,18 @@ public class DungeonController {
         System.out.println("Next turn");
         moveEnemies();
         checkPlayersStatus();
+    }
+
+    private void nextTurnPlayer1() {
+        if (dungeon.firstPlayerExists()) {
+            player.nextTurn();
+        }
+    }
+
+    private void nextTurnPlayer2() {
+        if (dungeon.secondPlayerExists()) {
+            playerCoop.nextTurn();
+        }
     }
 
     private void moveEnemies() {
@@ -187,6 +209,7 @@ public class DungeonController {
         enemies.remove(e);
         dungeon.removeEntity(e);
         e.attacked().set(false);
+        dungeon.logKill();
     }
 
     /**
@@ -201,8 +224,10 @@ public class DungeonController {
         for (Player p : players) {
             for (Enemy e : new ArrayList<Enemy>(enemies)) {
                 if (e.getX() == p.getX() && e.getY() == p.getY()) {
-                    if (e.readyToAttack() && p.attacked()) {
-                        killEnemy(e);
+                    if (e.readyToAttack()) {
+                        if (p.attacked()) {
+                            killEnemy(e);
+                        }
                     }
                 }
             }

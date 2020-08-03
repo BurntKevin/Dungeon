@@ -475,6 +475,38 @@ public class Dungeon {
         log.logDryFireRanged();
     }
 
+    public void logStep() {
+        log.logStep();
+    }
+
+    public void logDeath() {
+        log.logDeath();
+    }
+
+    public void logKill() {
+        log.logKill();
+    }
+
+    public void logSword() {
+        log.logSword();
+    }
+
+    public void logBow() {
+        log.logBow();
+    }
+
+    public void logPotion() {
+        log.logPotion();
+    }
+
+    public void logBowShot() {
+        log.logBow();
+    }
+
+    public void logRangedAttack(Boolean hit) {
+        log.logRangedAtk(hit);
+    }
+
     public boolean validArrowLocation(int x, int y) {
         for (Entity e : entities) {
             if (e.getX() == x && e.getY() == y && ! (e instanceof Enemy)) {
