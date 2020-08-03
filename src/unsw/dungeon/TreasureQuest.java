@@ -17,4 +17,8 @@ public class TreasureQuest implements Mission {
     public Boolean complete() {
         return dungeon.getTreasureLeft() == 0;
     }
+
+    public String descript() {
+        return "Collect all treasure";
+    }
 }

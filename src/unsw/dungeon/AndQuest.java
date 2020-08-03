@@ -42,4 +42,17 @@ public class AndQuest implements Mission {
         }
         return true;
     }
+
+    public String descript() {
+        String descriptStr = "";
+        for (Mission m : quests) {
+            if (descriptStr.equals("")) {
+                descriptStr = m.descript();
+            }
+            else {
+                descriptStr = descriptStr+" AND "+m.descript();
+            }
+        }
+        return descriptStr;
+    }
 }

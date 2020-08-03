@@ -97,7 +97,7 @@ public class DungeonController {
         bowImg.setImage(bow);
         questImg.setImage(quest);
         
-        questList.setText("Hello !!");
+        questList.setText(getQuestsStr());
         Tooltip.install(questImg, questList);
         ArrayList<IntegerProperty> uses = player.getInventoryStatus();
 
@@ -252,5 +252,14 @@ public class DungeonController {
 
     public void setLog(Log log) {
         dungeon.setLog(log);
+    }
+    
+    private String getQuestsStr() {
+        String questStr = "";
+        for (Mission m : player.getQuests()) {
+            questStr = questStr+ m.descript() + "\n";
+            System.out.println("quest found\n");
+        }
+        return questStr;
     }
 }

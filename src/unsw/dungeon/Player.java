@@ -319,4 +319,8 @@ public class Player extends Entity {
         inven.add(ranged.getUsesProperty());
         return inven;
     }
+
+    public ArrayList<Mission> getQuests() {
+        return quest;
+    }
 }

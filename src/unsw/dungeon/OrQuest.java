@@ -47,4 +47,17 @@ public class OrQuest implements Mission {
         // Did not find a mission which was complete
         return false;
     }
+
+    public String descript() {
+        String descriptStr = "";
+        for (Mission m : quests) {
+            if (descriptStr.equals("")) {
+                descriptStr = m.descript();
+            }
+            else {
+                descriptStr = descriptStr+" OR "+m.descript();
+            }
+        }
+        return descriptStr;
+    }
 }

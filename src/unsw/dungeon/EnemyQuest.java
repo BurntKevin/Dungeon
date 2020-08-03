@@ -17,4 +17,8 @@ public class EnemyQuest implements Mission {
     public Boolean complete() {
         return dungeon.enemiesRemaining() == 0;
     }
+
+    public String descript() {
+        return "Defeat all enemies";
+    }
 }
