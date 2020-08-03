@@ -73,4 +73,8 @@ public class TitleController {
     public void setLog(Log log) {
         this.log = log; 
     }
+
+    public void restartLevel() {
+        level.start(lvlChoiceBox.getSelectionModel().getSelectedItem(), log);
+    }
 }

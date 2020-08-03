@@ -48,4 +48,8 @@ public class TitleScreen {
         controller.setLog(log);
     }
 
+    public void controllerRestart() {
+        controller.restartLevel();
+    }
+
 }

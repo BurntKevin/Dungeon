@@ -177,6 +177,9 @@ public class DungeonController {
                     nextTurnPlayer1();
                 }
                 break;
+            case R:
+                mainMenu.controllerRestart();
+            break;
             default:
                 break;
         }
