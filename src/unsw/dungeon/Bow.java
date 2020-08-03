@@ -63,12 +63,14 @@ public class Bow extends Weapon {
             System.out.println("I shot");
 
             // Firing shot
-           do {
+            boolean hit = false;
+            do {
                 Enemy enemy = dungeon.getEnemy(x, y);
                 if (enemy != null) {
                     dungeon.removeEntity(enemy);
                     enemy.attacked().set(false);
                     System.out.print("Killed enemy with bow");
+                    hit = true;
                     break;
                 }
 
@@ -83,6 +85,8 @@ public class Bow extends Weapon {
                 }
                 System.out.println(x + " " + y);
             } while (dungeon.validArrowLocation(x, y));
+
+            dungeon.logRangedAttack(hit);
         } else {
             dungeon.logDryFireRanged();
         }
