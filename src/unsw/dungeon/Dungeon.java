@@ -631,33 +631,8 @@ public class Dungeon {
      * @return Player reaached exit boolean
      */
     public boolean exitReached() {
-        // Creating player and exit locations
-        HashSet<String> players = new HashSet<String>();
-        HashSet<String> exit = new HashSet<String>();
-
-        // For all entities
-        for (Entity e : entities) {
-            if (e instanceof Player) {
-                // Checking if player corresponding to an exit
-                if (exit.contains(e.getX() + " " + e.getY())) {
-                    return true;
-                }
-
-                // Add player location
-                players.add(e.getX() + " " + e.getY());
-            } else if (e instanceof Exit) {
-                // Checking if exit corresponds to a player
-                if (players.contains(e.getX() + " " + e.getY())) {
-                    return true;
-                }
-
-                // Adding exit location
-                exit.add(e.getX() + " " + e.getY());
-            }
-        }
-
-        // Player has not finished the game
-        return false;
+        Exit exit = getExit();
+        return exit.enter();
     }
 
     /**

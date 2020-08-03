@@ -189,6 +189,9 @@ public abstract class DungeonLoader {
                 }
                 missions.add(AndQuest);
                 break;
+            default:
+                String quest = jsonGoalCondition.getString("goal");
+                missions.add(createQuest(quest, dungeon));
         }
 
         AllQuests.createInstance(missions);
