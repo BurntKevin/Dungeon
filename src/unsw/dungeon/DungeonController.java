@@ -12,12 +12,10 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 
 import java.io.File;
-
+import javafx.util.Duration; 
 /**
  * A JavaFX controller for the dungeon.
  * @author Robert Clifton-Everest
@@ -98,6 +96,10 @@ public class DungeonController {
         questImg.setImage(quest);
         
         questList.setText(getQuestsStr());
+        questList.setShowDelay(Duration.millis(100));
+        // questList.setHideDelay(Duration.millis(200));
+
+        
         Tooltip.install(questImg, questList);
         ArrayList<IntegerProperty> uses = player.getInventoryStatus();
 
@@ -258,7 +260,6 @@ public class DungeonController {
         String questStr = "";
         for (Mission m : player.getQuests()) {
             questStr = questStr+ m.descript() + "\n";
-            System.out.println("quest found\n");
         }
         return questStr;
     }

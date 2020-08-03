@@ -63,6 +63,9 @@ public class DungeonScreen {
         if (choice.equals("Test")) {
             fname = "test";
         }
+        else if (choice.equals("Maze Challenge")) {
+            fname = "maze";
+        }
         else {
             fname = "level"+(choice.charAt(choice.length()-1));
         }
