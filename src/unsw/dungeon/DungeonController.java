@@ -258,7 +258,6 @@ public class DungeonController {
         String questStr = "";
         for (Mission m : player.getQuests()) {
             questStr = questStr+ m.descript() + "\n";
-            System.out.println("quest found\n");
         }
         return questStr;
     }
