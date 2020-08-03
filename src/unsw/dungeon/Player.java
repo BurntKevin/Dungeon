@@ -18,6 +18,7 @@ public class Player extends Entity {
     private SimpleBooleanProperty buff;
     private SimpleBooleanProperty view;
     private boolean alive;
+    private ArrayList<Mission> quest;
 
     /**
      * Create a player positioned in square (x,y)
@@ -25,7 +26,7 @@ public class Player extends Entity {
      * @param x x-coordinate
      * @param y y-coordinate
      */
-    public Player(Dungeon dungeon, int x, int y) {
+    public Player(Dungeon dungeon, ArrayList<Mission> quest, int x, int y) {
         super(x, y);
         this.dungeon = dungeon;
         this.melee = new Sword();
@@ -36,6 +37,7 @@ public class Player extends Entity {
         this.buff = new SimpleBooleanProperty(false);
         this.view = new SimpleBooleanProperty(true);
         this.alive = true;
+        this.quest = quest;
     }
 
     /**
@@ -281,6 +283,7 @@ public class Player extends Entity {
                 key.equipKey((Key) curr);
                 dungeon.removeEntity(item);
                 item.confirmPickedUp().set(false);
+                dungeon.highlightDoors(key.getKeyID());
             }
         } else if (curr instanceof Treasure) {
             dungeon.logItem(item);

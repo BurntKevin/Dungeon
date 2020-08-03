@@ -57,13 +57,17 @@ public abstract class DungeonLoader {
         Entity entity = null;
         switch (type) {
             case "player":
-                Player player = new Player(dungeon, x, y);
+                JSONObject jsonGoalConditionP1 = this.json.getJSONObject("goal-condition");
+                ArrayList<Mission> missionsP1 = createAllQuests(dungeon, jsonGoalConditionP1);
+                Player player = new Player(dungeon, missionsP1, x, y);
                 dungeon.setPlayer(player);
                 onLoad(player);
                 entity = player;
                 break;
             case "player_coop":
-                Player playerCoop = new Player(dungeon, x, y);
+                JSONObject jsonGoalConditionP2 = this.json.getJSONObject("goal-condition");
+                ArrayList<Mission> missionsP2 = createAllQuests(dungeon, jsonGoalConditionP2);
+                Player playerCoop = new Player(dungeon, missionsP2, x, y);
                 dungeon.setPlayerCoop(playerCoop);
                 onLoad(playerCoop);
                 entity = playerCoop;
@@ -145,43 +149,51 @@ public abstract class DungeonLoader {
                 Exit exit = new Exit(x, y);
                 onLoad(exit);
                 entity = exit;
-
-                // Creating quests
-                // Obtaining goal
                 JSONObject jsonGoalCondition = this.json.getJSONObject("goal-condition");
-                String jsonGoal = jsonGoalCondition.getString("goal");
-
-                // Simple quest of simply arriving to exit
-                Mission questExit = new ExitQuest(dungeon);
-                exit.addMission(questExit);
-
-                // Creating AND, OR goals
-                JSONArray jsonQuests = null;
-                switch (jsonGoal) {
-                    case "OR":
-                        jsonQuests = jsonGoalCondition.getJSONArray("subgoals");
-                        OrQuest OrQuest = new OrQuest(new ArrayList<Mission>());
-                        for (int i = 0; i < jsonQuests.length(); i++) {
-                            JSONObject jsonSpecificQuest = (JSONObject) jsonQuests.get(i);
-                            Mission additionalQuest = createQuest(jsonSpecificQuest.getString("goal"), dungeon);
-                            OrQuest.addQuest(additionalQuest);
-                        }
-                        exit.addMission(OrQuest);
-                        break;
-                    case "AND":
-                        jsonQuests = jsonGoalCondition.getJSONArray("subgoals");
-                        AndQuest AndQuest = new AndQuest(new ArrayList<Mission>());
-                        for (int i = 0; i < jsonQuests.length(); i++) {
-                            JSONObject jsonSpecificQuest = (JSONObject) jsonQuests.get(i);
-                            Mission additionalQuest = createQuest(jsonSpecificQuest.getString("goal"), dungeon);
-                            AndQuest.addQuest(additionalQuest);
-                        }
-                        exit.addMission(AndQuest);
-                        break;
-                }
+                ArrayList<Mission> missions = createAllQuests(dungeon, jsonGoalCondition);
+                exit.addMission(missions);
                 break;
         }
         dungeon.addEntity(entity);
+    }
+
+    private ArrayList<Mission> createAllQuests(Dungeon dungeon, JSONObject jsonGoalCondition) {
+        // Finding type of quest
+        String jsonGoal = jsonGoalCondition.getString("goal");
+
+        // Creating array of quests
+        ArrayList<Mission> missions = new ArrayList<Mission>();
+
+        // Simple quest of simply arriving to exit
+        Mission questExit = new ExitQuest(dungeon);
+        missions.add(questExit);
+
+        // Creating AND, OR goals
+        JSONArray jsonQuests = null;
+        switch (jsonGoal) {
+            case "OR":
+                jsonQuests = jsonGoalCondition.getJSONArray("subgoals");
+                OrQuest OrQuest = new OrQuest(new ArrayList<Mission>());
+                for (int i = 0; i < jsonQuests.length(); i++) {
+                    JSONObject jsonSpecificQuest = (JSONObject) jsonQuests.get(i);
+                    Mission additionalQuest = createQuest(jsonSpecificQuest.getString("goal"), dungeon);
+                    OrQuest.addQuest(additionalQuest);
+                }
+                missions.add(OrQuest);
+                break;
+            case "AND":
+                jsonQuests = jsonGoalCondition.getJSONArray("subgoals");
+                AndQuest AndQuest = new AndQuest(new ArrayList<Mission>());
+                for (int i = 0; i < jsonQuests.length(); i++) {
+                    JSONObject jsonSpecificQuest = (JSONObject) jsonQuests.get(i);
+                    Mission additionalQuest = createQuest(jsonSpecificQuest.getString("goal"), dungeon);
+                    AndQuest.addQuest(additionalQuest);
+                }
+                missions.add(AndQuest);
+                break;
+        }
+
+        return missions;
     }
 
     private Mission createQuest(String goal, Dungeon dungeon) {
