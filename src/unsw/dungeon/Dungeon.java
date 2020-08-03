@@ -496,4 +496,8 @@ public class Dungeon {
     public void setLog(Log log) {
         this.log = log;
     }
+
+    public ArrayList<IntegerProperty> getPlayerInventory() {
+        return player.getInventoryStatus();
+    }
 }
