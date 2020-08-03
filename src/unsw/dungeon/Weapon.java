@@ -6,14 +6,6 @@ package unsw.dungeon;
 public abstract class Weapon implements Item {
     private int usesLeft;
 
-    // /**
-    //  * Creates a weapon class
-    //  * @return
-    //  */
-    // public boolean Weapon(usesLeft) {
-    //     this.usesLeft = usesLeft;
-    // }
-
     /**
      * Used to attack
      * @return Success of attack
