@@ -1,5 +1,8 @@
 package unsw.dungeon;
 
+import java.util.ArrayList;
+
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
 /**
@@ -337,5 +340,9 @@ public class Player extends Entity {
      */
     public Sword getSword() {
         return melee;
+    }
+
+    public ArrayList<IntegerProperty> getInventory() {
+        return new ArrayList<>();
     }
 }
