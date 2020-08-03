@@ -25,12 +25,13 @@ public class DungeonControllerLoader extends DungeonLoader {
     
     // Images
     private Image playerImage;
+    private Image buffedPlayerImage;
     private Image wallImage;
     private Image gnomeImage;
     private Image treasureImage;
     private Image swordImage;
     private Image exitImage;
-    private Image lostGnomeImage;
+    private Image houndImage;
     private Image camoGnomeImage;
     private Image closedDoorImage;
     private Image openDoorImage;
@@ -45,12 +46,13 @@ public class DungeonControllerLoader extends DungeonLoader {
         super(filename);
         entities = new ArrayList<>();
         playerImage = new Image((new File("images/human_new.png")).toURI().toString());
+        buffedPlayerImage = new Image((new File("images/human_inv.png")).toURI().toString());
         wallImage = new Image((new File("images/brick_brown_0.png")).toURI().toString());
         treasureImage = new Image((new File("images/gold_pile.png")).toURI().toString());
         gnomeImage = new Image((new File("images/gnome.png")).toURI().toString());
         swordImage = new Image((new File("images/greatsword_1_new.png")).toURI().toString());
         exitImage = new Image((new File("images/exit.png")).toURI().toString());
-        lostGnomeImage = new Image((new File("images/lost_gnome.png")).toURI().toString());
+        houndImage = new Image((new File("images/hound.png")).toURI().toString());
         camoGnomeImage = new Image((new File("images/camo_gnome.png")).toURI().toString());
         closedDoorImage = new Image((new File("images/closed_door.png")).toURI().toString());
         openDoorImage = new Image((new File("images/open_door.png")).toURI().toString());
@@ -83,10 +85,10 @@ public class DungeonControllerLoader extends DungeonLoader {
     }
 
     @Override
-    public void onLoad(LostGnome lostGnome) {
-        ImageView view = new ImageView(lostGnomeImage);
-        addEntity(lostGnome, view);
-        trackEnemyStatus(lostGnome, view);
+    public void onLoad(Hound hound) {
+        ImageView view = new ImageView(houndImage);
+        addEntity(hound, view);
+        trackEnemyStatus(hound, view);
     }
     
     @Override
@@ -208,6 +210,24 @@ public class DungeonControllerLoader extends DungeonLoader {
             public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) {
                 System.out.println("Removing person from front end");
                 node.setVisible(false);
+            }
+        });
+        player.buffed().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean oldValue, Boolean newValue) {
+                System.out.println("Buffing player");
+                for (ImageView i : entities) {
+                    if (i == node) {
+                        if (newValue) {
+                            // Setting player under potion effect
+                            i.setImage(buffedPlayerImage);
+                        } else {
+                            // Setting player to normal status
+                            i.setImage(playerImage);
+                        }
+                        break;
+                    }
+                }
             }
         });
     }

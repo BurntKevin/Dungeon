@@ -19,6 +19,7 @@ public class Dungeon {
     private int width, height;
     private List<Entity> entities;
     private Player player;
+    private Player playerCoop;
     private Log log;
 
     /**
@@ -31,6 +32,7 @@ public class Dungeon {
         this.height = height;
         this.entities = new ArrayList<Entity>();
         this.player = null;
+        this.playerCoop = null;
         this.log = new Log();
     }
 
@@ -58,8 +60,8 @@ public class Dungeon {
         return player;
     }
 
-    public AraryList<IntegerProperties> getInventoryProperties() {
-        player.getInventory();
+    public Player getPlayerCoop() {
+        return playerCoop;
     }
 
     /**
@@ -68,6 +70,14 @@ public class Dungeon {
      */
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    /**
+     * Sets the new coop player of the dungeon
+     * @param player Player (Player)
+     */
+    public void setPlayerCoop(Player player) {
+        this.playerCoop = player;
     }
 
     /**
@@ -89,7 +99,7 @@ public class Dungeon {
     }
 
     /**
-     * Obtains an item from the map given its coordinates
+     * Obtains a potential interactable item from the map given its coordinates
      * @param x x-coordinate
      * @param y y-coordinate
      * @return Item on x, y
@@ -98,8 +108,8 @@ public class Dungeon {
         // Checking all items
         for (Entity entity : entities) {
             // Checking if the item matches the desired coordinates
-            if (entity.getX() == x && entity.getY() == y) {
-                // Found item
+            if (entity.getX() == x && entity.getY() == y && ! (entity instanceof Switch)) {
+                // Found item which can be interacted with
                 return entity;
             }
         }
@@ -173,10 +183,70 @@ public class Dungeon {
      * @return Coordinates ({x, y})
      */
     public int[] getPlayerCoordinates() {
+        // First player does not exist
+        if (!player.isAlive()) {
+            System.out.println("Player1 died");
+            return new int[] {-1, -1};
+        }
+
         // Obtaining player's coordinates
         int[] coordinates = {player.getX(), player.getY()};
 
         return coordinates;
+    }
+
+    /**
+     * Obtains the player's coordinates in a length 2 array
+     * @return Coordinates ({x, y})
+     */
+    public int[] getPlayerCoopCoordinates() {
+        // Second player does not exist
+        if (playerCoop == null || !playerCoop.isAlive()) {
+            return new int[] {-1, -1};
+        }
+
+        // Obtaining player's coordinates
+        int[] coordinates = {playerCoop.getX(), playerCoop.getY()};
+
+        return coordinates;
+    }
+
+    public ArrayList<Player> getPlayers() {
+        ArrayList<Player> players = new ArrayList<Player>();
+        if (firstPlayerExists()) {
+            players.add(getPlayer());
+        }
+        if (secondPlayerExists()) {
+            players.add(getPlayerCoop());
+        }
+
+        return players;
+    }
+
+    public boolean firstPlayerExists() {
+        return player != null && player.isAlive();
+    }
+
+    public boolean secondPlayerExists() {
+        return playerCoop != null && playerCoop.isAlive();
+    }
+
+    public ArrayList<int[]> getPlayersCoordinates() {
+        // Obtaining player coordinates
+        int[] playerOne = getPlayerCoordinates();
+        int[] playerTwo = getPlayerCoopCoordinates();
+
+        ArrayList<int[]> players = new ArrayList<int[]>();
+        players.add(playerOne);
+        if (!playerTwo.equals(new int[] {-1, -1})) {
+            players.add(playerTwo);
+        }
+
+        return players;
+    }
+
+    public boolean inDungeon(int x, int y) {
+        return 0 <= x && x < getWidth() && 0 <= y && y < getHeight();
     }
 
     /**
@@ -265,7 +335,7 @@ public class Dungeon {
      * @return Player affected by potion
      */
     public Boolean buffedPlayer() {
-        return player.isInvincible();
+        return player.isInvincible() || (secondPlayerExists() && playerCoop.isInvincible());
     }
 
     /**
@@ -281,6 +351,26 @@ public class Dungeon {
             if ((e instanceof Obstacle) && e.getX() == x && e.getY() == y) {
                 // Cannot move into this tile
                 return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Checks if a tile can be moved towards by an enemy
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @return Availability of location for the player
+     */
+    public Boolean validEnemyTile(int x, int y) {
+        // For all entities
+        for (Entity e : entities) {
+            // Checking if the tile can be moved towards
+            if (e.getX() == x && e.getY() == y) {
+                if (e instanceof Obstacle || e instanceof Enemy || e instanceof Door) {
+                    // Cannot move into this tile
+                    return false;
+                }
             }
         }
         return true;

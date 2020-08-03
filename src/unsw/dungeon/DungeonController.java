@@ -46,6 +46,8 @@ public class DungeonController {
 
     private Player player;
 
+    private Player playerCoop;
+
     private ArrayList<Enemy> enemies;
 
     private ArrayList<PickUp> itemPickUps;
@@ -57,6 +59,7 @@ public class DungeonController {
     public DungeonController(Dungeon dungeon, List<ImageView> initialEntities) {
         this.dungeon = dungeon;
         this.player = dungeon.getPlayer();
+        this.playerCoop = dungeon.getPlayerCoop();
         this.initialEntities = new ArrayList<>(initialEntities);
         this.itemPickUps = new ArrayList<PickUp>();
         this.enemies = dungeon.getEnemies();
@@ -93,26 +96,53 @@ public class DungeonController {
     @FXML
     public void handleKeyPress(KeyEvent event) {
         switch (event.getCode()) {
-        case UP:
-            player.moveUp();
-            break;
-        case DOWN:
-            player.moveDown();
-            break;
-        case LEFT:
-            player.moveLeft();
-            break;
-        case RIGHT:
-            player.moveRight();
-            break;
-        case R:
-            player.fireRanged();
-        default:
-            break;
+            case UP:
+                player.moveUp();
+                break;
+            case DOWN:
+                player.moveDown();
+                break;
+            case LEFT:
+                player.moveLeft();
+                break;
+            case RIGHT:
+                player.moveRight();
+                break;
+            case M:
+                player.fireRanged();
+                break;
+            case W:
+                if (playerCoop != null) {
+                    playerCoop.moveUp();
+                }
+                break;
+            case A:
+                if (playerCoop != null) {
+                    playerCoop.moveLeft();
+                }
+                break;
+            case S:
+                if (playerCoop != null) {
+                    playerCoop.moveDown();
+                }
+                break;
+            case D:
+                if (playerCoop != null) {
+                    playerCoop.moveRight();
+                }
+                break;
+            case F:
+                if (playerCoop != null) {
+                    playerCoop.fireRanged();
+                }
+                break;
+            default:
+                break;
         }
 
+        System.out.println("Next turn");
         moveEnemies();
-        checkPlayerStatus();
+        checkPlayersStatus();
     }
 
     private void moveEnemies() {
@@ -132,22 +162,25 @@ public class DungeonController {
      * Determines what actions to take for current turn
      * depending on what entities are in the same tile as the player
      */
-    private void checkPlayerStatus() {
+    private void checkPlayersStatus() {
         // Checks if a player is meant to be dead
         // Obtaining player coordinates
-        int[] playerCoordinate = dungeon.getPlayerCoordinates();
-        for (Enemy e : new ArrayList<Enemy>(enemies)) {
-            if (e.getX() == playerCoordinate[0] && e.getY() == playerCoordinate[1]) {
-                if (player.attacked()) {
-                    killEnemy(e);
+        ArrayList<Player> players = dungeon.getPlayers();
+
+        for (Player p : players) {
+            for (Enemy e : new ArrayList<Enemy>(enemies)) {
+                if (e.getX() == p.getX() && e.getY() == p.getY()) {
+                    if (e.readyToAttack() && p.attacked()) {
+                        killEnemy(e);
+                    }
                 }
             }
-        }
 
-        // Checking for potential items to pickup
-        for (PickUp i : itemPickUps) {
-            if (i.checkTilesCoincide(playerCoordinate[0], playerCoordinate[1])) {
-                player.pickUpItem(i);
+            // Checking for potential items to pickup
+            for (PickUp i : itemPickUps) {
+                if (i.checkTilesCoincide(p.getX(), p.getY())) {
+                    player.pickUpItem(i);
+                }
             }
         }
         //squares.setFocusTraversable(true);
