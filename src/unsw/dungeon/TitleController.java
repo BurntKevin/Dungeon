@@ -24,9 +24,6 @@ public class TitleController {
     private Button startBtn;
 
     @FXML
-    private Button controlsBtn;
-
-    @FXML
     private Button statsBtn;
 
     @FXML
@@ -35,10 +32,6 @@ public class TitleController {
     @FXML
     public void handleStartPress(ActionEvent event) {
         level.start(lvlChoiceBox.getSelectionModel().getSelectedItem(), log);
-    }
-
-    @FXML
-    public void handleControlsPress(ActionEvent event) {
     }
 
     @FXML

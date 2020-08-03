@@ -24,17 +24,12 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="ctrlsBtn" layoutX="265.0" layoutY="340.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" text="Controls">
+      <Button fx:id="statsBtn" layoutX="265.0" layoutY="340.0" mnemonicParsing="false" onAction="#handleStatsPress" prefHeight="25.0" prefWidth="120.0" text="Gameplay Stats">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="statsBtn" layoutX="265.0" layoutY="390.0" mnemonicParsing="false" onAction="#handleStatsPress" prefHeight="25.0" prefWidth="120.0" text="Gameplay Stats">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
-      <Button fx:id="exitBtn" layoutX="265.0" layoutY="440.0" mnemonicParsing="false" onAction="#handleExitPress" prefHeight="25.0" prefWidth="120.0" text="Exit">
+      <Button fx:id="exitBtn" layoutX="265.0" layoutY="390.0" mnemonicParsing="false" onAction="#handleExitPress" prefHeight="25.0" prefWidth="120.0" text="Exit">
          <font>
             <Font size="14.0" />
          </font>
